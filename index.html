@@ -135,6 +135,23 @@
     .quiz-message { min-height: 18px; margin-top: 10px; color: #bdf0d6; font-size: 11px; font-weight: 700; }
     .tip { margin-top: 16px; padding: 14px; border: 1px solid #f5e3ad; border-radius: 13px; background: #fffaf0; }
     .tip strong { color: #9a711a; font-size: 12px; } .tip p { margin-top: 5px; color: #8b7b5e; font-size: 11px; line-height: 1.45; }
+    .exam-library { margin-top: 29px; padding: 23px; border: 1px solid var(--line); border-radius: 19px; background: #fff; box-shadow: 0 6px 22px rgba(74, 89, 145, .06); }
+    .exam-library .section-head { margin: 0 0 5px; }
+    .library-note { color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .exam-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+    .exam-filter { padding: 9px 13px; color: var(--muted); border: 1px solid var(--line); border-radius: 9px; background: #fff; font-size: 12px; font-weight: 700; }
+    .exam-filter.active, .exam-filter:hover { color: var(--purple-dark); border-color: #b4aef7; background: #f0efff; }
+    .exam-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+    .exam-card { padding: 15px; border: 1px solid var(--line); border-radius: 13px; background: #fbfcff; }
+    .exam-card[hidden] { display: none; }
+    .exam-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 9px; }
+    .exam-badge { padding: 4px 7px; color: #5144c6; border-radius: 6px; background: #eceaff; font-size: 10px; font-weight: 800; }
+    .exam-year { color: #9aa2b7; font-size: 10px; }
+    .exam-card h3 { font-size: 14px; }
+    .exam-card p { min-height: 35px; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .exam-card button { width: 100%; margin-top: 12px; padding: 9px; color: var(--purple-dark); border: 1px solid #c9c5ff; border-radius: 8px; background: #f6f5ff; font-size: 11px; font-weight: 800; }
+    .exam-card button:hover { background: #eceaff; }
+    .disclaimer { margin-top: 14px; color: #9299ad; font-size: 10px; line-height: 1.45; }
 
     @media (max-width: 1000px) {
       .sidebar { width: 214px; flex-basis: 214px; }
@@ -224,6 +241,41 @@
           <div class="tip"><strong>💡 Exam tip</strong><p>Read every question twice. Circle the important words before you start answering.</p></div>
         </aside>
       </div>
+
+      <section class="exam-library" id="exam-library">
+        <div class="section-head"><h2>BECE &amp; WASSCE practice</h2><a href="#exam-library">Study bank →</a></div>
+        <p class="library-note">Build confidence with original exam-style practice sets organised by level and subject.</p>
+        <div class="exam-filters" role="group" aria-label="Filter practice sets">
+          <button class="exam-filter active" type="button" data-filter="all">All sets</button>
+          <button class="exam-filter" type="button" data-filter="BECE">BECE</button>
+          <button class="exam-filter" type="button" data-filter="WASSCE">WASSCE</button>
+          <button class="exam-filter" type="button" data-filter="Mathematics">Mathematics</button>
+          <button class="exam-filter" type="button" data-filter="English">English</button>
+        </div>
+        <div class="exam-list">
+          <article class="exam-card" data-exam="BECE Mathematics">
+            <div class="exam-card-top"><span class="exam-badge">BECE · Maths</span><span class="exam-year">JHS 1–3</span></div>
+            <h3>Numbers &amp; algebra</h3><p>Fractions, ratios, equations, percentages and everyday problem solving.</p>
+            <button type="button" onclick="loadPractice('BECE Mathematics')">Practice set · 10 questions</button>
+          </article>
+          <article class="exam-card" data-exam="BECE English">
+            <div class="exam-card-top"><span class="exam-badge">BECE · English</span><span class="exam-year">JHS 1–3</span></div>
+            <h3>Comprehension &amp; grammar</h3><p>Reading skills, parts of speech, vocabulary and sentence completion.</p>
+            <button type="button" onclick="loadPractice('BECE English')">Practice set · 10 questions</button>
+          </article>
+          <article class="exam-card" data-exam="WASSCE Mathematics">
+            <div class="exam-card-top"><span class="exam-badge">WASSCE · Maths</span><span class="exam-year">SHS 1–3</span></div>
+            <h3>Core mathematics</h3><p>Functions, statistics, geometry and quantitative reasoning practice.</p>
+            <button type="button" onclick="loadPractice('WASSCE Mathematics')">Practice set · 15 questions</button>
+          </article>
+          <article class="exam-card" data-exam="WASSCE English">
+            <div class="exam-card-top"><span class="exam-badge">WASSCE · English</span><span class="exam-year">SHS 1–3</span></div>
+            <h3>Language &amp; literature</h3><p>Summary, lexis, structure and thoughtful text-based exam practice.</p>
+            <button type="button" onclick="loadPractice('WASSCE English')">Practice set · 15 questions</button>
+          </article>
+        </div>
+        <p class="disclaimer">These are original revision questions inspired by common BECE and WASSCE topics, not official past-paper questions. Always use approved textbooks and guidance from your school.</p>
+      </section>
     </main>
   </div>
   <script>
@@ -233,11 +285,35 @@
       document.getElementById("subject-title").textContent = level + " subjects";
     }
 
+    const practiceQuestions = {
+      "BECE Mathematics": { question: "A shop gives a 10% discount on a GH₵80 school bag. What is the sale price?", answers: ["GH₵70", "GH₵72", "GH₵78"], correct: 1 },
+      "BECE English": { question: "Choose the word that best completes the sentence: The pupils ___ finished their work.", answers: ["has", "have", "having"], correct: 1 },
+      "WASSCE Mathematics": { question: "If f(x) = 2x + 3, what is f(4)?", answers: ["8", "10", "11"], correct: 2 },
+      "WASSCE English": { question: "Which literary device compares two things using 'like' or 'as'?", answers: ["Simile", "Irony", "Alliteration"], correct: 0 }
+    };
+
     function answerQuiz(button, correct) {
       document.querySelectorAll(".answer").forEach(item => item.disabled = true);
       button.classList.add(correct ? "correct" : "wrong");
-      document.getElementById("quiz-message").textContent = correct ? "Amazing! You earned 10 XP ⭐" : "Good try! The answer is 56. Keep practicing! 💪";
-      if (!correct) document.querySelectorAll(".answer")[1].classList.add("correct");
+      const correctIndex = Number(document.getElementById("quiz").dataset.correct || 1);
+      document.getElementById("quiz-message").textContent = correct ? "Amazing! You earned 10 XP ⭐" : "Good try! Check the highlighted answer and keep practicing! 💪";
+      if (!correct) document.querySelectorAll(".answer")[correctIndex].classList.add("correct");
+    }
+
+    function loadPractice(name) {
+      const item = practiceQuestions[name];
+      const quiz = document.getElementById("quiz");
+      quiz.dataset.correct = item.correct;
+      quiz.querySelector(".quiz-label span:first-child").textContent = name + " · Practice";
+      quiz.querySelector(".question").textContent = item.question;
+      quiz.querySelectorAll(".answer").forEach((button, index) => {
+        button.disabled = false;
+        button.className = "answer";
+        button.textContent = item.answers[index];
+        button.onclick = () => answerQuiz(button, index === item.correct);
+      });
+      document.getElementById("quiz-message").textContent = "";
+      quiz.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     function startQuiz() {
@@ -253,6 +329,17 @@
       const term = event.target.value.toLowerCase().trim();
       document.querySelectorAll(".subject").forEach(subject => {
         subject.hidden = term && !subject.dataset.name.includes(term);
+      });
+    });
+
+    document.querySelectorAll(".exam-filter").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".exam-filter").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        const filter = button.dataset.filter;
+        document.querySelectorAll(".exam-card").forEach(card => {
+          card.hidden = filter !== "all" && !card.dataset.exam.includes(filter);
+        });
       });
     });
   </script>

@@ -3,520 +3,258 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#11132f">
-  <title>Benedict Barker Mawutor | Digital Contact Card</title>
-
+  <meta name="theme-color" content="#f6f8ff">
+  <title>BrightMind | Learn. Practice. Shine.</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root {
+      --ink: #17213d;
+      --muted: #6f7894;
+      --line: #e5e9f5;
+      --paper: #ffffff;
+      --bg: #f6f8ff;
+      --purple: #6759e8;
+      --purple-dark: #493bc6;
+      --blue: #3b9df8;
+      --yellow: #ffc857;
+      --green: #31b77a;
+      --shadow: 0 18px 50px rgba(66, 73, 139, 0.12);
     }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: clamp(20px, 4vw, 64px);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 90% 0%, rgba(111, 224, 255, .22), transparent 27rem),
+        linear-gradient(135deg, #f7f9ff 0%, #eef3ff 100%);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at 12% 18%, rgba(111, 76, 255, 0.28), transparent 32%),
-        radial-gradient(circle at 88% 82%, rgba(29, 209, 255, 0.18), transparent 30%),
-        linear-gradient(135deg, #080b22 0%, #17133b 48%, #0c1838 100%);
-      color: #ffffff;
-      overflow-x: hidden;
     }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .app { display: flex; min-height: 100vh; max-width: 1500px; margin: auto; }
 
-    .tech-background {
-      position: fixed;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-      user-select: none;
-      z-index: 0;
-    }
-
-    .gadget {
-      position: absolute;
-      opacity: 0.28;
-      filter: drop-shadow(0 0 18px rgba(91, 196, 255, 0.18));
-    }
-
-    .laptop {
-      top: 11%;
-      left: 5%;
-      transform: rotate(-12deg);
-    }
-
-    .phone {
-      right: 7%;
-      top: 12%;
-      transform: rotate(14deg);
-    }
-
-    .tablet {
-      right: 3%;
-      bottom: 9%;
-      transform: rotate(-16deg);
-    }
-
-    .gadget svg {
-      display: block;
-      overflow: visible;
-    }
-
-    .chip {
-      left: 8%;
-      bottom: 14%;
-      transform: rotate(18deg);
-    }
-
-    .circuit {
-      position: absolute;
-      width: 180px;
-      height: 120px;
-      opacity: 0.26;
-      background:
-        linear-gradient(90deg, transparent 49%, rgba(102, 220, 255, 0.55) 50%, transparent 51%),
-        linear-gradient(0deg, transparent 49%, rgba(102, 220, 255, 0.55) 50%, transparent 51%);
-      background-size: 42px 42px;
-      mask-image: linear-gradient(135deg, transparent, #000 30%, #000 70%, transparent);
-    }
-
-    .circuit-one {
-      top: 45%;
-      left: -30px;
-      transform: rotate(-15deg);
-    }
-
-    .circuit-two {
-      right: -30px;
-      bottom: 37%;
-      transform: rotate(18deg);
-    }
-
-    .card {
-      width: 100%;
-      max-width: 1120px;
-      overflow: hidden;
-      border: 1px solid rgba(190, 185, 255, 0.22);
-      border-radius: 32px;
-      background: linear-gradient(135deg, rgba(30, 29, 72, 0.9), rgba(11, 20, 49, 0.94));
-      box-shadow: 0 28px 90px rgba(3, 4, 24, 0.55), 0 0 80px rgba(102, 79, 255, 0.12);
-      backdrop-filter: blur(18px);
-      position: relative;
-      z-index: 1;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      width: 280px;
-      height: 280px;
-      top: -150px;
-      right: -70px;
-      border-radius: 50%;
-      background: rgba(119, 95, 255, 0.22);
-      filter: blur(12px);
-      pointer-events: none;
-    }
-
-    .top {
+    .sidebar {
+      width: 252px;
+      flex: 0 0 252px;
+      padding: 28px 18px;
+      background: #fff;
+      border-right: 1px solid var(--line);
       display: flex;
-      align-items: center;
-      gap: 28px;
-      padding: clamp(32px, 5vw, 66px);
-      position: relative;
-      border-bottom: 1px solid rgba(190, 185, 255, 0.16);
+      flex-direction: column;
     }
-
-    .top::after {
-      content: "";
-      position: absolute;
-      left: clamp(32px, 5vw, 66px);
-      bottom: -1px;
-      width: 92px;
-      height: 2px;
-      background: linear-gradient(90deg, #7f75ff, #56ddff);
-      box-shadow: 0 0 16px rgba(86, 221, 255, 0.65);
+    .brand { display: flex; align-items: center; gap: 11px; padding: 0 12px 36px; }
+    .brand-mark {
+      width: 40px; height: 40px; display: grid; place-items: center;
+      color: white; font-weight: 900; font-size: 20px;
+      border-radius: 13px; background: linear-gradient(135deg, #786bff, #40b9ff);
+      box-shadow: 0 8px 16px rgba(103, 89, 232, .25);
     }
-
-    .avatar {
-      width: 116px;
-      height: 116px;
-      flex: 0 0 116px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(145deg, #8173ff, #2bcdf4);
-      border: 5px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 36px rgba(77, 177, 255, 0.35);
-      color: #fff;
-      font-size: 31px;
-      font-weight: 700;
-      letter-spacing: 1px;
+    .brand strong { font-size: 20px; letter-spacing: -.6px; }
+    .brand span { color: var(--purple); }
+    .nav-label { color: #a1a8bf; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; padding: 0 13px 10px; text-transform: uppercase; }
+    .nav { display: grid; gap: 5px; }
+    .nav button {
+      display: flex; align-items: center; gap: 13px; width: 100%; padding: 13px 14px;
+      color: var(--muted); text-align: left; border: 0; border-radius: 12px; background: transparent;
+      transition: .2s ease;
     }
-
-    h1 {
-      font-size: clamp(30px, 4vw, 50px);
-      line-height: 1.05;
-      margin-bottom: 12px;
-      letter-spacing: -1.5px;
+    .nav button:hover, .nav button.active { color: var(--purple-dark); background: #f0efff; font-weight: 700; }
+    .nav-icon { width: 22px; text-align: center; font-size: 18px; }
+    .sidebar-card {
+      margin-top: auto; padding: 18px; color: #fff; border-radius: 18px;
+      background: linear-gradient(145deg, #7568ed, #4d9eee); box-shadow: 0 12px 25px rgba(91, 91, 218, .2);
     }
+    .sidebar-card .spark { font-size: 26px; }
+    .sidebar-card p { margin: 7px 0 13px; color: #e9ebff; font-size: 12px; line-height: 1.5; }
+    .sidebar-card button { width: 100%; padding: 9px; color: var(--purple-dark); border: 0; border-radius: 9px; background: white; font-size: 12px; font-weight: 800; }
 
-    .eyebrow {
-      margin-bottom: 14px;
-      color: #9b9cff;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2.4px;
-      text-transform: uppercase;
+    main { width: 100%; min-width: 0; padding: 27px clamp(20px, 4vw, 56px) 50px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 31px; }
+    .welcome small { color: var(--muted); font-size: 13px; }
+    .welcome h1 { margin-top: 4px; font-size: clamp(24px, 3vw, 33px); letter-spacing: -1.2px; }
+    .top-actions { display: flex; align-items: center; gap: 14px; }
+    .search {
+      width: min(230px, 28vw); padding: 11px 14px 11px 38px; color: var(--ink);
+      border: 1px solid var(--line); border-radius: 12px; outline: none; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23707894' stroke-width='2'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='m11 11 4 4'/%3E%3C/svg%3E") 13px center no-repeat;
     }
+    .search:focus { border-color: #9d95f5; box-shadow: 0 0 0 3px #eeecff; }
+    .avatar { width: 40px; height: 40px; display: grid; place-items: center; color: #4a3f9c; border-radius: 50%; background: #ddd9ff; font-weight: 800; }
 
-    .role {
-      color: #c4c6e9;
-      font-size: 17px;
-      margin-bottom: 8px;
+    .hero {
+      display: flex; justify-content: space-between; align-items: center; gap: 30px; overflow: hidden;
+      min-height: 205px; padding: 30px 38px; margin-bottom: 27px; color: white; border-radius: 24px;
+      background: linear-gradient(105deg, #5f55dc 0%, #7669e9 52%, #4aa8ed 100%);
+      box-shadow: 0 18px 35px rgba(99, 90, 218, .22); position: relative;
     }
+    .hero::after { content: "✦  ✧  ✦"; position: absolute; right: 30px; top: 17px; color: rgba(255,255,255,.27); font-size: 45px; letter-spacing: 14px; }
+    .hero h2 { max-width: 570px; font-size: clamp(25px, 4vw, 39px); line-height: 1.08; letter-spacing: -1.4px; }
+    .hero p { max-width: 490px; margin: 13px 0 21px; color: #e9eaff; font-size: 14px; line-height: 1.5; }
+    .hero button, .primary { padding: 12px 18px; color: #5144c6; border: 0; border-radius: 10px; background: #fff; font-size: 13px; font-weight: 800; }
+    .hero-art { align-self: stretch; display: grid; place-items: center; min-width: 145px; font-size: 96px; filter: drop-shadow(0 12px 5px rgba(39, 43, 132, .2)); transform: rotate(5deg); }
 
-    .company {
-      font-size: 18px;
-      font-weight: 700;
-      color: #8fe5ff;
+    .section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 25px 0 14px; }
+    .section-head h2 { font-size: 19px; letter-spacing: -.4px; }
+    .section-head a { color: var(--purple); font-size: 12px; font-weight: 800; text-decoration: none; }
+    .levels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px; }
+    .level {
+      padding: 17px 16px; text-align: left; border: 2px solid transparent; border-radius: 16px; background: #fff;
+      box-shadow: 0 6px 22px rgba(74, 89, 145, .06); transition: .2s ease;
     }
+    .level:hover, .level.selected { border-color: var(--purple); transform: translateY(-3px); }
+    .level-icon { width: 39px; height: 39px; display: grid; place-items: center; margin-bottom: 13px; border-radius: 12px; font-size: 20px; }
+    .level:nth-child(1) .level-icon { background: #fff0c9; } .level:nth-child(2) .level-icon { background: #dff5ff; }
+    .level:nth-child(3) .level-icon { background: #e5e0ff; } .level:nth-child(4) .level-icon { background: #dff7eb; }
+    .level strong { display: block; font-size: 14px; } .level small { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; }
 
-    .details {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      padding: clamp(24px, 4vw, 48px);
+    .content-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(275px, .8fr); gap: 22px; align-items: start; }
+    .subjects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 13px; }
+    .subject {
+      display: flex; align-items: center; gap: 14px; padding: 17px; border: 1px solid var(--line); border-radius: 16px;
+      background: #fff; box-shadow: 0 6px 22px rgba(74, 89, 145, .06); transition: .2s ease;
     }
+    .subject:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .subject-icon { width: 47px; height: 47px; display: grid; place-items: center; flex: 0 0 47px; border-radius: 14px; font-size: 23px; }
+    .math { background: #e9f0ff; } .science { background: #e4f9ed; } .english { background: #fff0e4; } .social { background: #f0eaff; }
+    .subject h3 { font-size: 14px; } .subject p { margin-top: 4px; color: var(--muted); font-size: 11px; }
+    .progress { height: 5px; margin-top: 10px; overflow: hidden; border-radius: 99px; background: #edf0f8; }
+    .progress span { display: block; width: 64%; height: 100%; border-radius: inherit; background: var(--purple); }
+    .subject:nth-child(2) .progress span { width: 42%; background: var(--green); } .subject:nth-child(3) .progress span { width: 78%; background: #f09b57; } .subject:nth-child(4) .progress span { width: 28%; background: #ac82e9; }
 
-    .details-heading {
-      grid-column: span 2;
-      margin-bottom: 3px;
-      color: #aeb4dc;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 1.8px;
-      text-transform: uppercase;
+    .quiz {
+      padding: 21px; color: #fff; border-radius: 18px; background: #202b56; box-shadow: var(--shadow);
     }
+    .quiz-label { display: flex; justify-content: space-between; color: #aeb8e2; font-size: 11px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; }
+    .quiz h3 { margin: 15px 0 9px; font-size: 18px; line-height: 1.3; }
+    .quiz p { color: #bac3e4; font-size: 12px; line-height: 1.5; }
+    .question { margin: 16px 0 12px; padding: 12px; border-radius: 10px; color: #303967; background: #fff; font-size: 13px; font-weight: 700; }
+    .answers { display: grid; gap: 7px; }
+    .answer { padding: 10px; color: #e9edff; text-align: left; border: 1px solid #495681; border-radius: 8px; background: transparent; font-size: 12px; }
+    .answer:hover { border-color: #a7b2e8; background: #303d70; }
+    .answer.correct { border-color: #61d6a0; background: #24634e; }
+    .answer.wrong { border-color: #ff9d9d; background: #753c51; }
+    .quiz-message { min-height: 18px; margin-top: 10px; color: #bdf0d6; font-size: 11px; font-weight: 700; }
+    .tip { margin-top: 16px; padding: 14px; border: 1px solid #f5e3ad; border-radius: 13px; background: #fffaf0; }
+    .tip strong { color: #9a711a; font-size: 12px; } .tip p { margin-top: 5px; color: #8b7b5e; font-size: 11px; line-height: 1.45; }
 
-    .item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      min-height: 84px;
-      padding: 17px 19px;
-      border-radius: 18px;
-      background: rgba(8, 13, 38, 0.48);
-      border: 1px solid rgba(183, 188, 255, 0.16);
-      color: #fff;
-      text-decoration: none;
-      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    @media (max-width: 1000px) {
+      .sidebar { width: 214px; flex-basis: 214px; }
+      .content-grid { grid-template-columns: 1fr; } .quiz { max-width: none; }
     }
-
-    .item:hover {
-      transform: translateY(-2px);
-      border-color: rgba(137, 224, 255, 0.7);
-      background: rgba(25, 31, 72, 0.72);
+    @media (max-width: 700px) {
+      .app { display: block; } .sidebar { width: 100%; padding: 13px 15px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .brand { padding: 0 3px 12px; } .sidebar-card, .nav-label { display: none; }
+      .nav { display: flex; overflow-x: auto; gap: 4px; } .nav button { width: auto; padding: 9px 11px; white-space: nowrap; } .nav-icon { font-size: 15px; }
+      main { padding: 22px 15px 38px; } .topbar { align-items: flex-start; margin-bottom: 22px; } .top-actions { flex: 1; justify-content: flex-end; }
+      .search { width: 42px; padding: 11px 10px 11px 35px; } .hero { min-height: 0; padding: 26px 23px; } .hero-art { display: none; }
+      .levels { grid-template-columns: repeat(2, 1fr); } .subjects { grid-template-columns: 1fr; }
     }
-
-    .icon {
-      width: 45px;
-      height: 45px;
-      flex: 0 0 45px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(145deg, rgba(128, 112, 255, 0.35), rgba(39, 205, 244, 0.18));
-      color: #a8ecff;
-      font-size: 19px;
-    }
-
-    .label {
-      display: block;
-      color: #9298c4;
-      font-size: 10px;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 1.4px;
-    }
-
-    .value {
-      font-size: 16px;
-      word-break: break-word;
-    }
-
-    .details > .item:nth-child(4) {
-      grid-column: span 2;
-    }
-
-    .buttons {
-      grid-column: span 2;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 8px;
-    }
-
-    button {
-      border: 0;
-      border-radius: 15px;
-      padding: 17px 14px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      color: #10132f;
-      background: linear-gradient(135deg, #ffffff, #b8f2ff);
-      box-shadow: 0 10px 24px rgba(76, 206, 255, 0.14);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 28px rgba(76, 206, 255, 0.24);
-    }
-
-    button.secondary {
-      color: #fff;
-      background: rgba(123, 106, 255, 0.25);
-      border: 1px solid rgba(173, 168, 255, 0.38);
-    }
-
-    .footer {
-      position: relative;
-      text-align: center;
-      padding: 0 30px 30px;
-      color: #8b91bb;
-      font-size: 12px;
-      letter-spacing: 0.4px;
-    }
-
-    @media (max-width: 680px) {
-      body {
-        align-items: flex-start;
-        padding: 14px;
-      }
-
-      .card {
-        border-radius: 24px;
-      }
-
-      .top {
-        display: block;
-        text-align: center;
-        padding: 36px 22px 30px;
-      }
-
-      .top::after {
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
-      .avatar {
-        margin: 0 auto 20px;
-      }
-
-      h1 {
-        font-size: clamp(28px, 9vw, 38px);
-        letter-spacing: -0.8px;
-      }
-
-      .role {
-        font-size: 15px;
-      }
-
-      .company {
-        font-size: 16px;
-      }
-
-      .details {
-        display: block;
-        padding: 20px;
-      }
-
-      .details-heading {
-        margin-bottom: 16px;
-      }
-
-      .item,
-      .details > .item:nth-child(4) {
-        margin-bottom: 12px;
-      }
-
-      .buttons {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 12px;
-        margin-top: 20px;
-      }
-
-      .footer {
-        padding-bottom: 24px;
-      }
+    @media (max-width: 430px) {
+      .welcome h1 { font-size: 23px; } .avatar { width: 35px; height: 35px; font-size: 12px; }
+      .hero h2 { font-size: 27px; } .hero p { font-size: 13px; } .section-head { margin-top: 22px; }
     }
   </style>
 </head>
-
 <body>
-  <div class="tech-background" aria-hidden="true">
-    <div class="gadget laptop">
-      <svg width="210" height="150" viewBox="0 0 210 150" fill="none">
-        <rect x="18" y="10" width="174" height="106" rx="10" fill="#252867" stroke="#9AD9FF" stroke-width="3"/>
-        <rect x="29" y="21" width="152" height="83" rx="4" fill="url(#laptopScreen)"/>
-        <path d="M4 120h202l-13 13H17L4 120Z" fill="#424B9B" stroke="#9AD9FF" stroke-width="3"/>
-        <path d="M91 124h28" stroke="#A7EDFF" stroke-width="3" stroke-linecap="round"/>
-        <path d="m50 73 17-17 13 12 18-25 25 29" stroke="#A7EDFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <defs>
-          <linearGradient id="laptopScreen" x1="29" y1="21" x2="181" y2="104" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#6256D9"/><stop offset="1" stop-color="#163F73"/>
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
-    <div class="gadget phone">
-      <svg width="90" height="155" viewBox="0 0 90 155" fill="none">
-        <rect x="9" y="3" width="72" height="149" rx="13" fill="#282A69" stroke="#B8AEFF" stroke-width="3"/>
-        <rect x="17" y="20" width="56" height="112" rx="5" fill="url(#phoneScreen)"/>
-        <path d="M36 11h18" stroke="#B8F0FF" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="45" cy="142" r="4" fill="#B8F0FF"/>
-        <circle cx="45" cy="72" r="19" stroke="#9FEAFF" stroke-width="3"/>
-        <path d="m36 72 6 6 12-14" stroke="#9FEAFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        <defs>
-          <linearGradient id="phoneScreen" x1="17" y1="20" x2="73" y2="132" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#684FC9"/><stop offset="1" stop-color="#144C79"/>
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
-    <div class="gadget tablet">
-      <svg width="175" height="220" viewBox="0 0 175 220" fill="none">
-        <rect x="8" y="5" width="159" height="210" rx="15" fill="#25295F" stroke="#89DFFF" stroke-width="3"/>
-        <rect x="20" y="22" width="135" height="174" rx="6" fill="url(#tabletScreen)"/>
-        <circle cx="87.5" cy="205" r="4" fill="#B8F0FF"/>
-        <path d="M38 137h98M38 157h72M38 61h70" stroke="#9BEAFF" stroke-width="3" stroke-linecap="round" opacity=".75"/>
-        <path d="m40 111 20-23 16 14 25-35 34 43" stroke="#B9A8FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-        <defs>
-          <linearGradient id="tabletScreen" x1="20" y1="22" x2="155" y2="196" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#3D3EAC"/><stop offset="1" stop-color="#124D76"/>
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
-    <div class="gadget chip">
-      <svg width="125" height="125" viewBox="0 0 125 125" fill="none">
-        <rect x="24" y="24" width="77" height="77" rx="8" fill="#3A347B" stroke="#A9E8FF" stroke-width="3"/>
-        <rect x="42" y="42" width="41" height="41" rx="5" fill="#171F59" stroke="#B8AEFF" stroke-width="3"/>
-        <path d="M35 8v16M52 8v16M70 8v16M87 8v16M35 101v16M52 101v16M70 101v16M87 101v16M8 35h16M8 52h16M8 70h16M8 87h16M101 35h16M101 52h16M101 70h16M101 87h16" stroke="#8DDEFF" stroke-width="3" stroke-linecap="round"/>
-        <path d="m53 63 8 8 13-16" stroke="#9BEAFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-    <div class="circuit circuit-one"></div>
-    <div class="circuit circuit-two"></div>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">✦</div><strong>Bright<span>Mind</span></strong></div>
+      <div class="nav-label">Learning space</div>
+      <nav class="nav" aria-label="Main navigation">
+        <button class="active" type="button"><span class="nav-icon">⌂</span> Dashboard</button>
+        <button type="button"><span class="nav-icon">▣</span> My Subjects</button>
+        <button type="button"><span class="nav-icon">◷</span> Practice Tests</button>
+        <button type="button"><span class="nav-icon">★</span> Achievements</button>
+      </nav>
+      <div class="sidebar-card">
+        <div class="spark">🚀</div>
+        <strong>Keep going!</strong>
+        <p>You are 3 lessons away from earning your next star.</p>
+        <button type="button" onclick="scrollToSubjects()">View progress</button>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div class="welcome"><small>Monday, 14 September</small><h1>Ready to learn, Alex? 👋</h1></div>
+        <div class="top-actions"><input class="search" id="search" aria-label="Search subjects" placeholder="Search..." type="search"><div class="avatar">A</div></div>
+      </header>
+
+      <section class="hero">
+        <div>
+          <h2>Small steps today,<br>big dreams tomorrow.</h2>
+          <p>Learn at your own pace with fun lessons, friendly practice, and helpful exam tips made just for you.</p>
+          <button type="button" onclick="startQuiz()">Start today's practice <span aria-hidden="true">→</span></button>
+        </div>
+        <div class="hero-art" aria-hidden="true">📚</div>
+      </section>
+
+      <section id="levels">
+        <div class="section-head"><h2>Choose your level</h2><a href="#levels">View all levels →</a></div>
+        <div class="levels">
+          <button class="level selected" type="button" onclick="selectLevel(this, 'Primary')"><span class="level-icon">🌱</span><strong>Primary</strong><small>Ages 6–11</small></button>
+          <button class="level" type="button" onclick="selectLevel(this, 'Junior High')"><span class="level-icon">🚲</span><strong>Junior High</strong><small>Ages 12–14</small></button>
+          <button class="level" type="button" onclick="selectLevel(this, 'Senior High')"><span class="level-icon">🎓</span><strong>Senior High</strong><small>Ages 15–17</small></button>
+          <button class="level" type="button" onclick="selectLevel(this, 'College')"><span class="level-icon">🏆</span><strong>College</strong><small>Advanced study</small></button>
+        </div>
+      </section>
+
+      <div class="content-grid" id="subjects">
+        <section>
+          <div class="section-head"><h2 id="subject-title">Your subjects</h2><a href="#subjects">See all →</a></div>
+          <div class="subjects">
+            <article class="subject" data-name="mathematics"><div class="subject-icon math">➗</div><div><h3>Mathematics</h3><p>12 lessons · 64% complete</p><div class="progress"><span></span></div></div></article>
+            <article class="subject" data-name="science"><div class="subject-icon science">🔬</div><div><h3>Science</h3><p>10 lessons · 42% complete</p><div class="progress"><span></span></div></div></article>
+            <article class="subject" data-name="english"><div class="subject-icon english">📖</div><div><h3>English Language</h3><p>15 lessons · 78% complete</p><div class="progress"><span></span></div></div></article>
+            <article class="subject" data-name="social studies"><div class="subject-icon social">🌍</div><div><h3>Social Studies</h3><p>8 lessons · 28% complete</p><div class="progress"><span></span></div></div></article>
+          </div>
+        </section>
+        <aside>
+          <div class="section-head"><h2>Quick practice</h2></div>
+          <div class="quiz" id="quiz">
+            <div class="quiz-label"><span>Question 1 of 1</span><span>+10 XP</span></div>
+            <h3>Test your brain</h3><p>Warm up with a quick question before your next lesson.</p>
+            <div class="question">What is 7 × 8?</div>
+            <div class="answers">
+              <button class="answer" type="button" onclick="answerQuiz(this, false)">54</button>
+              <button class="answer" type="button" onclick="answerQuiz(this, true)">56</button>
+              <button class="answer" type="button" onclick="answerQuiz(this, false)">64</button>
+            </div>
+            <div class="quiz-message" id="quiz-message" aria-live="polite"></div>
+          </div>
+          <div class="tip"><strong>💡 Exam tip</strong><p>Read every question twice. Circle the important words before you start answering.</p></div>
+        </aside>
+      </div>
+    </main>
   </div>
-
-  <main class="card">
-    <section class="top">
-      <div class="avatar">BBM</div>
-
-      <div class="identity">
-        <p class="eyebrow">Digital Contact Card</p>
-        <h1>Benedict Barker Mawutor</h1>
-        <p class="role">Business Man</p>
-        <p class="company">Mr Ben's IT Company Limited</p>
-      </div>
-    </section>
-
-    <section class="details">
-      <h2 class="details-heading">Connect with me</h2>
-
-      <a class="item" href="tel:0592410985">
-        <span class="icon">☎</span>
-        <span>
-          <span class="label">Phone</span>
-          <span class="value">059 241 0985</span>
-        </span>
-      </a>
-
-      <a class="item" href="tel:0204939073">
-        <span class="icon">📱</span>
-        <span>
-          <span class="label">Mobile</span>
-          <span class="value">020 493 9073</span>
-        </span>
-      </a>
-
-      <a class="item" href="mailto:benedictbarker246@gmail.com">
-        <span class="icon">✉</span>
-        <span>
-          <span class="label">Email</span>
-          <span class="value">benedictbarker246@gmail.com</span>
-        </span>
-      </a>
-
-      <div class="item">
-        <span class="icon">📍</span>
-        <span>
-          <span class="label">Location</span>
-          <span class="value">Burma Camp</span>
-        </span>
-      </div>
-
-      <div class="buttons">
-        <button type="button" onclick="saveContact()">Save Contact</button>
-        <button type="button" class="secondary" onclick="shareCard()">Share Card</button>
-      </div>
-    </section>
-
-    <div class="footer">
-      Mr Ben's IT Company Limited
-    </div>
-  </main>
-
   <script>
-    function saveContact() {
-      const vcard = `BEGIN:VCARD
-VERSION:3.0
-FN:Benedict Barker Mawutor
-N:Mawutor;Benedict Barker;;;
-ORG:Mr Ben's IT Company Limited
-TITLE:Business Man
-TEL;TYPE=CELL:0592410985
-TEL;TYPE=WORK:0204939073
-EMAIL:benedictbarker246@gmail.com
-ADR;TYPE=WORK:;;Burma Camp;;;;
-END:VCARD`;
-
-      const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "Benedict_Barker_Mawutor.vcf";
-      a.click();
-      URL.revokeObjectURL(url);
+    function selectLevel(button, level) {
+      document.querySelectorAll(".level").forEach(item => item.classList.remove("selected"));
+      button.classList.add("selected");
+      document.getElementById("subject-title").textContent = level + " subjects";
     }
 
-    async function shareCard() {
-      const shareData = {
-        title: "Benedict Barker Mawutor",
-        text: "Benedict Barker Mawutor | Mr Ben's IT Company Limited | 059 241 0985 | benedictbarker246@gmail.com"
-      };
-
-      if (navigator.share) {
-        try {
-          await navigator.share(shareData);
-        } catch (e) {}
-      } else {
-        await navigator.clipboard.writeText(
-          "Benedict Barker Mawutor\nMr Ben's IT Company Limited\n059 241 0985\n020 493 9073\nbenedictbarker246@gmail.com\nBurma Camp"
-        );
-        alert("Contact details copied to clipboard.");
-      }
+    function answerQuiz(button, correct) {
+      document.querySelectorAll(".answer").forEach(item => item.disabled = true);
+      button.classList.add(correct ? "correct" : "wrong");
+      document.getElementById("quiz-message").textContent = correct ? "Amazing! You earned 10 XP ⭐" : "Good try! The answer is 56. Keep practicing! 💪";
+      if (!correct) document.querySelectorAll(".answer")[1].classList.add("correct");
     }
+
+    function startQuiz() {
+      document.getElementById("quiz").scrollIntoView({ behavior: "smooth", block: "center" });
+      document.querySelector(".question").focus?.();
+    }
+
+    function scrollToSubjects() {
+      document.getElementById("subjects").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    document.getElementById("search").addEventListener("input", event => {
+      const term = event.target.value.toLowerCase().trim();
+      document.querySelectorAll(".subject").forEach(subject => {
+        subject.hidden = term && !subject.dataset.name.includes(term);
+      });
+    });
   </script>
 </body>
 </html>

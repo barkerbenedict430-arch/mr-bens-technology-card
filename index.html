@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#11132f">
+  <title>Benedict Barker Mawutor | Digital Contact Card</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(20px, 4vw, 64px);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(111, 76, 255, 0.28), transparent 32%),
+        radial-gradient(circle at 88% 82%, rgba(29, 209, 255, 0.18), transparent 30%),
+        linear-gradient(135deg, #080b22 0%, #17133b 48%, #0c1838 100%);
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .tech-background {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    .gadget {
+      position: absolute;
+      opacity: 0.28;
+      filter: drop-shadow(0 0 18px rgba(91, 196, 255, 0.18));
+    }
+
+    .laptop {
+      top: 11%;
+      left: 5%;
+      transform: rotate(-12deg);
+    }
+
+    .phone {
+      right: 7%;
+      top: 12%;
+      transform: rotate(14deg);
+    }
+
+    .tablet {
+      right: 3%;
+      bottom: 9%;
+      transform: rotate(-16deg);
+    }
+
+    .gadget svg {
+      display: block;
+      overflow: visible;
+    }
+
+    .chip {
+      left: 8%;
+      bottom: 14%;
+      transform: rotate(18deg);
+    }
+
+    .circuit {
+      position: absolute;
+      width: 180px;
+      height: 120px;
+      opacity: 0.26;
+      background:
+        linear-gradient(90deg, transparent 49%, rgba(102, 220, 255, 0.55) 50%, transparent 51%),
+        linear-gradient(0deg, transparent 49%, rgba(102, 220, 255, 0.55) 50%, transparent 51%);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(135deg, transparent, #000 30%, #000 70%, transparent);
+    }
+
+    .circuit-one {
+      top: 45%;
+      left: -30px;
+      transform: rotate(-15deg);
+    }
+
+    .circuit-two {
+      right: -30px;
+      bottom: 37%;
+      transform: rotate(18deg);
+    }
+
+    .card {
+      width: 100%;
+      max-width: 1120px;
+      overflow: hidden;
+      border: 1px solid rgba(190, 185, 255, 0.22);
+      border-radius: 32px;
+      background: linear-gradient(135deg, rgba(30, 29, 72, 0.9), rgba(11, 20, 49, 0.94));
+      box-shadow: 0 28px 90px rgba(3, 4, 24, 0.55), 0 0 80px rgba(102, 79, 255, 0.12);
+      backdrop-filter: blur(18px);
+      position: relative;
+      z-index: 1;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      top: -150px;
+      right: -70px;
+      border-radius: 50%;
+      background: rgba(119, 95, 255, 0.22);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: clamp(32px, 5vw, 66px);
+      position: relative;
+      border-bottom: 1px solid rgba(190, 185, 255, 0.16);
+    }
+
+    .top::after {
+      content: "";
+      position: absolute;
+      left: clamp(32px, 5vw, 66px);
+      bottom: -1px;
+      width: 92px;
+      height: 2px;
+      background: linear-gradient(90deg, #7f75ff, #56ddff);
+      box-shadow: 0 0 16px rgba(86, 221, 255, 0.65);
+    }
+
+    .avatar {
+      width: 116px;
+      height: 116px;
+      flex: 0 0 116px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, #8173ff, #2bcdf4);
+      border: 5px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 36px rgba(77, 177, 255, 0.35);
+      color: #fff;
+      font-size: 31px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-size: clamp(30px, 4vw, 50px);
+      line-height: 1.05;
+      margin-bottom: 12px;
+      letter-spacing: -1.5px;
+    }
+
+    .eyebrow {
+      margin-bottom: 14px;
+      color: #9b9cff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+    }
+
+    .role {
+      color: #c4c6e9;
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .company {
+      font-size: 18px;
+      font-weight: 700;
+      color: #8fe5ff;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding: clamp(24px, 4vw, 48px);
+    }
+
+    .details-heading {
+      grid-column: span 2;
+      margin-bottom: 3px;
+      color: #aeb4dc;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 84px;
+      padding: 17px 19px;
+      border-radius: 18px;
+      background: rgba(8, 13, 38, 0.48);
+      border: 1px solid rgba(183, 188, 255, 0.16);
+      color: #fff;
+      text-decoration: none;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(137, 224, 255, 0.7);
+      background: rgba(25, 31, 72, 0.72);
+    }
+
+    .icon {
+      width: 45px;
+      height: 45px;
+      flex: 0 0 45px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(145deg, rgba(128, 112, 255, 0.35), rgba(39, 205, 244, 0.18));
+      color: #a8ecff;
+      font-size: 19px;
+    }
+
+    .label {
+      display: block;
+      color: #9298c4;
+      font-size: 10px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+    }
+
+    .value {
+      font-size: 16px;
+      word-break: break-word;
+    }
+
+    .details > .item:nth-child(4) {
+      grid-column: span 2;
+    }
+
+    .buttons {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 8px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 15px;
+      padding: 17px 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #10132f;
+      background: linear-gradient(135deg, #ffffff, #b8f2ff);
+      box-shadow: 0 10px 24px rgba(76, 206, 255, 0.14);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(76, 206, 255, 0.24);
+    }
+
+    button.secondary {
+      color: #fff;
+      background: rgba(123, 106, 255, 0.25);
+      border: 1px solid rgba(173, 168, 255, 0.38);
+    }
+
+    .footer {
+      position: relative;
+      text-align: center;
+      padding: 0 30px 30px;
+      color: #8b91bb;
+      font-size: 12px;
+      letter-spacing: 0.4px;
+    }
+
+    @media (max-width: 680px) {
+      body {
+        align-items: flex-start;
+        padding: 14px;
+      }
+
+      .card {
+        border-radius: 24px;
+      }
+
+      .top {
+        display: block;
+        text-align: center;
+        padding: 36px 22px 30px;
+      }
+
+      .top::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .avatar {
+        margin: 0 auto 20px;
+      }
+
+      h1 {
+        font-size: clamp(28px, 9vw, 38px);
+        letter-spacing: -0.8px;
+      }
+
+      .role {
+        font-size: 15px;
+      }
+
+      .company {
+        font-size: 16px;
+      }
+
+      .details {
+        display: block;
+        padding: 20px;
+      }
+
+      .details-heading {
+        margin-bottom: 16px;
+      }
+
+      .item,
+      .details > .item:nth-child(4) {
+        margin-bottom: 12px;
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .footer {
+        padding-bottom: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="tech-background" aria-hidden="true">
+    <div class="gadget laptop">
+      <svg width="210" height="150" viewBox="0 0 210 150" fill="none">
+        <rect x="18" y="10" width="174" height="106" rx="10" fill="#252867" stroke="#9AD9FF" stroke-width="3"/>
+        <rect x="29" y="21" width="152" height="83" rx="4" fill="url(#laptopScreen)"/>
+        <path d="M4 120h202l-13 13H17L4 120Z" fill="#424B9B" stroke="#9AD9FF" stroke-width="3"/>
+        <path d="M91 124h28" stroke="#A7EDFF" stroke-width="3" stroke-linecap="round"/>
+        <path d="m50 73 17-17 13 12 18-25 25 29" stroke="#A7EDFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs>
+          <linearGradient id="laptopScreen" x1="29" y1="21" x2="181" y2="104" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#6256D9"/><stop offset="1" stop-color="#163F73"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="gadget phone">
+      <svg width="90" height="155" viewBox="0 0 90 155" fill="none">
+        <rect x="9" y="3" width="72" height="149" rx="13" fill="#282A69" stroke="#B8AEFF" stroke-width="3"/>
+        <rect x="17" y="20" width="56" height="112" rx="5" fill="url(#phoneScreen)"/>
+        <path d="M36 11h18" stroke="#B8F0FF" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="45" cy="142" r="4" fill="#B8F0FF"/>
+        <circle cx="45" cy="72" r="19" stroke="#9FEAFF" stroke-width="3"/>
+        <path d="m36 72 6 6 12-14" stroke="#9FEAFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs>
+          <linearGradient id="phoneScreen" x1="17" y1="20" x2="73" y2="132" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#684FC9"/><stop offset="1" stop-color="#144C79"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="gadget tablet">
+      <svg width="175" height="220" viewBox="0 0 175 220" fill="none">
+        <rect x="8" y="5" width="159" height="210" rx="15" fill="#25295F" stroke="#89DFFF" stroke-width="3"/>
+        <rect x="20" y="22" width="135" height="174" rx="6" fill="url(#tabletScreen)"/>
+        <circle cx="87.5" cy="205" r="4" fill="#B8F0FF"/>
+        <path d="M38 137h98M38 157h72M38 61h70" stroke="#9BEAFF" stroke-width="3" stroke-linecap="round" opacity=".75"/>
+        <path d="m40 111 20-23 16 14 25-35 34 43" stroke="#B9A8FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <defs>
+          <linearGradient id="tabletScreen" x1="20" y1="22" x2="155" y2="196" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#3D3EAC"/><stop offset="1" stop-color="#124D76"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="gadget chip">
+      <svg width="125" height="125" viewBox="0 0 125 125" fill="none">
+        <rect x="24" y="24" width="77" height="77" rx="8" fill="#3A347B" stroke="#A9E8FF" stroke-width="3"/>
+        <rect x="42" y="42" width="41" height="41" rx="5" fill="#171F59" stroke="#B8AEFF" stroke-width="3"/>
+        <path d="M35 8v16M52 8v16M70 8v16M87 8v16M35 101v16M52 101v16M70 101v16M87 101v16M8 35h16M8 52h16M8 70h16M8 87h16M101 35h16M101 52h16M101 70h16M101 87h16" stroke="#8DDEFF" stroke-width="3" stroke-linecap="round"/>
+        <path d="m53 63 8 8 13-16" stroke="#9BEAFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="circuit circuit-one"></div>
+    <div class="circuit circuit-two"></div>
+  </div>
+
+  <main class="card">
+    <section class="top">
+      <div class="avatar">BBM</div>
+
+      <div class="identity">
+        <p class="eyebrow">Digital Contact Card</p>
+        <h1>Benedict Barker Mawutor</h1>
+        <p class="role">Business Man</p>
+        <p class="company">Mr Ben's IT Company Limited</p>
+      </div>
+    </section>
+
+    <section class="details">
+      <h2 class="details-heading">Connect with me</h2>
+
+      <a class="item" href="tel:0592410985">
+        <span class="icon">☎</span>
+        <span>
+          <span class="label">Phone</span>
+          <span class="value">059 241 0985</span>
+        </span>
+      </a>
+
+      <a class="item" href="tel:0204939073">
+        <span class="icon">📱</span>
+        <span>
+          <span class="label">Mobile</span>
+          <span class="value">020 493 9073</span>
+        </span>
+      </a>
+
+      <a class="item" href="mailto:benedictbarker246@gmail.com">
+        <span class="icon">✉</span>
+        <span>
+          <span class="label">Email</span>
+          <span class="value">benedictbarker246@gmail.com</span>
+        </span>
+      </a>
+
+      <div class="item">
+        <span class="icon">📍</span>
+        <span>
+          <span class="label">Location</span>
+          <span class="value">Burma Camp</span>
+        </span>
+      </div>
+
+      <div class="buttons">
+        <button type="button" onclick="saveContact()">Save Contact</button>
+        <button type="button" class="secondary" onclick="shareCard()">Share Card</button>
+      </div>
+    </section>
+
+    <div class="footer">
+      Mr Ben's IT Company Limited
+    </div>
+  </main>
+
+  <script>
+    function saveContact() {
+      const vcard = `BEGIN:VCARD
+VERSION:3.0
+FN:Benedict Barker Mawutor
+N:Mawutor;Benedict Barker;;;
+ORG:Mr Ben's IT Company Limited
+TITLE:Business Man
+TEL;TYPE=CELL:0592410985
+TEL;TYPE=WORK:0204939073
+EMAIL:benedictbarker246@gmail.com
+ADR;TYPE=WORK:;;Burma Camp;;;;
+END:VCARD`;
+
+      const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Benedict_Barker_Mawutor.vcf";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async function shareCard() {
+      const shareData = {
+        title: "Benedict Barker Mawutor",
+        text: "Benedict Barker Mawutor | Mr Ben's IT Company Limited | 059 241 0985 | benedictbarker246@gmail.com"
+      };
+
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+        } catch (e) {}
+      } else {
+        await navigator.clipboard.writeText(
+          "Benedict Barker Mawutor\nMr Ben's IT Company Limited\n059 241 0985\n020 493 9073\nbenedictbarker246@gmail.com\nBurma Camp"
+        );
+        alert("Contact details copied to clipboard.");
+      }
+    }
+  </script>
+</body>
+</html>

@@ -110,9 +110,10 @@
     .subjects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 13px; }
     .subject {
       display: flex; align-items: center; gap: 14px; padding: 17px; border: 1px solid var(--line); border-radius: 16px;
-      background: #fff; box-shadow: 0 6px 22px rgba(74, 89, 145, .06); transition: .2s ease;
+      background: #fff; box-shadow: 0 6px 22px rgba(74, 89, 145, .06); transition: .2s ease; cursor: pointer;
     }
     .subject:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .subject:focus-visible { outline: 3px solid #aaa4ff; outline-offset: 3px; }
     .subject-icon { width: 47px; height: 47px; display: grid; place-items: center; flex: 0 0 47px; border-radius: 14px; font-size: 23px; }
     .math { background: #e9f0ff; } .science { background: #e4f9ed; } .english { background: #fff0e4; } .social { background: #f0eaff; }
     .subject h3 { font-size: 14px; } .subject p { margin-top: 4px; color: var(--muted); font-size: 11px; }
@@ -152,6 +153,16 @@
     .exam-card button { width: 100%; margin-top: 12px; padding: 9px; color: var(--purple-dark); border: 1px solid #c9c5ff; border-radius: 8px; background: #f6f5ff; font-size: 11px; font-weight: 800; }
     .exam-card button:hover { background: #eceaff; }
     .disclaimer { margin-top: 14px; color: #9299ad; font-size: 10px; line-height: 1.45; }
+    .lesson-panel { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; padding: 20px; background: rgba(23, 33, 61, .42); }
+    .lesson-panel[hidden] { display: none; }
+    .lesson-dialog { width: min(480px, 100%); padding: 26px; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: 0 25px 70px rgba(38, 46, 95, .24); }
+    .lesson-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .lesson-kicker { color: var(--purple); font-size: 11px; font-weight: 800; letter-spacing: 1.3px; text-transform: uppercase; }
+    .close-lesson { width: 32px; height: 32px; color: var(--muted); border: 0; border-radius: 50%; background: #f1f3fa; font-size: 18px; }
+    .lesson-dialog h2 { margin-top: 17px; font-size: 25px; letter-spacing: -.8px; }
+    .lesson-dialog p { margin-top: 9px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .lesson-prompt { margin: 19px 0; padding: 14px; color: #5144c6; border-radius: 12px; background: #f1efff; font-size: 13px; font-weight: 700; line-height: 1.45; }
+    .lesson-start { width: 100%; padding: 12px; color: #fff; border: 0; border-radius: 10px; background: var(--purple); font-size: 13px; font-weight: 800; }
 
     @media (max-width: 1000px) {
       .sidebar { width: 214px; flex-basis: 214px; }
@@ -219,10 +230,10 @@
         <section>
           <div class="section-head"><h2 id="subject-title">Your subjects</h2><a href="#subjects">See all →</a></div>
           <div class="subjects">
-            <article class="subject" data-name="mathematics"><div class="subject-icon math">➗</div><div><h3>Mathematics</h3><p>12 lessons · 64% complete</p><div class="progress"><span></span></div></div></article>
-            <article class="subject" data-name="science"><div class="subject-icon science">🔬</div><div><h3>Science</h3><p>10 lessons · 42% complete</p><div class="progress"><span></span></div></div></article>
-            <article class="subject" data-name="english"><div class="subject-icon english">📖</div><div><h3>English Language</h3><p>15 lessons · 78% complete</p><div class="progress"><span></span></div></div></article>
-            <article class="subject" data-name="social studies"><div class="subject-icon social">🌍</div><div><h3>Social Studies</h3><p>8 lessons · 28% complete</p><div class="progress"><span></span></div></div></article>
+            <article class="subject" data-name="mathematics" tabindex="0" role="button" data-subject="Mathematics"><div class="subject-icon math">➗</div><div><h3>Mathematics</h3><p>12 lessons · 64% complete</p><div class="progress"><span></span></div></div></article>
+            <article class="subject" data-name="science" tabindex="0" role="button" data-subject="Science"><div class="subject-icon science">🔬</div><div><h3>Science</h3><p>10 lessons · 42% complete</p><div class="progress"><span></span></div></div></article>
+            <article class="subject" data-name="english" tabindex="0" role="button" data-subject="English Language"><div class="subject-icon english">📖</div><div><h3>English Language</h3><p>15 lessons · 78% complete</p><div class="progress"><span></span></div></div></article>
+            <article class="subject" data-name="social studies" tabindex="0" role="button" data-subject="Social Studies"><div class="subject-icon social">🌍</div><div><h3>Social Studies</h3><p>8 lessons · 28% complete</p><div class="progress"><span></span></div></div></article>
           </div>
         </section>
         <aside>
@@ -278,7 +289,23 @@
       </section>
     </main>
   </div>
+  <div class="lesson-panel" id="lesson-panel" hidden>
+    <section class="lesson-dialog" role="dialog" aria-modal="true" aria-labelledby="lesson-title">
+      <div class="lesson-top"><span class="lesson-kicker">Next lesson</span><button class="close-lesson" type="button" aria-label="Close lesson panel" onclick="closeLesson()">×</button></div>
+      <h2 id="lesson-title">Mathematics</h2>
+      <p id="lesson-description">Build confidence with a short guided lesson and a practice question at the end.</p>
+      <div class="lesson-prompt" id="lesson-prompt">Today's focus: Numbers, patterns, and problem solving.</div>
+      <button class="lesson-start" type="button" onclick="startLessonPractice()">Start lesson practice →</button>
+    </section>
+  </div>
   <script>
+    const lessonDetails = {
+      "Mathematics": ["Numbers, patterns, and problem solving.", "Work through a quick example, then test your understanding with a practice question."],
+      "Science": ["Living things and their environments.", "Explore a key idea, learn the important words, and answer a short science check."],
+      "English Language": ["Reading for meaning and clear writing.", "Read a short passage, identify the main idea, and practise a useful language skill."],
+      "Social Studies": ["People, places, and responsible citizenship.", "Connect classroom ideas to everyday life with a guided question and reflection."]
+    };
+
     function selectLevel(button, level) {
       document.querySelectorAll(".level").forEach(item => item.classList.remove("selected"));
       button.classList.add("selected");
@@ -324,6 +351,42 @@
     function scrollToSubjects() {
       document.getElementById("subjects").scrollIntoView({ behavior: "smooth", block: "start" });
     }
+
+    function openLesson(subject) {
+      const details = lessonDetails[subject];
+      document.getElementById("lesson-title").textContent = subject;
+      document.getElementById("lesson-prompt").textContent = "Today's focus: " + details[0];
+      document.getElementById("lesson-description").textContent = details[1];
+      document.getElementById("lesson-panel").hidden = false;
+      document.querySelector(".close-lesson").focus();
+    }
+
+    function closeLesson() {
+      document.getElementById("lesson-panel").hidden = true;
+    }
+
+    function startLessonPractice() {
+      closeLesson();
+      startQuiz();
+    }
+
+    document.querySelectorAll(".subject").forEach(subject => {
+      subject.addEventListener("click", () => openLesson(subject.dataset.subject));
+      subject.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openLesson(subject.dataset.subject);
+        }
+      });
+    });
+
+    document.getElementById("lesson-panel").addEventListener("click", event => {
+      if (event.target.id === "lesson-panel") closeLesson();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeLesson();
+    });
 
     document.getElementById("search").addEventListener("input", event => {
       const term = event.target.value.toLowerCase().trim();

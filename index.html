@@ -239,13 +239,13 @@
         <aside>
           <div class="section-head"><h2>Quick practice</h2></div>
           <div class="quiz" id="quiz">
-            <div class="quiz-label"><span>Question 1 of 1</span><span>+10 XP</span></div>
+            <div class="quiz-label"><span id="quiz-progress">Question 1 of 4</span><span>+10 XP each</span></div>
             <h3>Test your brain</h3><p>Warm up with a quick question before your next lesson.</p>
             <div class="question">What is 7 × 8?</div>
             <div class="answers">
-              <button class="answer" type="button" onclick="answerQuiz(this, false)">54</button>
-              <button class="answer" type="button" onclick="answerQuiz(this, true)">56</button>
-              <button class="answer" type="button" onclick="answerQuiz(this, false)">64</button>
+              <button class="answer" type="button" data-index="0">54</button>
+              <button class="answer" type="button" data-index="1">56</button>
+              <button class="answer" type="button" data-index="2">64</button>
             </div>
             <div class="quiz-message" id="quiz-message" aria-live="polite"></div>
           </div>
@@ -312,40 +312,99 @@
       document.getElementById("subject-title").textContent = level + " subjects";
     }
 
-    const practiceQuestions = {
-      "BECE Mathematics": { question: "A shop gives a 10% discount on a GH₵80 school bag. What is the sale price?", answers: ["GH₵70", "GH₵72", "GH₵78"], correct: 1 },
-      "BECE English": { question: "Choose the word that best completes the sentence: The pupils ___ finished their work.", answers: ["has", "have", "having"], correct: 1 },
-      "WASSCE Mathematics": { question: "If f(x) = 2x + 3, what is f(4)?", answers: ["8", "10", "11"], correct: 2 },
-      "WASSCE English": { question: "Which literary device compares two things using 'like' or 'as'?", answers: ["Simile", "Irony", "Alliteration"], correct: 0 }
+    const quickQuestionSets = {
+      "Mathematics": [
+        { question: "What is 7 × 8?", answers: ["54", "56", "64"], correct: 1 },
+        { question: "What is 25% of 80?", answers: ["15", "20", "25"], correct: 1 },
+        { question: "Which fraction is equal to 0.5?", answers: ["1/4", "1/2", "2/5"], correct: 1 },
+        { question: "A triangle has angles 60° and 70°. What is the third angle?", answers: ["40°", "50°", "60°"], correct: 1 }
+      ],
+      "Science": [
+        { question: "Which organ pumps blood around the body?", answers: ["Lung", "Heart", "Kidney"], correct: 1 },
+        { question: "What force pulls objects towards Earth?", answers: ["Friction", "Gravity", "Magnetism"], correct: 1 },
+        { question: "Plants make food using sunlight in a process called…", answers: ["Digestion", "Photosynthesis", "Respiration"], correct: 1 },
+        { question: "Water changes into vapour through…", answers: ["Freezing", "Melting", "Evaporation"], correct: 2 }
+      ],
+      "English Language": [
+        { question: "Choose the correct word: She ___ to school every day.", answers: ["go", "goes", "going"], correct: 1 },
+        { question: "Which word is an adjective?", answers: ["Quickly", "Beautiful", "Run"], correct: 1 },
+        { question: "What is the opposite of 'ancient'?", answers: ["Old", "Modern", "Broken"], correct: 1 },
+        { question: "Which punctuation mark ends a question?", answers: ["Full stop", "Comma", "Question mark"], correct: 2 }
+      ],
+      "Social Studies": [
+        { question: "Which action shows responsible citizenship?", answers: ["Littering", " obeying laws", "Damaging property"], correct: 1 },
+        { question: "What is the main purpose of a community?", answers: ["To live and work together", "To avoid one another", "To waste resources"], correct: 0 },
+        { question: "Which is a natural resource?", answers: ["Plastic", "Water", "Television"], correct: 1 },
+        { question: "Voting is an example of…", answers: ["Civic participation", "Private business", "A natural disaster"], correct: 0 }
+      ]
     };
 
-    function answerQuiz(button, correct) {
-      document.querySelectorAll(".answer").forEach(item => item.disabled = true);
-      button.classList.add(correct ? "correct" : "wrong");
-      const correctIndex = Number(document.getElementById("quiz").dataset.correct || 1);
-      document.getElementById("quiz-message").textContent = correct ? "Amazing! You earned 10 XP ⭐" : "Good try! Check the highlighted answer and keep practicing! 💪";
-      if (!correct) document.querySelectorAll(".answer")[correctIndex].classList.add("correct");
-    }
+    let currentQuestions = quickQuestionSets.Mathematics;
+    let currentQuestionIndex = 0;
+    let currentScore = 0;
+    let answerLocked = false;
 
-    function loadPractice(name) {
-      const item = practiceQuestions[name];
+    function renderQuestion() {
       const quiz = document.getElementById("quiz");
-      quiz.dataset.correct = item.correct;
-      quiz.querySelector(".quiz-label span:first-child").textContent = name + " · Practice";
+      const item = currentQuestions[currentQuestionIndex];
+      quiz.querySelector("#quiz-progress").textContent = "Question " + (currentQuestionIndex + 1) + " of " + currentQuestions.length;
       quiz.querySelector(".question").textContent = item.question;
       quiz.querySelectorAll(".answer").forEach((button, index) => {
         button.disabled = false;
         button.className = "answer";
+        button.dataset.index = index;
         button.textContent = item.answers[index];
-        button.onclick = () => answerQuiz(button, index === item.correct);
       });
       document.getElementById("quiz-message").textContent = "";
-      quiz.scrollIntoView({ behavior: "smooth", block: "center" });
+      answerLocked = false;
+    }
+
+    function startSubjectPractice(subject) {
+      currentQuestions = quickQuestionSets[subject] || quickQuestionSets.Mathematics;
+      currentQuestionIndex = 0;
+      currentScore = 0;
+      renderQuestion();
+      startQuiz();
+    }
+
+    function answerQuiz(button, selectedIndex) {
+      if (answerLocked) return;
+      answerLocked = true;
+      const item = currentQuestions[currentQuestionIndex];
+      const correct = selectedIndex === item.correct;
+      document.querySelectorAll(".answer").forEach(item => item.disabled = true);
+      button.classList.add(correct ? "correct" : "wrong");
+      if (correct) currentScore++;
+      document.getElementById("quiz-message").textContent = correct ? "Amazing! Next question coming up ⭐" : "Good try! The correct answer is highlighted. Next question coming up!";
+      if (!correct) document.querySelectorAll(".answer")[item.correct].classList.add("correct");
+      window.setTimeout(() => {
+        if (currentQuestionIndex === currentQuestions.length - 1) {
+          document.getElementById("quiz-message").textContent = "Practice complete! You scored " + currentScore + "/" + currentQuestions.length + " ⭐";
+          answerLocked = true;
+          return;
+        }
+        currentQuestionIndex++;
+        renderQuestion();
+      }, 850);
+    }
+
+    function loadPractice(name) {
+      const examQuestions = {
+        "BECE Mathematics": quickQuestionSets.Mathematics,
+        "BECE English": quickQuestionSets["English Language"],
+        "WASSCE Mathematics": quickQuestionSets.Mathematics,
+        "WASSCE English": quickQuestionSets["English Language"]
+      };
+      currentQuestions = examQuestions[name] || quickQuestionSets.Mathematics;
+      currentQuestionIndex = 0;
+      currentScore = 0;
+      document.getElementById("quiz").querySelector("h3").textContent = name + " practice";
+      renderQuestion();
+      startQuiz();
     }
 
     function startQuiz() {
       document.getElementById("quiz").scrollIntoView({ behavior: "smooth", block: "center" });
-      document.querySelector(".question").focus?.();
     }
 
     function scrollToSubjects() {
@@ -366,8 +425,9 @@
     }
 
     function startLessonPractice() {
+      const subject = document.getElementById("lesson-title").textContent;
       closeLesson();
-      startQuiz();
+      startSubjectPractice(subject);
     }
 
     document.querySelectorAll(".subject").forEach(subject => {
@@ -378,6 +438,11 @@
           openLesson(subject.dataset.subject);
         }
       });
+
+      document.querySelectorAll(".answer").forEach(button => {
+        button.addEventListener("click", () => answerQuiz(button, Number(button.dataset.index)));
+      });
+      renderQuestion();
     });
 
     document.getElementById("lesson-panel").addEventListener("click", event => {

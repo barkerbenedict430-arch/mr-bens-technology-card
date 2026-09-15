@@ -153,6 +153,17 @@
     .exam-card button { width: 100%; margin-top: 12px; padding: 9px; color: var(--purple-dark); border: 1px solid #c9c5ff; border-radius: 8px; background: #f6f5ff; font-size: 11px; font-weight: 800; }
     .exam-card button:hover { background: #eceaff; }
     .disclaimer { margin-top: 14px; color: #9299ad; font-size: 10px; line-height: 1.45; }
+    .theory-library { margin-top: 22px; padding: 23px; border: 1px solid #dce9ff; border-radius: 19px; background: linear-gradient(145deg, #f8fbff, #fff); box-shadow: 0 6px 22px rgba(74, 89, 145, .06); }
+    .theory-library .section-head { margin: 0 0 5px; }
+    .theory-badge { padding: 5px 8px; color: #16705d; border-radius: 6px; background: #dff7eb; font-size: 10px; font-weight: 800; }
+    .theory-question { margin-top: 18px; padding: 19px; border-radius: 14px; background: #fff; box-shadow: 0 4px 15px rgba(74, 89, 145, .07); }
+    .theory-meta { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 11px; font-weight: 700; }
+    .theory-question h3 { margin-top: 13px; font-size: 16px; line-height: 1.45; }
+    .theory-answer { margin-top: 14px; padding: 14px; color: #526078; border-left: 3px solid #6d61ea; border-radius: 0 9px 9px 0; background: #f3f1ff; font-size: 12px; line-height: 1.55; }
+    .theory-answer[hidden] { display: none; }
+    .theory-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 15px; }
+    .theory-actions button { padding: 10px 13px; color: var(--purple-dark); border: 1px solid #c9c5ff; border-radius: 8px; background: #f6f5ff; font-size: 11px; font-weight: 800; }
+    .theory-actions button:hover { background: #eceaff; }
     .lesson-panel { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; padding: 20px; background: rgba(23, 33, 61, .42); }
     .lesson-panel[hidden] { display: none; }
     .lesson-dialog { width: min(480px, 100%); padding: 26px; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: 0 25px 70px rgba(38, 46, 95, .24); }
@@ -191,6 +202,7 @@
         <button class="active" type="button"><span class="nav-icon">⌂</span> Dashboard</button>
         <button type="button"><span class="nav-icon">▣</span> My Subjects</button>
         <button id="practice-tests-nav" type="button" onclick="openPracticeTests()"><span class="nav-icon">◷</span> Practice Tests</button>
+        <button id="theory-nav" type="button" onclick="openTheoryPractice()"><span class="nav-icon">✎</span> Theory Past Questions</button>
         <button type="button"><span class="nav-icon">★</span> Achievements</button>
       </nav>
       <div class="sidebar-card">
@@ -285,6 +297,29 @@
           </article>
         </div>
         <p class="disclaimer">These are original revision questions inspired by common BECE and WASSCE topics, not official past-paper questions. Always use approved textbooks and guidance from your school.</p>
+      </section>
+
+      <section class="theory-library" id="theory-library">
+        <div class="section-head"><h2>Theory past-question practice</h2><span class="theory-badge">50 per subject</span></div>
+        <p class="library-note">Practise explaining ideas in your own words, just like a written theory paper. Choose a subject to begin.</p>
+        <div class="exam-filters" role="group" aria-label="Filter theory questions by subject">
+          <button class="theory-filter exam-filter active" type="button" data-theory-subject="Mathematics">Mathematics · 50</button>
+          <button class="theory-filter exam-filter" type="button" data-theory-subject="Science">Science · 50</button>
+          <button class="theory-filter exam-filter" type="button" data-theory-subject="English Language">English · 50</button>
+          <button class="theory-filter exam-filter" type="button" data-theory-subject="Social Studies">Social Studies · 50</button>
+        </div>
+        <div class="exam-filters" role="group" aria-label="Filter theory questions by exam">
+          <button class="theory-exam-filter exam-filter active" type="button" data-theory-exam="all">BECE + WASSCE</button>
+          <button class="theory-exam-filter exam-filter" type="button" data-theory-exam="BECE">BECE</button>
+          <button class="theory-exam-filter exam-filter" type="button" data-theory-exam="WASSCE">WASSCE</button>
+        </div>
+        <div class="theory-question" id="theory-question">
+          <div class="theory-meta"><span id="theory-progress">Question 1 of 50</span><span id="theory-exam">BECE · Mathematics</span></div>
+          <h3 id="theory-prompt">Explain two uses of fractions in everyday life.</h3>
+          <div class="theory-answer" id="theory-answer" hidden><strong>Model answer:</strong> Fractions help us share quantities, measure ingredients, compare parts of a whole, and calculate discounts.</div>
+          <div class="theory-actions"><button type="button" onclick="showTheoryAnswer()">Show model answer</button><button type="button" onclick="nextTheoryQuestion()">Next question →</button></div>
+        </div>
+        <p class="disclaimer">These are original theory-style revision prompts inspired by common BECE and WASSCE topics, not reproduced official past-paper questions. Use your approved syllabus and teacher's marking guidance when checking answers.</p>
       </section>
     </main>
   </div>
@@ -389,6 +424,113 @@
         ["Which job provides health care?", "Nurse", "Carpenter", "Pilot", 0], ["What is conservation?", "Careful protection of resources", "Rapid waste", "Pollution", 0]
       ])
     };
+
+    const theoryQuestions = [
+      { exam: "BECE", subject: "Mathematics", prompt: "Explain two uses of fractions in everyday life.", answer: "Fractions help us share quantities, measure ingredients, compare parts of a whole, and calculate discounts." },
+      { exam: "BECE", subject: "Mathematics", prompt: "Describe the steps for finding the area of a rectangle.", answer: "Measure the length and width, then multiply length by width and write the answer in square units." },
+      { exam: "BECE", subject: "Mathematics", prompt: "Explain what a ratio of 2:3 means.", answer: "For every 2 equal parts of the first quantity, there are 3 equal parts of the second quantity." },
+      { exam: "BECE", subject: "Mathematics", prompt: "State two properties of a rectangle.", answer: "Opposite sides are equal and parallel, and all four angles are right angles." },
+      { exam: "BECE", subject: "Mathematics", prompt: "Explain how to check whether an answer to an equation is correct.", answer: "Substitute the answer back into the original equation and check that both sides have the same value." },
+      { exam: "BECE", subject: "Science", prompt: "Explain two ways to keep drinking water safe in your community.", answer: "Treat water before drinking and store it in a clean, covered container." },
+      { exam: "BECE", subject: "Science", prompt: "Describe the importance of photosynthesis to living things.", answer: "It produces food for plants and releases oxygen, supporting food chains and breathing organisms." },
+      { exam: "BECE", subject: "Science", prompt: "State three effects of poor sanitation.", answer: "Poor sanitation can spread disease, pollute water, and create unpleasant or unsafe surroundings." },
+      { exam: "BECE", subject: "Science", prompt: "Explain the difference between a physical and a chemical change.", answer: "A physical change alters form or state without making a new substance; a chemical change produces one or more new substances." },
+      { exam: "BECE", subject: "Science", prompt: "Describe two ways to conserve energy at home.", answer: "Switch off unused lights and appliances, and use efficient bulbs or natural light where possible." },
+      { exam: "BECE", subject: "English", prompt: "Write two features of a good informal letter.", answer: "It has a clear greeting and friendly tone, organised paragraphs, relevant details, and an appropriate closing." },
+      { exam: "BECE", subject: "English", prompt: "Explain the difference between a noun and a verb.", answer: "A noun names a person, place, thing, or idea; a verb expresses an action or state." },
+      { exam: "BECE", subject: "English", prompt: "Give two reasons why a writer uses paragraphs.", answer: "Paragraphs group related ideas, make a text easier to read, and show changes in topic or focus." },
+      { exam: "BECE", subject: "English", prompt: "Describe how to identify the main idea of a passage.", answer: "Read the whole passage, notice repeated or important points, and express the central message in one sentence." },
+      { exam: "BECE", subject: "English", prompt: "Write a short persuasive point about keeping the school clean.", answer: "Keeping school clean protects health, creates a better place to learn, and teaches everyone responsibility." },
+      { exam: "BECE", subject: "Social Studies", prompt: "Explain two responsibilities of a good citizen.", answer: "A good citizen obeys fair laws, respects others, protects public property, and contributes positively to the community." },
+      { exam: "BECE", subject: "Social Studies", prompt: "State three causes of conflict among young people.", answer: "Conflict may result from misunderstanding, unfair treatment, competition, rumours, or poor communication." },
+      { exam: "BECE", subject: "Social Studies", prompt: "Describe two benefits of teamwork.", answer: "Teamwork combines skills, shares responsibility, improves ideas, and helps people complete tasks more effectively." },
+      { exam: "BECE", subject: "Social Studies", prompt: "Explain why trees are important to the environment.", answer: "Trees provide oxygen and habitats, reduce erosion, offer shade, and help regulate the climate." },
+      { exam: "BECE", subject: "Social Studies", prompt: "Suggest two ways to prevent littering.", answer: "Provide and use waste bins, teach responsible disposal, reduce single-use items, and enforce sensible community rules." },
+      { exam: "BECE", subject: "Integrated Science", prompt: "Explain why a balanced diet is important.", answer: "A balanced diet supplies energy, supports growth and repair, and helps the body resist illness." },
+      { exam: "BECE", subject: "Integrated Science", prompt: "Describe the water cycle in three stages.", answer: "Water evaporates from surfaces, condenses into clouds, and returns as precipitation before collecting again." },
+      { exam: "BECE", subject: "Mathematics", prompt: "Explain how percentages are useful when shopping.", answer: "Percentages help calculate discounts, increases, profit, tax, and the final amount to pay." },
+      { exam: "BECE", subject: "English", prompt: "State two qualities of a clear summary.", answer: "It is brief, accurate, written in your own words, and includes only the important points." },
+      { exam: "BECE", subject: "Social Studies", prompt: "Explain why communities need rules.", answer: "Rules guide behaviour, protect rights, reduce conflict, and help people live together safely." },
+      { exam: "WASSCE", subject: "Mathematics", prompt: "Explain how the gradient of a straight-line graph is found.", answer: "Choose two points on the line and divide the change in y by the corresponding change in x: gradient = rise/run." },
+      { exam: "WASSCE", subject: "Mathematics", prompt: "Describe two applications of statistics in society.", answer: "Statistics summarise survey results and support decisions in areas such as health, education, business, and government." },
+      { exam: "WASSCE", subject: "Mathematics", prompt: "Explain the meaning of probability 0 and probability 1.", answer: "Probability 0 represents an impossible event; probability 1 represents a certain event." },
+      { exam: "WASSCE", subject: "Mathematics", prompt: "State the relationship between the roots and coefficients of a quadratic equation.", answer: "For ax² + bx + c = 0, the sum of roots is −b/a and the product of roots is c/a." },
+      { exam: "WASSCE", subject: "Mathematics", prompt: "Explain why simultaneous equations can have one solution.", answer: "Their graphs may intersect at one point, meaning one ordered pair satisfies both equations." },
+      { exam: "WASSCE", subject: "Biology", prompt: "Explain the role of enzymes in digestion.", answer: "Enzymes are biological catalysts that break large food molecules into smaller soluble molecules the body can absorb." },
+      { exam: "WASSCE", subject: "Biology", prompt: "Describe two adaptations of a plant to reduce water loss.", answer: "A waxy cuticle and reduced leaves or sunken stomata reduce evaporation from the plant." },
+      { exam: "WASSCE", subject: "Biology", prompt: "Explain how vaccination helps protect a population.", answer: "Vaccination prepares the immune system to recognise a pathogen, reducing illness and limiting its spread." },
+      { exam: "WASSCE", subject: "Chemistry", prompt: "Distinguish between an acid and a base.", answer: "An acid donates hydrogen ions in solution and has pH below 7; a base accepts hydrogen ions or produces hydroxide ions and has pH above 7." },
+      { exam: "WASSCE", subject: "Chemistry", prompt: "Explain why catalysts are used in industrial reactions.", answer: "A catalyst increases reaction rate by providing an alternative pathway and is not permanently used up." },
+      { exam: "WASSCE", subject: "Physics", prompt: "State Newton's first law and give one example.", answer: "An object remains at rest or moves uniformly unless acted on by a resultant force; a passenger moves forward when a bus stops suddenly." },
+      { exam: "WASSCE", subject: "Physics", prompt: "Explain the difference between mass and weight.", answer: "Mass is the amount of matter measured in kilograms; weight is the gravitational force on that mass, measured in newtons." },
+      { exam: "WASSCE", subject: "Physics", prompt: "Describe energy conservation in a hydroelectric system.", answer: "Gravitational potential energy of stored water changes to kinetic energy, then mechanical energy in turbines and electrical energy in generators." },
+      { exam: "WASSCE", subject: "English", prompt: "Explain two features of an effective argumentative essay.", answer: "It presents a clear position, organised reasons, relevant evidence, counterarguments where useful, and a logical conclusion." },
+      { exam: "WASSCE", subject: "English", prompt: "Describe how tone affects a writer's message.", answer: "Tone shows the writer's attitude, such as approval, anger, or concern, and influences how readers interpret the message." },
+      { exam: "WASSCE", subject: "English", prompt: "Explain the difference between direct and indirect speech.", answer: "Direct speech gives the speaker's exact words in quotation marks; indirect speech reports the meaning without quoting the exact words." },
+      { exam: "WASSCE", subject: "English", prompt: "State two purposes of using evidence in a text.", answer: "Evidence supports claims, makes an argument credible, and helps readers verify or understand the writer's point." },
+      { exam: "WASSCE", subject: "Social Studies", prompt: "Explain two ways education supports national development.", answer: "Education builds skills for work and citizenship, encourages innovation, and helps people make informed decisions." },
+      { exam: "WASSCE", subject: "Social Studies", prompt: "Discuss two effects of unemployment on a community.", answer: "Unemployment can reduce household income, increase dependency and frustration, and limit economic growth." },
+      { exam: "WASSCE", subject: "Social Studies", prompt: "Describe two measures for promoting democratic governance.", answer: "Promote free and informed elections, respect the rule of law, protect participation, and ensure accountable institutions." },
+      { exam: "WASSCE", subject: "Geography", prompt: "Explain two factors that influence the climate of a place.", answer: "Latitude affects solar heating, while altitude, distance from the sea, winds, and relief also influence temperature and rainfall." },
+      { exam: "WASSCE", subject: "Geography", prompt: "Describe two effects of deforestation.", answer: "Deforestation can cause soil erosion, habitat loss, reduced rainfall, flooding, and increased carbon dioxide." },
+      { exam: "WASSCE", subject: "Economics", prompt: "Explain the law of demand.", answer: "Other things remaining equal, quantity demanded usually falls when price rises and rises when price falls." },
+      { exam: "WASSCE", subject: "Economics", prompt: "State two functions of money.", answer: "Money acts as a medium of exchange and a measure or store of value; it can also settle future payments." },
+      { exam: "WASSCE", subject: "Agriculture", prompt: "Explain two benefits of crop rotation.", answer: "Crop rotation helps maintain soil nutrients, interrupts pest cycles, reduces erosion, and can improve yields." },
+      { exam: "WASSCE", subject: "ICT", prompt: "Describe two ways to protect a computer account.", answer: "Use a long unique password with multi-factor authentication and keep software updated while avoiding suspicious links." }
+    ];
+    const theoryTopics = {
+      "Mathematics": ["fractions in daily life", "area and perimeter", "ratios and proportion", "linear equations", "percentages and discounts", "angles and shapes", "mean, median, and mode", "probability", "graphs and tables", "number patterns"],
+      "Science": ["safe water and sanitation", "photosynthesis", "the water cycle", "balanced nutrition", "human body systems", "energy changes", "forces and motion", "materials and their properties", "adaptation", "environmental conservation"],
+      "English Language": ["formal and informal letters", "main ideas in passages", "summary writing", "parts of speech", "sentence structure", "punctuation", "vocabulary in context", "persuasive writing", "reported speech", "figures of speech"],
+      "Social Studies": ["responsible citizenship", "community rules", "conflict resolution", "environmental protection", "national development", "culture and identity", "democratic participation", "human rights", "family responsibilities", "resources and sustainability"]
+    };
+    const theoryActions = ["Explain two important points about", "Describe how", "State three reasons why", "Discuss two benefits of", "Suggest two ways to improve"];
+    const theoryPools = Object.fromEntries(Object.entries(theoryTopics).map(([subject, topics]) => {
+      const pool = [];
+      topics.forEach((topic, topicIndex) => {
+        theoryActions.forEach((action, actionIndex) => {
+          pool.push({
+            exam: pool.length < 25 ? "BECE" : "WASSCE",
+            subject,
+            prompt: action + " " + topic + ".",
+            answer: "A strong answer should define the idea clearly, give relevant points, and support each point with a suitable example. Award credit for any accurate explanation related to " + topic + "."
+          });
+        });
+      });
+      return [subject, pool];
+    }));
+    let selectedTheorySubject = "Mathematics";
+    let selectedTheoryExam = "all";
+    let theoryPool = theoryPools[selectedTheorySubject];
+    let theoryIndex = 0;
+
+    function renderTheoryQuestion() {
+      const filteredPool = selectedTheoryExam === "all" ? theoryPools[selectedTheorySubject] : theoryPools[selectedTheorySubject].filter(item => item.exam === selectedTheoryExam);
+      theoryPool = filteredPool;
+      if (theoryIndex >= theoryPool.length) theoryIndex = 0;
+      const item = theoryPool[theoryIndex];
+      document.getElementById("theory-progress").textContent = "Question " + (theoryIndex + 1) + " of " + theoryPool.length;
+      document.getElementById("theory-exam").textContent = item.exam + " · " + item.subject;
+      document.getElementById("theory-prompt").textContent = item.prompt;
+      document.getElementById("theory-answer").innerHTML = "<strong>Model answer:</strong> " + item.answer;
+      document.getElementById("theory-answer").hidden = true;
+    }
+
+    function showTheoryAnswer() {
+      document.getElementById("theory-answer").hidden = false;
+    }
+
+    function nextTheoryQuestion() {
+      theoryIndex = (theoryIndex + 1) % theoryPool.length;
+      renderTheoryQuestion();
+    }
+
+    function openTheoryPractice() {
+      document.querySelectorAll(".nav button").forEach(item => item.classList.remove("active"));
+      document.getElementById("theory-nav").classList.add("active");
+      document.getElementById("theory-library").scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(() => document.querySelector("#theory-question button")?.focus(), 450);
+    }
 
     let currentQuestions = quickQuestionSets.Mathematics;
     let currentQuestionIndex = 0;
@@ -520,9 +662,9 @@
       });
     });
 
-    document.querySelectorAll(".exam-filter").forEach(button => {
+    document.querySelectorAll(".exam-library .exam-filter").forEach(button => {
       button.addEventListener("click", () => {
-        document.querySelectorAll(".exam-filter").forEach(item => item.classList.remove("active"));
+        document.querySelectorAll(".exam-library .exam-filter").forEach(item => item.classList.remove("active"));
         button.classList.add("active");
         const filter = button.dataset.filter;
         document.querySelectorAll(".exam-card").forEach(card => {
@@ -530,6 +672,28 @@
         });
       });
     });
+
+    document.querySelectorAll(".theory-filter").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".theory-filter").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        selectedTheorySubject = button.dataset.theorySubject;
+        theoryIndex = 0;
+        renderTheoryQuestion();
+      });
+    });
+
+    document.querySelectorAll(".theory-exam-filter").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".theory-exam-filter").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        selectedTheoryExam = button.dataset.theoryExam;
+        theoryIndex = 0;
+        renderTheoryQuestion();
+      });
+    });
+
+    renderTheoryQuestion();
   </script>
 </body>
 </html>

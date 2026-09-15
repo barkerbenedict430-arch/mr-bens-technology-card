@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f8ff">
+  <title>BrightMind | Learn. Practice. Shine.</title>
+  <style>
+    :root {
+      --ink: #17213d;
+      --muted: #6f7894;
+      --line: #e5e9f5;
+      --paper: #ffffff;
+      --bg: #f6f8ff;
+      --purple: #6759e8;
+      --purple-dark: #493bc6;
+      --blue: #3b9df8;
+      --yellow: #ffc857;
+      --green: #31b77a;
+      --shadow: 0 18px 50px rgba(66, 73, 139, 0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 90% 0%, rgba(111, 224, 255, .22), transparent 27rem),
+        linear-gradient(135deg, #f7f9ff 0%, #eef3ff 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .app { display: flex; min-height: 100vh; max-width: 1500px; margin: auto; }
+
+    .sidebar {
+      width: 252px;
+      flex: 0 0 252px;
+      padding: 28px 18px;
+      background: #fff;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; padding: 0 12px 36px; }
+    .brand-mark {
+      width: 40px; height: 40px; display: grid; place-items: center;
+      color: white; font-weight: 900; font-size: 20px;
+      border-radius: 13px; background: linear-gradient(135deg, #786bff, #40b9ff);
+      box-shadow: 0 8px 16px rgba(103, 89, 232, .25);
+    }
+    .brand strong { font-size: 20px; letter-spacing: -.6px; }
+    .brand span { color: var(--purple); }
+    .nav-label { color: #a1a8bf; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; padding: 0 13px 10px; text-transform: uppercase; }
+    .nav { display: grid; gap: 5px; }
+    .nav button {
+      display: flex; align-items: center; gap: 13px; width: 100%; padding: 13px 14px;
+      color: var(--muted); text-align: left; border: 0; border-radius: 12px; background: transparent;
+      transition: .2s ease;
+    }
+    .nav button:hover, .nav button.active { color: var(--purple-dark); background: #f0efff; font-weight: 700; }
+    .nav-icon { width: 22px; text-align: center; font-size: 18px; }
+    .sidebar-card {
+      margin-top: auto; padding: 18px; color: #fff; border-radius: 18px;
+      background: linear-gradient(145deg, #7568ed, #4d9eee); box-shadow: 0 12px 25px rgba(91, 91, 218, .2);
+    }
+    .sidebar-card .spark { font-size: 26px; }
+    .sidebar-card p { margin: 7px 0 13px; color: #e9ebff; font-size: 12px; line-height: 1.5; }
+    .sidebar-card button { width: 100%; padding: 9px; color: var(--purple-dark); border: 0; border-radius: 9px; background: white; font-size: 12px; font-weight: 800; }
+
+    main { width: 100%; min-width: 0; padding: 27px clamp(20px, 4vw, 56px) 50px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 31px; }
+    .welcome small { color: var(--muted); font-size: 13px; }
+    .welcome h1 { margin-top: 4px; font-size: clamp(24px, 3vw, 33px); letter-spacing: -1.2px; }
+    .top-actions { display: flex; align-items: center; gap: 14px; }
+    .search {
+      width: min(230px, 28vw); padding: 11px 14px 11px 38px; color: var(--ink);
+      border: 1px solid var(--line); border-radius: 12px; outline: none; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23707894' stroke-width='2'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='m11 11 4 4'/%3E%3C/svg%3E") 13px center no-repeat;
+    }
+    .search:focus { border-color: #9d95f5; box-shadow: 0 0 0 3px #eeecff; }
+    .avatar { width: 40px; height: 40px; display: grid; place-items: center; color: #4a3f9c; border-radius: 50%; background: #ddd9ff; font-weight: 800; }
+
+    .hero {
+      display: flex; justify-content: space-between; align-items: center; gap: 30px; overflow: hidden;
+      min-height: 205px; padding: 30px 38px; margin-bottom: 27px; color: white; border-radius: 24px;
+      background: linear-gradient(105deg, #5f55dc 0%, #7669e9 52%, #4aa8ed 100%);
+      box-shadow: 0 18px 35px rgba(99, 90, 218, .22); position: relative;
+    }
+    .hero::after { content: "✦  ✧  ✦"; position: absolute; right: 30px; top: 17px; color: rgba(255,255,255,.27); font-size: 45px; letter-spacing: 14px; }
+    .hero h2 { max-width: 570px; font-size: clamp(25px, 4vw, 39px); line-height: 1.08; letter-spacing: -1.4px; }
+    .hero p { max-width: 490px; margin: 13px 0 21px; color: #e9eaff; font-size: 14px; line-height: 1.5; }
+    .hero button, .primary { padding: 12px 18px; color: #5144c6; border: 0; border-radius: 10px; background: #fff; font-size: 13px; font-weight: 800; }
+    .hero-art { align-self: stretch; display: grid; place-items: center; min-width: 145px; font-size: 96px; filter: drop-shadow(0 12px 5px rgba(39, 43, 132, .2)); transform: rotate(5deg); }
+
+    .section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 25px 0 14px; }
+    .section-head h2 { font-size: 19px; letter-spacing: -.4px; }
+    .section-head a { color: var(--purple); font-size: 12px; font-weight: 800; text-decoration: none; }
+    .levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
+    .level {
+      padding: 17px 16px; text-align: left; border: 2px solid transparent; border-radius: 16px; background: #fff;
+      box-shadow: 0 6px 22px rgba(74, 89, 145, .06); transition: .2s ease;
+    }
+    .level:hover, .level.selected { border-color: var(--purple); transform: translateY(-3px); }
+    .level-icon { width: 39px; height: 39px; display: grid; place-items: center; margin-bottom: 13px; border-radius: 12px; font-size: 20px; }
+    .level:nth-child(1) .level-icon { background: #fff0c9; } .level:nth-child(2) .level-icon { background: #dff5ff; }
+    .level:nth-child(3) .level-icon { background: #e5e0ff; }
+    .level strong { display: block; font-size: 14px; } .level small { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; }
+
+    .content-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(275px, .8fr); gap: 22px; align-items: start; }
+    .subjects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 13px; }
+    .subject {
+      display: flex; align-items: center; gap: 14px; padding: 17px; border: 1px solid var(--line); border-radius: 16px;
+      background: #fff; box-shadow: 0 6px 22px rgba(74, 89, 145, .06); transition: .2s ease; cursor: pointer;
+    }
+    .subject:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .subject:focus-visible { outline: 3px solid #aaa4ff; outline-offset: 3px; }
+    .subject-icon { width: 47px; height: 47px; display: grid; place-items: center; flex: 0 0 47px; border-radius: 14px; font-size: 23px; }
+    .math { background: #e9f0ff; } .science { background: #e4f9ed; } .english { background: #fff0e4; } .social { background: #f0eaff; }
+    .subject h3 { font-size: 14px; } .subject p { margin-top: 4px; color: var(--muted); font-size: 11px; }
+    .progress { height: 5px; margin-top: 10px; overflow: hidden; border-radius: 99px; background: #edf0f8; }
+    .progress span { display: block; width: 64%; height: 100%; border-radius: inherit; background: var(--purple); }
+    .subject:nth-child(2) .progress span { width: 42%; background: var(--green); } .subject:nth-child(3) .progress span { width: 78%; background: #f09b57; } .subject:nth-child(4) .progress span { width: 28%; background: #ac82e9; }
+
+    .quiz {
+      padding: 21px; color: #fff; border-radius: 18px; background: #202b56; box-shadow: var(--shadow);
+    }
+    .quiz-label { display: flex; justify-content: space-between; color: #aeb8e2; font-size: 11px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; }
+    .quiz h3 { margin: 15px 0 9px; font-size: 18px; line-height: 1.3; }
+    .quiz p { color: #bac3e4; font-size: 12px; line-height: 1.5; }
+    .question { margin: 16px 0 12px; padding: 12px; border-radius: 10px; color: #303967; background: #fff; font-size: 13px; font-weight: 700; }
+    .answers { display: grid; gap: 7px; }
+    .answer { padding: 10px; color: #e9edff; text-align: left; border: 1px solid #495681; border-radius: 8px; background: transparent; font-size: 12px; }
+    .answer:hover { border-color: #a7b2e8; background: #303d70; }
+    .answer.correct { border-color: #61d6a0; background: #24634e; }
+    .answer.wrong { border-color: #ff9d9d; background: #753c51; }
+    .quiz-message { min-height: 18px; margin-top: 10px; color: #bdf0d6; font-size: 11px; font-weight: 700; }
+    .tip { margin-top: 16px; padding: 14px; border: 1px solid #f5e3ad; border-radius: 13px; background: #fffaf0; }
+    .tip strong { color: #9a711a; font-size: 12px; } .tip p { margin-top: 5px; color: #8b7b5e; font-size: 11px; line-height: 1.45; }
+    .exam-library { margin-top: 29px; padding: 23px; border: 1px solid var(--line); border-radius: 19px; background: #fff; box-shadow: 0 6px 22px rgba(74, 89, 145, .06); }
+    .exam-library .section-head { margin: 0 0 5px; }
+    .library-note { color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .exam-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+    .exam-filter { padding: 9px 13px; color: var(--muted); border: 1px solid var(--line); border-radius: 9px; background: #fff; font-size: 12px; font-weight: 700; }
+    .exam-filter.active, .exam-filter:hover { color: var(--purple-dark); border-color: #b4aef7; background: #f0efff; }
+    .exam-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+    .exam-card { padding: 15px; border: 1px solid var(--line); border-radius: 13px; background: #fbfcff; }
+    .exam-card[hidden] { display: none; }
+    .exam-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 9px; }
+    .exam-badge { padding: 4px 7px; color: #5144c6; border-radius: 6px; background: #eceaff; font-size: 10px; font-weight: 800; }
+    .exam-year { color: #9aa2b7; font-size: 10px; }
+    .exam-card h3 { font-size: 14px; }
+    .exam-card p { min-height: 35px; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .exam-card button { width: 100%; margin-top: 12px; padding: 9px; color: var(--purple-dark); border: 1px solid #c9c5ff; border-radius: 8px; background: #f6f5ff; font-size: 11px; font-weight: 800; }
+    .exam-card button:hover { background: #eceaff; }
+    .disclaimer { margin-top: 14px; color: #9299ad; font-size: 10px; line-height: 1.45; }
+    .theory-library { margin-top: 22px; padding: 23px; border: 1px solid #dce9ff; border-radius: 19px; background: linear-gradient(145deg, #f8fbff, #fff); box-shadow: 0 6px 22px rgba(74, 89, 145, .06); }
+    .theory-library .section-head { margin: 0 0 5px; }
+    .theory-badge { padding: 5px 8px; color: #16705d; border-radius: 6px; background: #dff7eb; font-size: 10px; font-weight: 800; }
+    .theory-question { margin-top: 18px; padding: 19px; border-radius: 14px; background: #fff; box-shadow: 0 4px 15px rgba(74, 89, 145, .07); }
+    .theory-meta { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 11px; font-weight: 700; }
+    .theory-question h3 { margin-top: 13px; font-size: 16px; line-height: 1.45; }
+    .theory-answer { margin-top: 14px; padding: 14px; color: #526078; border-left: 3px solid #6d61ea; border-radius: 0 9px 9px 0; background: #f3f1ff; font-size: 12px; line-height: 1.55; }
+    .theory-answer[hidden] { display: none; }
+    .theory-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 15px; }
+    .theory-actions button { padding: 10px 13px; color: var(--purple-dark); border: 1px solid #c9c5ff; border-radius: 8px; background: #f6f5ff; font-size: 11px; font-weight: 800; }
+    .theory-actions button:hover { background: #eceaff; }
+    .lesson-panel { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; padding: 20px; background: rgba(23, 33, 61, .42); }
+    .lesson-panel[hidden] { display: none; }
+    .lesson-dialog { width: min(480px, 100%); padding: 26px; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: 0 25px 70px rgba(38, 46, 95, .24); }
+    .lesson-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .lesson-kicker { color: var(--purple); font-size: 11px; font-weight: 800; letter-spacing: 1.3px; text-transform: uppercase; }
+    .close-lesson { width: 32px; height: 32px; color: var(--muted); border: 0; border-radius: 50%; background: #f1f3fa; font-size: 18px; }
+    .lesson-dialog h2 { margin-top: 17px; font-size: 25px; letter-spacing: -.8px; }
+    .lesson-dialog p { margin-top: 9px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .lesson-prompt { margin: 19px 0; padding: 14px; color: #5144c6; border-radius: 12px; background: #f1efff; font-size: 13px; font-weight: 700; line-height: 1.45; }
+    .lesson-start { width: 100%; padding: 12px; color: #fff; border: 0; border-radius: 10px; background: var(--purple); font-size: 13px; font-weight: 800; }
+
+    @media (max-width: 1000px) {
+      .sidebar { width: 214px; flex-basis: 214px; }
+      .content-grid { grid-template-columns: 1fr; } .quiz { max-width: none; }
+    }
+    @media (max-width: 700px) {
+      .app { display: block; } .sidebar { width: 100%; padding: 13px 15px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .brand { padding: 0 3px 12px; } .sidebar-card, .nav-label { display: none; }
+      .nav { display: flex; overflow-x: auto; gap: 4px; } .nav button { width: auto; padding: 9px 11px; white-space: nowrap; } .nav-icon { font-size: 15px; }
+      main { padding: 22px 15px 38px; } .topbar { align-items: flex-start; margin-bottom: 22px; } .top-actions { flex: 1; justify-content: flex-end; }
+      .search { width: 42px; padding: 11px 10px 11px 35px; } .hero { min-height: 0; padding: 26px 23px; } .hero-art { display: none; }
+      .levels { grid-template-columns: repeat(2, 1fr); } .subjects { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 430px) {
+      .welcome h1 { font-size: 23px; } .avatar { width: 35px; height: 35px; font-size: 12px; }
+      .hero h2 { font-size: 27px; } .hero p { font-size: 13px; } .section-head { margin-top: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">✦</div><strong>Bright<span>Mind</span></strong></div>
+      <div class="nav-label">Learning space</div>
+      <nav class="nav" aria-label="Main navigation">
+        <button class="active" type="button"><span class="nav-icon">⌂</span> Dashboard</button>
+        <button type="button"><span class="nav-icon">▣</span> My Subjects</button>
+        <button id="practice-tests-nav" type="button" onclick="openPracticeTests()"><span class="nav-icon">◷</span> Practice Tests</button>
+        <button id="theory-nav" type="button" onclick="openTheoryPractice()"><span class="nav-icon">✎</span> Theory Past Questions</button>
+        <button type="button"><span class="nav-icon">★</span> Achievements</button>
+      </nav>
+      <div class="sidebar-card">
+        <div class="spark">🚀</div>
+        <strong>Keep going!</strong>
+        <p>You are 3 lessons away from earning your next star.</p>
+        <button type="button" onclick="scrollToSubjects()">View progress</button>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div class="welcome"><small>Ghana curriculum learning hub · Monday, 14 September</small><h1>Ready to learn, Alex? 👋</h1></div>
+        <div class="top-actions"><input class="search" id="search" aria-label="Search subjects" placeholder="Search..." type="search"><div class="avatar">A</div></div>
+      </header>
+
+      <section class="hero">
+        <div>
+          <h2>Small steps today,<br>big dreams tomorrow.</h2>
+          <p>Learn at your own pace with Ghana curriculum-aligned lessons, friendly practice, and helpful BECE and WASSCE exam tips.</p>
+          <button type="button" onclick="startQuiz()">Start today's practice <span aria-hidden="true">→</span></button>
+        </div>
+        <div class="hero-art" aria-hidden="true">📚</div>
+      </section>
+
+      <section id="levels">
+        <div class="section-head"><h2>Choose your level</h2><a href="#levels">View all levels →</a></div>
+        <div class="levels">
+          <button class="level selected" type="button" onclick="selectLevel(this, 'Primary')"><span class="level-icon">🌱</span><strong>Primary</strong><small>Ages 6–11</small></button>
+          <button class="level" type="button" onclick="selectLevel(this, 'Junior High · BECE')"><span class="level-icon">🚲</span><strong>Junior High</strong><small>Common Core · BECE</small></button>
+          <button class="level" type="button" onclick="selectLevel(this, 'Senior High · WASSCE')"><span class="level-icon">🎓</span><strong>Senior High</strong><small>SHS · WASSCE</small></button>
+        </div>
+      </section>
+
+      <div class="content-grid" id="subjects">
+        <section>
+          <div class="section-head"><h2 id="subject-title">Your subjects</h2><a href="#subjects">See all →</a></div>
+          <div class="subjects">
+            <article class="subject" data-name="mathematics" tabindex="0" role="button" data-subject="Mathematics"><div class="subject-icon math">➗</div><div><h3>Mathematics</h3><p>12 lessons · 64% complete</p><div class="progress"><span></span></div></div></article>
+            <article class="subject" data-name="science integrated science" tabindex="0" role="button" data-subject="Science"><div class="subject-icon science">🔬</div><div><h3>Integrated Science</h3><p>10 lessons · 42% complete</p><div class="progress"><span></span></div></div></article>
+            <article class="subject" data-name="english" tabindex="0" role="button" data-subject="English Language"><div class="subject-icon english">📖</div><div><h3>English Language</h3><p>15 lessons · 78% complete</p><div class="progress"><span></span></div></div></article>
+            <article class="subject" data-name="social studies" tabindex="0" role="button" data-subject="Social Studies"><div class="subject-icon social">🌍</div><div><h3>Social Studies</h3><p>8 lessons · 28% complete</p><div class="progress"><span></span></div></div></article>
+          </div>
+        </section>
+        <aside>
+          <div class="section-head"><h2>Quick practice</h2></div>
+          <div class="quiz" id="quiz">
+            <div class="quiz-label"><span id="quiz-progress">Question 1 of 32</span><span>+10 XP each</span></div>
+            <h3>Test your brain</h3><p>Warm up with a quick question before your next lesson.</p>
+            <div class="question">What is 7 × 8?</div>
+            <div class="answers">
+              <button class="answer" type="button" data-index="0">54</button>
+              <button class="answer" type="button" data-index="1">56</button>
+              <button class="answer" type="button" data-index="2">64</button>
+            </div>
+            <div class="quiz-message" id="quiz-message" aria-live="polite"></div>
+          </div>
+          <div class="tip"><strong>💡 Exam tip</strong><p>Read every question twice. Circle the important words before you start answering.</p></div>
+        </aside>
+      </div>
+
+      <section class="exam-library" id="exam-library">
+        <div class="section-head"><h2>Ghana BECE &amp; WASSCE practice</h2><a href="#exam-library">Study bank →</a></div>
+        <p class="library-note">Build confidence with original practice aligned to Ghana's Common Core Programme for BECE and SHS subjects for WASSCE.</p>
+        <div class="exam-filters" role="group" aria-label="Filter practice sets">
+          <button class="exam-filter active" type="button" data-filter="all">All sets</button>
+          <button class="exam-filter" type="button" data-filter="BECE">BECE</button>
+          <button class="exam-filter" type="button" data-filter="WASSCE">WASSCE</button>
+          <button class="exam-filter" type="button" data-filter="Mathematics">Mathematics</button>
+          <button class="exam-filter" type="button" data-filter="English">English</button>
+          <button class="exam-filter" type="button" data-filter="Science">Integrated Science</button>
+          <button class="exam-filter" type="button" data-filter="Social Studies">Social Studies</button>
+        </div>
+        <div class="exam-list">
+          <article class="exam-card" data-exam="BECE Mathematics">
+            <div class="exam-card-top"><span class="exam-badge">BECE · Core Maths</span><span class="exam-year">JHS / Common Core</span></div>
+            <h3>Numbers &amp; algebra</h3><p>Fractions, ratios, equations, percentages and everyday problem solving.</p>
+            <button type="button" onclick="loadPractice('BECE Mathematics')">Practice set · 32 questions</button>
+          </article>
+          <article class="exam-card" data-exam="BECE English">
+            <div class="exam-card-top"><span class="exam-badge">BECE · English</span><span class="exam-year">JHS / Common Core</span></div>
+            <h3>Comprehension &amp; grammar</h3><p>Reading skills, parts of speech, vocabulary and sentence completion.</p>
+            <button type="button" onclick="loadPractice('BECE English')">Practice set · 32 questions</button>
+          </article>
+          <article class="exam-card" data-exam="WASSCE Mathematics">
+            <div class="exam-card-top"><span class="exam-badge">WASSCE · Core Maths</span><span class="exam-year">SHS 1–3</span></div>
+            <h3>Core mathematics</h3><p>Functions, statistics, geometry and quantitative reasoning practice.</p>
+            <button type="button" onclick="loadPractice('WASSCE Mathematics')">Practice set · 32 questions</button>
+          </article>
+          <article class="exam-card" data-exam="WASSCE English">
+            <div class="exam-card-top"><span class="exam-badge">WASSCE · English</span><span class="exam-year">SHS 1–3</span></div>
+            <h3>Language &amp; literature</h3><p>Summary, lexis, structure and thoughtful text-based exam practice.</p>
+            <button type="button" onclick="loadPractice('WASSCE English')">Practice set · 32 questions</button>
+          </article>
+          <article class="exam-card" data-exam="BECE Science">
+            <div class="exam-card-top"><span class="exam-badge">BECE · Integrated Science</span><span class="exam-year">JHS / Common Core</span></div>
+            <h3>Living world &amp; environment</h3><p>Health, energy, matter, ecosystems, forces, and practical science ideas.</p>
+            <button type="button" onclick="loadPractice('BECE Science')">Practice set · 32 questions</button>
+          </article>
+          <article class="exam-card" data-exam="BECE Social Studies">
+            <div class="exam-card-top"><span class="exam-badge">BECE · Social Studies</span><span class="exam-year">JHS / Common Core</span></div>
+            <h3>Citizenship &amp; society</h3><p>Ghanaian values, governance, environment, identity, and community development.</p>
+            <button type="button" onclick="loadPractice('BECE Social Studies')">Practice set · 32 questions</button>
+          </article>
+          <article class="exam-card" data-exam="WASSCE Science">
+            <div class="exam-card-top"><span class="exam-badge">WASSCE · Integrated Science</span><span class="exam-year">SHS 1–3</span></div>
+            <h3>Core science concepts</h3><p>Biology, chemistry, physics, agriculture, health, and scientific investigation.</p>
+            <button type="button" onclick="loadPractice('WASSCE Science')">Practice set · 32 questions</button>
+          </article>
+          <article class="exam-card" data-exam="WASSCE Social Studies">
+            <div class="exam-card-top"><span class="exam-badge">WASSCE · Social Studies</span><span class="exam-year">SHS 1–3</span></div>
+            <h3>Ghana &amp; national development</h3><p>Governance, geography, economics, social change, and sustainable development.</p>
+            <button type="button" onclick="loadPractice('WASSCE Social Studies')">Practice set · 32 questions</button>
+          </article>
+        </div>
+        <p class="disclaimer">These are original Ghana curriculum-aligned revision questions, not official past-paper questions. Always compare study topics with the current NaCCA/WAEC syllabus and guidance from your school.</p>
+      </section>
+
+      <section class="theory-library" id="theory-library">
+        <div class="section-head"><h2>Theory past-question practice</h2><span class="theory-badge">50+ per subject</span></div>
+        <p class="library-note">Practise explaining ideas in your own words, just like a written theory paper. Choose a subject to begin.</p>
+        <div class="exam-filters" role="group" aria-label="Filter theory questions by subject">
+          <button class="theory-filter exam-filter active" type="button" data-theory-subject="Mathematics">Mathematics · 50</button>
+          <button class="theory-filter exam-filter" type="button" data-theory-subject="Science">Science · 50</button>
+          <button class="theory-filter exam-filter" type="button" data-theory-subject="English Language">English · 70</button>
+          <button class="theory-filter exam-filter" type="button" data-theory-subject="Social Studies">Social Studies · 50</button>
+        </div>
+        <div class="exam-filters" role="group" aria-label="Filter theory questions by exam">
+          <button class="theory-exam-filter exam-filter active" type="button" data-theory-exam="all">BECE + WASSCE</button>
+          <button class="theory-exam-filter exam-filter" type="button" data-theory-exam="BECE">BECE</button>
+          <button class="theory-exam-filter exam-filter" type="button" data-theory-exam="WASSCE">WASSCE</button>
+        </div>
+        <div class="theory-question" id="theory-question">
+          <div class="theory-meta"><span id="theory-progress">Question 1 of 50</span><span id="theory-exam">BECE · Mathematics</span></div>
+          <h3 id="theory-prompt">Explain two uses of fractions in everyday life.</h3>
+          <div class="theory-answer" id="theory-answer" hidden><strong>Model answer:</strong> Fractions help us share quantities, measure ingredients, compare parts of a whole, and calculate discounts.</div>
+          <div class="theory-actions"><button type="button" onclick="showTheoryAnswer()">Show model answer</button><button type="button" onclick="nextTheoryQuestion()">Next question →</button></div>
+        </div>
+        <p class="disclaimer">These are original Ghana curriculum-aligned theory prompts, not reproduced official past-paper questions. Use the current NaCCA/WAEC syllabus and your teacher's marking guidance when checking answers.</p>
+      </section>
+    </main>
+  </div>
+  <div class="lesson-panel" id="lesson-panel" hidden>
+    <section class="lesson-dialog" role="dialog" aria-modal="true" aria-labelledby="lesson-title">
+      <div class="lesson-top"><span class="lesson-kicker">Next lesson</span><button class="close-lesson" type="button" aria-label="Close lesson panel" onclick="closeLesson()">×</button></div>
+      <h2 id="lesson-title">Mathematics</h2>
+      <p id="lesson-description">Build confidence with a short guided lesson and a practice question at the end.</p>
+      <div class="lesson-prompt" id="lesson-prompt">Today's focus: Numbers, patterns, and problem solving.</div>
+      <button class="lesson-start" type="button" onclick="startLessonPractice()">Start lesson practice →</button>
+    </section>
+  </div>
+  <script>
+    const lessonDetails = {
+      "Mathematics": ["Numbers, patterns, and problem solving.", "Work through a quick example, then test your understanding with a practice question."],
+      "Science": ["Living things and their environments.", "Explore a key idea, learn the important words, and answer a short science check."],
+      "English Language": ["Reading for meaning and clear writing.", "Read a short passage, identify the main idea, and practise a useful language skill."],
+      "Social Studies": ["People, places, and responsible citizenship.", "Connect classroom ideas to everyday life with a guided question and reflection."]
+    };
+
+    function selectLevel(button, level) {
+      document.querySelectorAll(".level").forEach(item => item.classList.remove("selected"));
+      button.classList.add("selected");
+      document.getElementById("subject-title").textContent = level + " subjects";
+    }
+
+    const makeQuestions = rows => rows.map(([question, first, second, third, correct]) => ({
+      question, answers: [first, second, third], correct
+    }));
+
+    const quickQuestionSets = {
+      "Mathematics": makeQuestions([
+        ["What is 7 × 8?", "54", "56", "64", 1], ["What is 25% of 80?", "15", "20", "25", 1],
+        ["Which fraction equals 0.5?", "1/4", "1/2", "2/5", 1], ["A triangle has angles 60° and 70°. Find the third angle.", "40°", "50°", "60°", 1],
+        ["What is 144 ÷ 12?", "10", "12", "14", 1], ["Round 6.748 to one decimal place.", "6.7", "6.8", "6.9", 1],
+        ["What is the perimeter of a square with side 5 cm?", "10 cm", "20 cm", "25 cm", 1], ["Solve: 3x = 21.", "6", "7", "8", 1],
+        ["What is 2/3 + 1/3?", "1/3", "1", "2", 1], ["Convert 0.75 to a percentage.", "7.5%", "75%", "750%", 1],
+        ["What is the next number: 4, 8, 12, 16, …?", "18", "20", "24", 1], ["A right angle measures…", "45°", "90°", "180°", 1],
+        ["What is 15% of 200?", "15", "30", "45", 1], ["Which is a prime number?", "21", "29", "35", 1],
+        ["What is 5²?", "10", "20", "25", 2], ["If y = 2x + 1 and x = 3, find y.", "5", "7", "9", 1],
+        ["How many millilitres are in 2 litres?", "200", "2,000", "20,000", 1], ["What is the mean of 4, 6, and 8?", "5", "6", "7", 1],
+        ["A GH₵50 item rises by GH₵10. What is the percentage increase?", "10%", "20%", "25%", 1], ["What is the area of a rectangle 8 cm by 3 cm?", "11 cm²", "22 cm²", "24 cm²", 2],
+        ["Simplify 12/18.", "2/3", "3/4", "4/5", 0], ["What is 0.4 × 10?", "0.04", "4", "40", 1],
+        ["How many faces does a cube have?", "4", "6", "8", 1], ["If 5 pens cost GH₵20, one pen costs…", "GH₵4", "GH₵5", "GH₵10", 0],
+        ["What is the mode of 2, 3, 3, 4, 5?", "2", "3", "5", 1], ["An angle greater than 90° but less than 180° is…", "acute", "right", "obtuse", 2],
+        ["What is 9 × 9?", "72", "81", "99", 1], ["Convert 3/4 to a decimal.", "0.34", "0.75", "0.8", 1],
+        ["A dozen means…", "10", "12", "20", 1], ["What is the lowest common multiple of 3 and 4?", "7", "12", "24", 1],
+        ["Solve: x + 9 = 15.", "5", "6", "7", 1], ["How many degrees are in a straight line?", "90°", "180°", "360°", 1]
+      ]),
+      "Science": makeQuestions([
+        ["Which organ pumps blood around the body?", "Lung", "Heart", "Kidney", 1], ["What force pulls objects towards Earth?", "Friction", "Gravity", "Magnetism", 1],
+        ["Plants make food using sunlight through…", "Digestion", "Photosynthesis", "Respiration", 1], ["Water changes into vapour through…", "Freezing", "Melting", "Evaporation", 2],
+        ["Which gas do humans need to breathe?", "Oxygen", "Carbon dioxide", "Nitrogen", 0], ["The smallest unit of a living thing is a…", "Cell", "Tissue", "Bone", 0],
+        ["Which material is a good conductor of electricity?", "Rubber", "Copper", "Wood", 1], ["The Earth travels around the…", "Moon", "Sun", "Mars", 1],
+        ["Which sense organ helps us hear?", "Eye", "Ear", "Skin", 1], ["A push or pull is called a…", "force", "mass", "volume", 0],
+        ["Which state of matter has a fixed shape?", "Solid", "Liquid", "Gas", 0], ["What protects Earth from much of the Sun's harmful radiation?", "Ozone layer", "Cloud cover", "Rainfall", 0],
+        ["Which simple machine is a ramp?", "Lever", "Inclined plane", "Pulley", 1], ["Sound travels fastest through…", "A vacuum", "Solids", "Air", 1],
+        ["What is the boiling point of water at sea level?", "0°C", "50°C", "100°C", 2], ["Which organ helps digest food?", "Stomach", "Heart", "Brain", 0],
+        ["Animals that eat only plants are…", "Carnivores", "Herbivores", "Omnivores", 1], ["What is needed for a fire to burn?", "Oxygen", "Ice", "Darkness", 0],
+        ["Which planet is known as the Red Planet?", "Venus", "Mars", "Jupiter", 1], ["A magnet has two…", "Wheels", "Poles", "Cells", 1],
+        ["What instrument measures temperature?", "Barometer", "Thermometer", "Ruler", 1], ["The change from liquid to solid is…", "Melting", "Freezing", "Boiling", 1],
+        ["Which part of a plant absorbs water?", "Flower", "Root", "Fruit", 1], ["What type of energy comes from the Sun?", "Solar", "Sound", "Chemical", 0],
+        ["The lungs are part of which body system?", "Digestive", "Respiratory", "Skeletal", 1], ["Which is a renewable energy source?", "Coal", "Solar power", "Petrol", 1],
+        ["What do we call water falling from clouds?", "Precipitation", "Condensation", "Collection", 0], ["Which vitamin is made in skin in sunlight?", "Vitamin A", "Vitamin C", "Vitamin D", 2],
+        ["A balanced diet contains…", "Only fats", "Different nutrients", "Only sugar", 1], ["Which object reflects light best?", "Mirror", "Cloth", "Paper", 0],
+        ["What is the centre of an atom called?", "Nucleus", "Shell", "Muscle", 0], ["Which process turns food into energy in cells?", "Respiration", "Filtration", "Evaporation", 0]
+      ]),
+      "English Language": makeQuestions([
+        ["Choose the correct word: She ___ to school every day.", "go", "goes", "going", 1], ["Which word is an adjective?", "Quickly", "Beautiful", "Run", 1],
+        ["What is the opposite of 'ancient'?", "Old", "Modern", "Broken", 1], ["Which punctuation mark ends a question?", "Full stop", "Comma", "Question mark", 2],
+        ["Choose the noun: The bright bird sang.", "bright", "bird", "sang", 1], ["The past tense of 'write' is…", "wrote", "written", "writes", 0],
+        ["Which word is a synonym for 'happy'?", "Joyful", "Angry", "Tired", 0], ["Choose the correct spelling.", "Necesary", "Necessary", "Neccessary", 1],
+        ["A story's main character is the…", "setting", "protagonist", "title", 1], ["Which word is a verb?", "Jump", "Blue", "Table", 0],
+        ["Complete: Neither Kojo ___ Ama was late.", "or", "nor", "and", 1], ["What is the plural of 'child'?", "Childs", "Children", "Childes", 1],
+        ["A comparison using 'like' or 'as' is a…", "simile", "metaphor", "pun", 0], ["Which word shows possession?", "their", "there", "they're", 0],
+        ["Choose the correct article: ___ orange.", "A", "An", "Thee", 1], ["The opposite of 'expand' is…", "enlarge", "contract", "extend", 1],
+        ["Which is an adverb?", "Carefully", "Careful", "Care", 0], ["A group of lines in a poem is a…", "paragraph", "stanza", "chapter", 1],
+        ["Choose the correct sentence.", "He don't run.", "He doesn't run.", "He not runs.", 1], ["What does 'brief' mean?", "Short", "Loud", "Heavy", 0],
+        ["The setting tells us the…", "time and place", "author's age", "book's price", 0], ["Which word is spelled correctly?", "Separate", "Seperate", "Separete", 0],
+        ["A word that replaces a noun is a…", "pronoun", "preposition", "conjunction", 0], ["Complete: I have lived here ___ 2020.", "for", "since", "during", 1],
+        ["Which is a compound word?", "Sunflower", "Sunny", "Sunshine", 0], ["The opposite of 'generous' is…", "kind", "selfish", "helpful", 1],
+        ["What is the purpose of a title?", "To name the text", "To end a sentence", "To list punctuation", 0], ["Choose the correct homophone: ___ going home.", "Their", "They're", "There", 1],
+        ["A question beginning with 'Who' asks about a…", "person", "place", "time", 0], ["Which punctuation separates items in a list?", "Comma", "Apostrophe", "Hyphen", 0],
+        ["The prefix 'un-' usually means…", "again", "not", "before", 1], ["A formal letter usually begins with a…", "salutation", "plot", "rhyme", 0]
+      ]),
+      "Social Studies": makeQuestions([
+        ["Which action shows responsible citizenship?", "Littering", "Obeying laws", "Damaging property", 1], ["What is the main purpose of a community?", "To live and work together", "To avoid one another", "To waste resources", 0],
+        ["Which is a natural resource?", "Plastic", "Water", "Television", 1], ["Voting is an example of…", "Civic participation", "Private business", "A natural disaster", 0],
+        ["A family is a group of people related by…", "blood, marriage, or adoption", "a classroom only", "a market", 0], ["Which is a duty of a good citizen?", "Protecting public property", "Breaking laws", "Spreading litter", 0],
+        ["A map key explains…", "symbols on a map", "the weather only", "a person's name", 0], ["Which direction is opposite to north?", "East", "South", "West", 1],
+        ["Culture includes a people's…", "language and traditions", "shoe size", "bank balance", 0], ["Why do communities make rules?", "To promote order and safety", "To create confusion", "To stop cooperation", 0],
+        ["Which is a means of transport?", "Radio", "Bicycle", "Cement", 1], ["A leader chosen by voting is…", "elected", "hidden", "borrowed", 0],
+        ["Which activity can protect the environment?", "Planting trees", "Burning plastic", "Dumping waste in rivers", 0], ["A budget helps people plan…", "income and spending", "the weather", "a football score", 0],
+        ["Which institution helps enforce laws?", "Police service", "Bakery", "Library club", 0], ["What is teamwork?", "Working together toward a goal", "Working alone always", "Avoiding responsibility", 0],
+        ["A person who moves to live in another country is a…", "migrant", "tourist guide", "farmer only", 0], ["Which is a basic human right?", "Right to education", "Right to harm others", "Right to steal", 0],
+        ["Why do people pay taxes?", "To support public services", "To stop schools", "To hide income", 0], ["A village is usually…", "a rural settlement", "an ocean", "an airport", 0],
+        ["Which resource can be replaced naturally?", "Sunlight", "Gold", "Coal", 0], ["What does cooperation mean?", "Helping one another", "Refusing all help", "Arguing constantly", 0],
+        ["Which is a national symbol?", "Flag", "Notebook", "Spoon", 0], ["A constitution contains…", "fundamental laws and principles", "recipes", "sports results", 0],
+        ["What can cause soil erosion?", "Removing vegetation", "Planting cover crops", "Careful terracing", 0], ["Which is a secondary source of information?", "Textbook", "A witness at the event", "The original speech", 0],
+        ["A market is a place where people…", "buy and sell goods", "sleep in class", "make laws only", 0], ["Why are roads important?", "They connect places", "They stop travel", "They create rainfall", 0],
+        ["Which behaviour promotes peace?", "Respectful dialogue", "Bullying", "Threatening others", 0], ["A population census counts…", "people in an area", "only buildings", "rainfall", 0],
+        ["Which job provides health care?", "Nurse", "Carpenter", "Pilot", 0], ["What is conservation?", "Careful protection of resources", "Rapid waste", "Pollution", 0]
+      ])
+    };
+
+    const theoryQuestions = [
+      { exam: "BECE", subject: "Mathematics", prompt: "Explain two uses of fractions in everyday life.", answer: "Fractions help us share quantities, measure ingredients, compare parts of a whole, and calculate discounts." },
+      { exam: "BECE", subject: "Mathematics", prompt: "Describe the steps for finding the area of a rectangle.", answer: "Measure the length and width, then multiply length by width and write the answer in square units." },
+      { exam: "BECE", subject: "Mathematics", prompt: "Explain what a ratio of 2:3 means.", answer: "For every 2 equal parts of the first quantity, there are 3 equal parts of the second quantity." },
+      { exam: "BECE", subject: "Mathematics", prompt: "State two properties of a rectangle.", answer: "Opposite sides are equal and parallel, and all four angles are right angles." },
+      { exam: "BECE", subject: "Mathematics", prompt: "Explain how to check whether an answer to an equation is correct.", answer: "Substitute the answer back into the original equation and check that both sides have the same value." },
+      { exam: "BECE", subject: "Science", prompt: "Explain two ways to keep drinking water safe in your community.", answer: "Treat water before drinking and store it in a clean, covered container." },
+      { exam: "BECE", subject: "Science", prompt: "Describe the importance of photosynthesis to living things.", answer: "It produces food for plants and releases oxygen, supporting food chains and breathing organisms." },
+      { exam: "BECE", subject: "Science", prompt: "State three effects of poor sanitation.", answer: "Poor sanitation can spread disease, pollute water, and create unpleasant or unsafe surroundings." },
+      { exam: "BECE", subject: "Science", prompt: "Explain the difference between a physical and a chemical change.", answer: "A physical change alters form or state without making a new substance; a chemical change produces one or more new substances." },
+      { exam: "BECE", subject: "Science", prompt: "Describe two ways to conserve energy at home.", answer: "Switch off unused lights and appliances, and use efficient bulbs or natural light where possible." },
+      { exam: "BECE", subject: "English", prompt: "Write two features of a good informal letter.", answer: "It has a clear greeting and friendly tone, organised paragraphs, relevant details, and an appropriate closing." },
+      { exam: "BECE", subject: "English", prompt: "Explain the difference between a noun and a verb.", answer: "A noun names a person, place, thing, or idea; a verb expresses an action or state." },
+      { exam: "BECE", subject: "English", prompt: "Give two reasons why a writer uses paragraphs.", answer: "Paragraphs group related ideas, make a text easier to read, and show changes in topic or focus." },
+      { exam: "BECE", subject: "English", prompt: "Describe how to identify the main idea of a passage.", answer: "Read the whole passage, notice repeated or important points, and express the central message in one sentence." },
+      { exam: "BECE", subject: "English", prompt: "Write a short persuasive point about keeping the school clean.", answer: "Keeping school clean protects health, creates a better place to learn, and teaches everyone responsibility." },
+      { exam: "BECE", subject: "Social Studies", prompt: "Explain two responsibilities of a good citizen.", answer: "A good citizen obeys fair laws, respects others, protects public property, and contributes positively to the community." },
+      { exam: "BECE", subject: "Social Studies", prompt: "State three causes of conflict among young people.", answer: "Conflict may result from misunderstanding, unfair treatment, competition, rumours, or poor communication." },
+      { exam: "BECE", subject: "Social Studies", prompt: "Describe two benefits of teamwork.", answer: "Teamwork combines skills, shares responsibility, improves ideas, and helps people complete tasks more effectively." },
+      { exam: "BECE", subject: "Social Studies", prompt: "Explain why trees are important to the environment.", answer: "Trees provide oxygen and habitats, reduce erosion, offer shade, and help regulate the climate." },
+      { exam: "BECE", subject: "Social Studies", prompt: "Suggest two ways to prevent littering.", answer: "Provide and use waste bins, teach responsible disposal, reduce single-use items, and enforce sensible community rules." },
+      { exam: "BECE", subject: "Integrated Science", prompt: "Explain why a balanced diet is important.", answer: "A balanced diet supplies energy, supports growth and repair, and helps the body resist illness." },
+      { exam: "BECE", subject: "Integrated Science", prompt: "Describe the water cycle in three stages.", answer: "Water evaporates from surfaces, condenses into clouds, and returns as precipitation before collecting again." },
+      { exam: "BECE", subject: "Mathematics", prompt: "Explain how percentages are useful when shopping.", answer: "Percentages help calculate discounts, increases, profit, tax, and the final amount to pay." },
+      { exam: "BECE", subject: "English", prompt: "State two qualities of a clear summary.", answer: "It is brief, accurate, written in your own words, and includes only the important points." },
+      { exam: "BECE", subject: "Social Studies", prompt: "Explain why communities need rules.", answer: "Rules guide behaviour, protect rights, reduce conflict, and help people live together safely." },
+      { exam: "WASSCE", subject: "Mathematics", prompt: "Explain how the gradient of a straight-line graph is found.", answer: "Choose two points on the line and divide the change in y by the corresponding change in x: gradient = rise/run." },
+      { exam: "WASSCE", subject: "Mathematics", prompt: "Describe two applications of statistics in society.", answer: "Statistics summarise survey results and support decisions in areas such as health, education, business, and government." },
+      { exam: "WASSCE", subject: "Mathematics", prompt: "Explain the meaning of probability 0 and probability 1.", answer: "Probability 0 represents an impossible event; probability 1 represents a certain event." },
+      { exam: "WASSCE", subject: "Mathematics", prompt: "State the relationship between the roots and coefficients of a quadratic equation.", answer: "For ax² + bx + c = 0, the sum of roots is −b/a and the product of roots is c/a." },
+      { exam: "WASSCE", subject: "Mathematics", prompt: "Explain why simultaneous equations can have one solution.", answer: "Their graphs may intersect at one point, meaning one ordered pair satisfies both equations." },
+      { exam: "WASSCE", subject: "Biology", prompt: "Explain the role of enzymes in digestion.", answer: "Enzymes are biological catalysts that break large food molecules into smaller soluble molecules the body can absorb." },
+      { exam: "WASSCE", subject: "Biology", prompt: "Describe two adaptations of a plant to reduce water loss.", answer: "A waxy cuticle and reduced leaves or sunken stomata reduce evaporation from the plant." },
+      { exam: "WASSCE", subject: "Biology", prompt: "Explain how vaccination helps protect a population.", answer: "Vaccination prepares the immune system to recognise a pathogen, reducing illness and limiting its spread." },
+      { exam: "WASSCE", subject: "Chemistry", prompt: "Distinguish between an acid and a base.", answer: "An acid donates hydrogen ions in solution and has pH below 7; a base accepts hydrogen ions or produces hydroxide ions and has pH above 7." },
+      { exam: "WASSCE", subject: "Chemistry", prompt: "Explain why catalysts are used in industrial reactions.", answer: "A catalyst increases reaction rate by providing an alternative pathway and is not permanently used up." },
+      { exam: "WASSCE", subject: "Physics", prompt: "State Newton's first law and give one example.", answer: "An object remains at rest or moves uniformly unless acted on by a resultant force; a passenger moves forward when a bus stops suddenly." },
+      { exam: "WASSCE", subject: "Physics", prompt: "Explain the difference between mass and weight.", answer: "Mass is the amount of matter measured in kilograms; weight is the gravitational force on that mass, measured in newtons." },
+      { exam: "WASSCE", subject: "Physics", prompt: "Describe energy conservation in a hydroelectric system.", answer: "Gravitational potential energy of stored water changes to kinetic energy, then mechanical energy in turbines and electrical energy in generators." },
+      { exam: "WASSCE", subject: "English", prompt: "Explain two features of an effective argumentative essay.", answer: "It presents a clear position, organised reasons, relevant evidence, counterarguments where useful, and a logical conclusion." },
+      { exam: "WASSCE", subject: "English", prompt: "Describe how tone affects a writer's message.", answer: "Tone shows the writer's attitude, such as approval, anger, or concern, and influences how readers interpret the message." },
+      { exam: "WASSCE", subject: "English", prompt: "Explain the difference between direct and indirect speech.", answer: "Direct speech gives the speaker's exact words in quotation marks; indirect speech reports the meaning without quoting the exact words." },
+      { exam: "WASSCE", subject: "English", prompt: "State two purposes of using evidence in a text.", answer: "Evidence supports claims, makes an argument credible, and helps readers verify or understand the writer's point." },
+      { exam: "WASSCE", subject: "Social Studies", prompt: "Explain two ways education supports national development.", answer: "Education builds skills for work and citizenship, encourages innovation, and helps people make informed decisions." },
+      { exam: "WASSCE", subject: "Social Studies", prompt: "Discuss two effects of unemployment on a community.", answer: "Unemployment can reduce household income, increase dependency and frustration, and limit economic growth." },
+      { exam: "WASSCE", subject: "Social Studies", prompt: "Describe two measures for promoting democratic governance.", answer: "Promote free and informed elections, respect the rule of law, protect participation, and ensure accountable institutions." },
+      { exam: "WASSCE", subject: "Geography", prompt: "Explain two factors that influence the climate of a place.", answer: "Latitude affects solar heating, while altitude, distance from the sea, winds, and relief also influence temperature and rainfall." },
+      { exam: "WASSCE", subject: "Geography", prompt: "Describe two effects of deforestation.", answer: "Deforestation can cause soil erosion, habitat loss, reduced rainfall, flooding, and increased carbon dioxide." },
+      { exam: "WASSCE", subject: "Economics", prompt: "Explain the law of demand.", answer: "Other things remaining equal, quantity demanded usually falls when price rises and rises when price falls." },
+      { exam: "WASSCE", subject: "Economics", prompt: "State two functions of money.", answer: "Money acts as a medium of exchange and a measure or store of value; it can also settle future payments." },
+      { exam: "WASSCE", subject: "Agriculture", prompt: "Explain two benefits of crop rotation.", answer: "Crop rotation helps maintain soil nutrients, interrupts pest cycles, reduces erosion, and can improve yields." },
+      { exam: "WASSCE", subject: "ICT", prompt: "Describe two ways to protect a computer account.", answer: "Use a long unique password with multi-factor authentication and keep software updated while avoiding suspicious links." }
+    ];
+    const scienceTheoryQuestions = [
+      ["State two functions of the cell membrane.", "It controls substances entering and leaving the cell and helps protect the cell contents."],
+      ["Explain how the small intestine is adapted for absorption.", "It has many villi, a large surface area, thin walls, and a good blood supply for rapid absorption."],
+      ["Distinguish between a series and a parallel electrical circuit.", "A series circuit has one path for current; a parallel circuit has separate branches, so one branch can work if another is open."],
+      ["Describe how a simple electric motor works.", "Current in a magnetic field experiences a force, causing the coil to turn; the split-ring commutator reverses current to maintain rotation."],
+      ["Explain why metals are suitable for making cooking pots.", "Metals conduct heat well and many have high melting points, allowing heat to reach food without the pot melting."],
+      ["Describe an experiment to show that air contains oxygen.", "Place a burning candle in a covered container; the flame goes out after oxygen is used, showing that air supports combustion."],
+      ["Explain two effects of friction in daily life.", "Friction allows walking and braking, but it also causes wear and produces unwanted heat in moving parts."],
+      ["State two differences between arteries and veins.", "Arteries carry blood away from the heart and have thick elastic walls; veins carry blood towards the heart and have valves."],
+      ["Explain how the kidneys help maintain a healthy body.", "They filter the blood, remove urea, and regulate water and mineral levels in the body."],
+      ["Describe two ways to prevent malaria in a community.", "Sleep under insecticide-treated nets and remove stagnant water where mosquitoes breed."],
+      ["Explain why crop rotation improves soil fertility.", "Different crops use different nutrients, while legumes add nitrogen through bacteria in their root nodules."],
+      ["Describe two causes of soil erosion on farms.", "Removing vegetation and leaving soil bare or poorly drained allow wind and running water to carry soil away."],
+      ["Explain how a food chain shows energy transfer.", "Energy passes from a producer to herbivores and then to consumers, with less available at each higher level."],
+      ["State two adaptations of a cactus to dry conditions.", "It has a thick water-storing stem, a waxy surface, and reduced leaves or spines to limit water loss."],
+      ["Explain the difference between weather and climate.", "Weather is the short-term condition of the atmosphere; climate is the average pattern over a long period."],
+      ["Describe how rainfall can be measured.", "A rain gauge collects rainfall, which is measured in millimetres over a stated time."],
+      ["Explain why a balanced diet is important for adolescents.", "It supplies energy, protein, vitamins, minerals, and water for growth, repair, and healthy body functions."],
+      ["Describe two methods of preserving food.", "Drying removes moisture and smoking adds heat and protective chemicals; both slow the growth of microorganisms."],
+      ["Explain how vaccination protects a person.", "It stimulates the immune system to produce memory cells so a later infection is recognised and fought quickly."],
+      ["State two symptoms that may indicate dehydration.", "A dehydrated person may have a dry mouth, dark urine, dizziness, thirst, or unusual tiredness."],
+      ["Explain why a metal spoon feels hotter than a wooden spoon in hot soup.", "Metal conducts heat quickly from the soup to the hand, while wood is a poor conductor."],
+      ["Describe how shadows are formed.", "An opaque object blocks light travelling from a source, creating a dark region behind the object."],
+      ["Explain the difference between renewable and non-renewable energy.", "Renewable energy is naturally replaced, such as solar energy; non-renewable fuels exist in limited amounts."],
+      ["State two uses of magnets in technology.", "Magnets are used in electric motors, speakers, generators, compasses, and magnetic storage devices."],
+      ["Explain how a lever makes work easier.", "A lever turns around a fulcrum so a small effort can move a larger load, depending on the distances involved."],
+      ["Describe two properties of acids.", "Acids have pH below 7, turn blue litmus red, and react with some metals to release hydrogen."],
+      ["Explain what happens during neutralisation.", "An acid reacts with a base to form salt and water, and the solution becomes less acidic or alkaline."],
+      ["Describe how to separate sand from salt in a mixture.", "Add water to dissolve the salt, filter out the sand, then evaporate the water to recover the salt."],
+      ["Explain why rusting is a chemical change.", "Iron reacts with oxygen and water to form a new substance, hydrated iron(III) oxide, with different properties."],
+      ["State two factors that affect the rate of a reaction.", "Temperature, concentration, surface area, and catalysts can affect how quickly a reaction occurs."],
+      ["Explain the importance of the ozone layer.", "It absorbs much of the Sun's harmful ultraviolet radiation and helps protect living organisms."],
+      ["Describe two effects of improper waste disposal.", "It can pollute soil and water, block drains, spread disease, and harm animals."],
+      ["Explain how trees help to reduce flooding.", "Roots improve water infiltration and hold soil, while leaves and branches slow rainfall reaching the ground."],
+      ["State two methods of conserving fish stocks.", "Use approved fishing gear and seasons, protect breeding areas, and avoid catching immature fish."],
+      ["Explain why scientific measurements should include units.", "Units communicate the quantity clearly and allow results from different investigations to be compared."],
+      ["Describe how to make a fair investigation.", "Change only the factor being tested, keep other conditions constant, repeat measurements, and record results accurately."],
+      ["Explain the difference between mass and weight.", "Mass is the amount of matter measured in kilograms; weight is gravitational force measured in newtons."],
+      ["State two uses of pulleys.", "Pulleys help lift loads, draw water from wells, raise flags, and move materials in construction."],
+      ["Explain how sound is produced and heard.", "A vibrating object creates waves in a medium; the waves enter the ear and make the eardrum vibrate."],
+      ["Describe two causes of noise pollution.", "Loud traffic, machinery, amplified music, construction, and aircraft can create excessive unwanted sound."],
+      ["Explain why a rainbow forms after rain.", "Water droplets disperse and reflect sunlight, separating white light into its different colours."],
+      ["State two ways to reduce the spread of communicable diseases.", "Wash hands, improve sanitation, vaccinate, cover coughs, and avoid close contact when ill."],
+      ["Explain the importance of a healthy lifestyle.", "Balanced food, exercise, rest, and hygiene help prevent disease and support physical and mental wellbeing."],
+      ["Describe how green plants obtain raw materials for photosynthesis.", "Roots absorb water and minerals from soil, while leaves take in carbon dioxide through stomata."],
+      ["Explain why farmers add compost to soil.", "Compost adds organic matter and nutrients, improves soil structure, and helps the soil hold water."],
+      ["State two uses of microorganisms that benefit humans.", "Microorganisms help make yoghurt and bread, decompose waste, and produce some medicines."],
+      ["Explain why a microscope is useful in science.", "It magnifies very small objects such as cells, allowing structures invisible to the unaided eye to be studied."],
+      ["Describe two safety rules for a science laboratory.", "Wear protective equipment, follow instructions, label chemicals, and never taste or directly smell substances."],
+      ["Explain how human activities can contribute to climate change.", "Burning fossil fuels and clearing forests increase greenhouse gases, which trap more heat in the atmosphere."],
+      ["Describe how a thermometer works.", "A thermometer uses a material that expands or contracts predictably with temperature, allowing the change to be read on a calibrated scale."]
+    ].map(([prompt, answer], index) => ({ exam: index < 25 ? "BECE" : "WASSCE", subject: "Integrated Science", prompt, answer }));
+
+    const mathematicsTheoryQuestions = [
+      ["Find the HCF of 24 and 36.", "The factors show that the highest common factor is 12."],
+      ["Explain how to convert a fraction to a percentage.", "Convert the fraction to a decimal or multiply it by 100%; for example, 3/4 = 75%."],
+      ["Solve 2x + 5 = 17.", "Subtract 5 from both sides to get 2x = 12, then divide by 2, so x = 6."],
+      ["Find the area of a triangle with base 12 cm and height 7 cm.", "Area = 1/2 × base × height = 1/2 × 12 × 7 = 42 cm²."],
+      ["Explain the difference between an expression and an equation.", "An expression has numbers and operations but no equality sign; an equation states that two expressions are equal."],
+      ["A trader buys an item for GH₵80 and sells it for GH₵100. Find the profit percentage.", "Profit is GH₵20; profit percentage = 20/80 × 100% = 25%."],
+      ["Describe how to construct a perpendicular bisector.", "Draw equal arcs from both endpoints of a line segment, then join the two arc intersections."],
+      ["Find the mean of 8, 10, 12, 14, and 16.", "The total is 60 and there are 5 values, so the mean is 12."],
+      ["Explain what a scale of 1:50,000 on a map means.", "One unit on the map represents 50,000 of the same units on the ground."],
+      ["Simplify 3a + 2b - a + 5b.", "Collect like terms: 3a - a + 2b + 5b = 2a + 7b."],
+      ["What is the probability of getting an even number on a fair die?", "There are 3 even outcomes out of 6, so the probability is 3/6 = 1/2."],
+      ["Explain why the sum of angles in a triangle is 180°.", "A line parallel to one side creates alternate angles whose total with the interior angle is a straight angle."],
+      ["Convert 2.75 metres to centimetres.", "Multiply by 100, so 2.75 m = 275 cm."],
+      ["Find the simple interest on GH₵500 at 8% per year for 2 years.", "Interest = PRT/100 = 500 × 8 × 2 / 100 = GH₵80."],
+      ["Describe the relationship between distance, speed, and time.", "Speed = distance/time; distance = speed × time; time = distance/speed."],
+      ["Factorise x² + 5x + 6.", "Find two numbers with product 6 and sum 5: x² + 5x + 6 = (x + 2)(x + 3)."],
+      ["Find the gradient between (2, 3) and (6, 11).", "Gradient = (11 - 3)/(6 - 2) = 8/4 = 2."],
+      ["Explain how to calculate compound interest.", "Add the interest to the amount after each period, so later interest is calculated on the accumulated amount."],
+      ["Find the volume of a cuboid measuring 4 cm by 5 cm by 8 cm.", "Volume = length × width × height = 4 × 5 × 8 = 160 cm³."],
+      ["State two properties of parallel lines.", "They remain the same distance apart and never meet; corresponding angles are equal when crossed by a transversal."],
+      ["Solve 3(y - 2) = 15.", "Divide by 3 to get y - 2 = 5, then add 2, so y = 7."],
+      ["Explain how a bar chart represents data.", "Separate bars show categories, and their heights or lengths represent the values using a labelled scale."],
+      ["Find the median of 3, 9, 4, 7, and 6.", "Arrange as 3, 4, 6, 7, 9; the middle value is 6."],
+      ["Convert 45° to radians.", "Multiply by π/180, giving 45π/180 = π/4 radians."],
+      ["Explain the meaning of a negative integer.", "It is a number less than zero and can represent direction, debt, temperature below zero, or loss."],
+      ["Find the nth term of 5, 8, 11, 14, …", "The common difference is 3, so the nth term is 3n + 2."],
+      ["Use Pythagoras' theorem to find the hypotenuse of legs 6 cm and 8 cm.", "c² = 6² + 8² = 100, so c = 10 cm."],
+      ["Explain why a circle's circumference is related to π.", "π is the constant ratio of a circle's circumference to its diameter, so circumference = πd."],
+      ["Find 15% of GH₵240.", "15/100 × 240 = GH₵36."],
+      ["Describe a transformation that maps a shape to its mirror image.", "Reflection in a line maps each point to the opposite side at the same perpendicular distance."],
+      ["Solve the simultaneous equations x + y = 9 and x - y = 3.", "Adding gives 2x = 12, so x = 6; substituting gives y = 3."],
+      ["Explain the difference between discrete and continuous data.", "Discrete data are countable values; continuous data can take any value within an interval."],
+      ["Find the upper quartile of 2, 4, 5, 7, 8, 10, 12, 14.", "The upper half is 8, 10, 12, 14; its median is (10 + 12)/2 = 11."],
+      ["Explain why the gradient of a horizontal line is zero.", "There is no vertical change while the horizontal change is non-zero, so rise/run equals zero."],
+      ["Find the exterior angle of a regular hexagon.", "A regular polygon's exterior angle is 360/6 = 60°."],
+      ["Describe how to solve a quadratic equation by factorisation.", "Rewrite it as a product of factors and set each factor equal to zero."],
+      ["A map distance is 6 cm at scale 1:100,000. Find the actual distance.", "6 cm represents 600,000 cm, which is 6 km."],
+      ["Explain why 0.333… is a recurring decimal.", "The division does not terminate; the digit 3 repeats indefinitely, representing 1/3."],
+      ["Find the perimeter of a semicircle of radius 7 cm, using π = 22/7.", "Perimeter = half circumference + diameter = 22 + 14 = 36 cm."],
+      ["Explain what a matrix is used for.", "A matrix arranges numbers in rows and columns to represent data or perform calculations."],
+      ["Find the determinant of [[3, 2], [1, 4]].", "Determinant = 3×4 - 2×1 = 10."],
+      ["Explain the effect of multiplying a vector by 2.", "Both its magnitude and its components double, while its direction remains the same."],
+      ["Find the equation of a line with gradient 3 and y-intercept 2.", "Using y = mx + c, the equation is y = 3x + 2."],
+      ["State the sine rule.", "For a triangle, a/sin A = b/sin B = c/sin C."],
+      ["Explain how sampling can be used in a survey.", "A smaller representative group is selected from a population to collect information efficiently."],
+      ["Find the range of 12, 5, 18, 9, and 7.", "Range = highest - lowest = 18 - 5 = 13."],
+      ["Describe an enlargement with scale factor 3.", "Every distance from the centre of enlargement becomes three times as long."],
+      ["Solve log10(1000).", "10³ = 1000, so log10(1000) = 3."],
+      ["Explain why accurate units matter in calculations.", "Units identify what a measurement represents and prevent quantities from being incorrectly compared."],
+      ["Find the compound amount on GH₵1,000 at 10% for 2 years.", "Amount = 1000 × 1.1² = GH₵1,210."]
+    ].map(([prompt, answer], index) => ({ exam: index < 25 ? "BECE" : "WASSCE", subject: "Mathematics", prompt, answer }));
+
+    const englishTheoryQuestions = [
+      ["Write two features of a good informal letter.", "Use a friendly tone, clear paragraphs, an appropriate greeting, relevant details, and a suitable closing."],
+      ["Explain how to identify the main idea of a passage.", "Look for the central point repeated or supported by the details, then state it briefly in your own words."],
+      ["State two qualities of an effective summary.", "It is concise, accurate, written in your own words, and includes only essential points."],
+      ["Distinguish between a noun and a pronoun.", "A noun names something; a pronoun replaces a noun to avoid repetition."],
+      ["Explain the difference between active and passive voice.", "In active voice the subject performs the action; in passive voice the subject receives the action."],
+      ["Write a sentence using a semicolon correctly.", "A semicolon can join closely related independent clauses, such as: The rain stopped; the match continued."],
+      ["Explain how context helps determine a word's meaning.", "The surrounding words and situation provide clues about which meaning of a word is intended."],
+      ["Describe two features of persuasive writing.", "It presents a clear position, uses reasons and evidence, addresses readers directly, and ends with a strong conclusion."],
+      ["Distinguish between direct and indirect speech.", "Direct speech gives exact words in quotation marks; indirect speech reports the meaning without quoting exactly."],
+      ["Explain the purpose of a topic sentence.", "It introduces the main idea of a paragraph and guides the supporting details that follow."],
+      ["State two uses of the apostrophe.", "It shows possession and contractions, such as Ama's book and don't."],
+      ["Explain how tone affects a writer's message.", "Tone reveals the writer's attitude and influences whether the message sounds serious, angry, respectful, or humorous."],
+      ["Describe the structure of a formal letter.", "It normally includes addresses, date, salutation, subject, organised paragraphs, closing, and signature."],
+      ["Explain the difference between a simile and a metaphor.", "A simile compares using like or as; a metaphor says one thing is another to create comparison."],
+      ["Identify two reasons authors use dialogue.", "Dialogue reveals character, develops relationships, provides information, and moves the plot forward."],
+      ["Write a clear thesis statement for an essay about reading.", "Regular reading improves vocabulary, knowledge, imagination, and communication skills."],
+      ["Explain what an inference is.", "An inference is a logical conclusion drawn from clues and evidence rather than directly stated information."],
+      ["State two ways to make writing coherent.", "Arrange ideas logically and use linking words, pronouns, and repeated key terms clearly."],
+      ["Explain the difference between a phrase and a clause.", "A phrase lacks a finite verb and complete idea; a clause contains a subject and verb."],
+      ["Describe how to write an effective conclusion.", "Restate the main position, summarise key points, and leave the reader with a final thought."],
+      ["Explain the use of alliteration.", "Repeating initial consonant sounds creates rhythm, emphasis, or a memorable effect."],
+      ["Distinguish between a fact and an opinion.", "A fact can be checked with evidence; an opinion is a belief, judgement, or personal view."],
+      ["State two features of a news report.", "It gives a clear headline and lead, presents important facts, and answers who, what, when, where, why, and how."],
+      ["Explain why writers vary sentence length.", "Short sentences can emphasise or create pace, while longer sentences develop detail and relationships between ideas."],
+      ["Write a suitable opening for a speech on school discipline.", "Good morning, teachers and fellow students. Today I will explain why fair discipline helps our school community learn and thrive."],
+      ["Explain how a dictionary can help a learner.", "It gives meanings, pronunciation, spelling, word class, examples, and sometimes word origins."],
+      ["Distinguish between homophones and homonyms.", "Homophones sound alike but may differ in spelling and meaning; homonyms share a form but have different meanings."],
+      ["Describe two ways to improve vocabulary.", "Read widely, record new words, infer meanings from context, and practise using them in sentences."],
+      ["Explain the purpose of a conjunction.", "A conjunction joins words, phrases, or clauses and shows relationships such as addition, contrast, cause, or time."],
+      ["State two characteristics of a good paragraph.", "It focuses on one main idea, uses supporting details, and connects sentences logically."],
+      ["Explain what personification does in a text.", "It gives human qualities to non-human things, making descriptions vivid and meaningful."],
+      ["Describe how to answer a comprehension question well.", "Read carefully, use evidence from the passage, answer exactly what is asked, and write clearly."],
+      ["Explain the difference between formal and informal language.", "Formal language is careful and appropriate for official contexts; informal language is relaxed and used with familiar people."],
+      ["State two purposes of a title.", "A title identifies the subject and attracts or prepares the reader."],
+      ["Explain how setting contributes to a story.", "Setting establishes time and place, creates atmosphere, and influences characters and events."],
+      ["Describe the role of conflict in narrative writing.", "Conflict creates a problem that drives events, tests characters, and keeps readers interested."],
+      ["Explain the difference between a protagonist and an antagonist.", "The protagonist is the central character; the antagonist opposes the protagonist's goals."],
+      ["Write two linking expressions for contrast.", "However, although, on the other hand, nevertheless, and in contrast show difference."],
+      ["Explain what a rhetorical question is.", "It is asked for effect or reflection rather than to receive a direct answer."],
+      ["State two ways to avoid plagiarism.", "Use your own wording and acknowledge sources when using another person's ideas or words."],
+      ["Describe the purpose of an outline before writing.", "An outline organises the main points and helps the writer maintain focus and sequence."],
+      ["Explain how punctuation affects meaning.", "Punctuation separates ideas, shows pauses and relationships, and can change the meaning of a sentence."],
+      ["Distinguish between denotation and connotation.", "Denotation is a word's literal meaning; connotation is the feelings or ideas associated with it."],
+      ["Explain why proofreading is important.", "Proofreading catches spelling, grammar, punctuation, factual, and formatting errors before submission."],
+      ["State two features of a good debate contribution.", "It makes a clear point, gives evidence or examples, listens to opposing views, and responds respectfully."],
+      ["Describe how a poem can create mood.", "Sound, rhythm, word choice, imagery, and subject matter work together to create feelings in the reader."],
+      ["Explain the difference between irony and sarcasm.", "Irony contrasts appearance and reality; sarcasm is often a sharp or mocking use of words."],
+      ["Write a clear instruction for planting a seed.", "Place the seed in moist soil at the recommended depth, cover it lightly, and water it regularly."],
+      ["Explain how an index helps readers.", "An index lists important topics and page numbers so readers can locate information quickly."],
+      ["State two reasons for using examples in an essay.", "Examples clarify abstract ideas and provide evidence that supports the writer's argument."],
+      ["Narrative essay: Write a story that begins, 'The lights went out just as I opened the door.'", "Use a clear plot with an engaging opening, setting, characters, rising action, climax, and satisfying ending."],
+      ["Descriptive essay: Describe a busy market in your town.", "Use vivid sensory details, precise adjectives, organised paragraphs, and a clear overall impression."],
+      ["Argumentative essay: Should students be allowed to use phones for learning in school?", "Take a clear position, give balanced reasons and examples, address an opposing view, and conclude logically."],
+      ["Expository essay: Explain three ways young people can protect the environment.", "Organise factual points about reducing waste, conserving resources, planting trees, and encouraging responsible behaviour."],
+      ["Discursive essay: Discuss whether homework should be reduced.", "Present more than one viewpoint fairly, support each with reasons, then give a reasoned personal conclusion."],
+      ["Formal letter: Write to your Municipal Chief Executive about poor waste collection in your area.", "Use the correct address, date, salutation, subject, formal tone, specific concerns, suggestions, closing, and signature."],
+      ["Formal letter: Write to a newspaper editor about unsafe driving near your school.", "State the problem clearly, explain its effects, suggest practical solutions, and maintain a respectful formal tone."],
+      ["Formal letter: Apply for a vacation work opportunity at a local organisation.", "Include the position, relevant skills, availability, polite request, contact details, and formal letter conventions."],
+      ["Informal letter: Write to a friend describing your first week at a new school.", "Use a warm personal tone, natural paragraphs, details about experiences, and an appropriate informal closing."],
+      ["Informal letter: Write to a cousin giving advice about preparing for the BECE.", "Offer practical study advice, encouragement, a friendly greeting, and a personal closing."],
+      ["Speech: Write a speech for assembly on the importance of regular reading.", "Address the audience, introduce the topic, use persuasive points and examples, and end with a memorable call to action."],
+      ["Debate: Write points for or against the motion, 'School uniforms should be compulsory.'", "State your side clearly, develop logical arguments, anticipate opposing points, and use respectful persuasive language."],
+      ["Article: Write for a school magazine about preventing cyberbullying.", "Use an engaging headline, explain the issue, give practical advice, and finish with a clear message to readers."],
+      ["Report: Write a report on an inter-school sports competition.", "Include a suitable heading, purpose, date and place, participants, main events, results, and recommendations."],
+      ["Proposal: Suggest three improvements to your school's library.", "Present a clear objective, practical improvements, reasons, resources needed, and expected benefits."],
+      ["Review: Write a review of a Ghanaian book, film, or cultural performance.", "Identify the work, summarise it without giving away everything, evaluate strengths and weaknesses, and recommend it."],
+      ["Diary entry: Record your feelings after helping at a community clean-up.", "Use a first-person voice, date, honest feelings, specific events, reflection, and an appropriate diary style."],
+      ["Email: Write to a classmate explaining how to join an online study group safely.", "Use a clear subject, friendly but careful tone, organised steps, digital safety advice, and a suitable sign-off."],
+      ["Creative writing: Continue a story that ends with, 'We all knew the secret had changed our family forever.'", "Develop believable characters and conflict, use dialogue and description, and create a coherent ending."],
+      ["Application letter: Write to a headteacher requesting permission to start a reading club.", "State the purpose, explain the benefits, suggest activities and arrangements, and use a respectful formal tone with correct letter layout."]
+    ].map(([prompt, answer], index) => ({ exam: index < 35 ? "BECE" : "WASSCE", subject: "English Language", prompt, answer }));
+
+    const socialStudiesTheoryQuestions = [
+      ["Explain two responsibilities of a good citizen.", "A good citizen obeys fair laws, respects others, protects public property, and contributes positively to the community."],
+      ["State three causes of conflict among young people.", "Conflict may result from misunderstanding, unfair treatment, competition, rumours, or poor communication."],
+      ["Describe two benefits of teamwork.", "Teamwork combines skills, shares responsibility, improves ideas, and helps people complete tasks effectively."],
+      ["Explain why trees are important to Ghana's environment.", "Trees provide oxygen and habitats, reduce erosion, offer shade, and help regulate the climate."],
+      ["Suggest two ways to prevent littering in a community.", "Provide and use waste bins, teach responsible disposal, reduce single-use items, and enforce sensible rules."],
+      ["Explain why communities need rules.", "Rules guide behaviour, protect rights, reduce conflict, and help people live together safely."],
+      ["State two benefits of cultural diversity.", "Diversity encourages respect and learning, preserves traditions, and brings different skills and viewpoints together."],
+      ["Describe two functions of the family.", "The family provides care and protection, socialises children, meets needs, and passes on values."],
+      ["Explain why citizens pay taxes.", "Taxes provide revenue for public services such as schools, roads, hospitals, security, and sanitation."],
+      ["State two ways to promote national unity in Ghana.", "Respect different cultures, reject discrimination, cooperate across communities, and support shared national values."],
+      ["Explain the importance of the rule of law.", "Everyone is subject to known laws, rights are protected, and public power is limited and accountable."],
+      ["Describe two effects of unemployment.", "It can reduce household income, increase dependency and frustration, and limit economic growth."],
+      ["Suggest two ways to reduce youth unemployment.", "Improve practical skills training, support entrepreneurship, expand apprenticeships, and create productive jobs."],
+      ["Explain what democracy means.", "Democracy is government in which people participate directly or through representatives chosen in free and fair elections."],
+      ["State two responsibilities of local government.", "Local government provides services, maintains local infrastructure, manages sanitation, and supports community development."],
+      ["Explain why elections must be free and fair.", "They allow citizens to choose leaders genuinely, build trust, and give elected government legitimate authority."],
+      ["Describe two ways young people can participate in civic life.", "They can join community projects, learn about issues, volunteer, speak respectfully, and vote when eligible."],
+      ["Explain the importance of Ghana's national symbols.", "Symbols such as the flag and anthem represent national identity, history, unity, and shared aspirations."],
+      ["State two causes of rural-urban migration.", "People may move for jobs, education, health services, better housing, or perceived economic opportunities."],
+      ["Describe two effects of rapid urbanisation.", "It can increase pressure on housing, transport, water, sanitation, schools, and employment."],
+      ["Explain how soil erosion affects farming.", "It removes fertile topsoil, lowers yields, silts waterways, and can make land less productive."],
+      ["Suggest two ways to conserve Ghana's forests.", "Enforce sustainable logging, replant trees, protect reserves, and reduce dependence on fuelwood."],
+      ["Explain why clean communities support public health.", "Proper waste disposal and drainage reduce disease vectors, pollution, flooding, and unsafe living conditions."],
+      ["State two benefits of formal education.", "Education develops knowledge and skills, improves opportunities, supports informed citizenship, and encourages innovation."],
+      ["Explain why vocational training is important.", "It gives learners practical skills for employment, self-employment, repairs, production, and entrepreneurship."],
+      ["Describe two ways technology supports learning.", "It provides access to resources and enables collaboration, simulations, research, and flexible practice."],
+      ["Explain what sustainable development means.", "It meets present needs while protecting resources and opportunities for future generations."],
+      ["State two ways to conserve water.", "Repair leaks, use water carefully, harvest rainwater, and avoid polluting rivers and drains."],
+      ["Explain the importance of a population census.", "A census provides data for planning schools, hospitals, jobs, housing, resources, and representation."],
+      ["Describe two causes of teenage pregnancy.", "Contributing factors may include lack of accurate information, coercion, poverty, peer pressure, and limited guidance."],
+      ["Suggest two ways to prevent teenage pregnancy.", "Provide accurate education and counselling, support healthy decision-making, and ensure access to trusted services."],
+      ["Explain the importance of gender equality.", "Equal opportunities allow all people to learn, work, participate, and contribute without unfair discrimination."],
+      ["State two examples of human rights.", "Rights include education, life, dignity, expression, fair treatment, and freedom from harmful discrimination."],
+      ["Explain why children need protection.", "Children are still developing and need safety, care, education, and protection from abuse, exploitation, and neglect."],
+      ["Describe two effects of corruption on national development.", "Corruption diverts public resources, weakens trust, reduces service quality, and discourages investment."],
+      ["Suggest two ways to fight corruption.", "Promote transparency, enforce laws fairly, protect reporting, audit public funds, and reject improper payments."],
+      ["Explain the role of traditional leaders.", "They help preserve culture, mediate disputes, mobilise communities, and support local development."],
+      ["State two causes of road accidents.", "Speeding, careless driving, poor vehicle maintenance, fatigue, unsafe roads, and distracted driving can cause accidents."],
+      ["Suggest two measures for road safety.", "Obey speed limits, maintain vehicles, use seat belts and helmets, improve roads, and enforce traffic laws."],
+      ["Explain why agriculture is important to Ghana.", "It provides food, jobs, raw materials, income, exports, and livelihoods for many households."],
+      ["Describe two challenges facing Ghanaian farmers.", "Farmers may face limited credit, poor roads, changing rainfall, pests, expensive inputs, and weak storage."],
+      ["Suggest two ways to improve food security.", "Support irrigation and improved seeds, reduce post-harvest losses, train farmers, and improve storage and markets."],
+      ["Explain why regional cooperation matters in West Africa.", "Cooperation supports trade, peace, transport, shared resources, public health, and responses to common challenges."],
+      ["State two effects of climate change on Ghana.", "It can bring irregular rainfall, droughts, floods, heat, coastal erosion, and pressure on agriculture."],
+      ["Suggest two ways communities can adapt to climate change.", "Use climate-smart farming, improve drainage, conserve water, protect forests, and prepare for hazards."],
+      ["Explain the importance of peaceful conflict resolution.", "It protects relationships, reduces harm, supports cooperation, and allows communities to focus on development."],
+      ["Describe two ways the media can support democracy.", "The media informs citizens, provides a platform for debate, investigates public issues, and holds leaders accountable."],
+      ["Explain why responsible use of social media matters.", "Careful use reduces misinformation, protects privacy, prevents cyberbullying, and supports respectful civic discussion."],
+      ["Describe two benefits of community volunteering.", "Volunteering builds skills, strengthens cooperation, supports people in need, and helps solve local problems."],
+      ["Explain why national development requires citizens and leaders to work together.", "Citizens contribute effort and accountability while leaders provide fair policies, services, and opportunities for shared progress."]
+    ].map(([prompt, answer], index) => ({ exam: index < 25 ? "BECE" : "WASSCE", subject: "Social Studies", prompt, answer }));
+
+    const theoryTopics = {
+      "Mathematics": ["fractions in daily life", "area and perimeter", "ratios and proportion", "linear equations", "percentages and discounts", "angles and shapes", "mean, median, and mode", "probability", "graphs and tables", "number patterns"],
+      "Science": ["cell biology", "electricity and circuits", "human body systems", "health and disease", "agriculture and soil", "energy and forces", "matter and reactions", "environment and climate", "scientific investigation", "food and nutrition"],
+      "English Language": ["formal and informal letters", "main ideas in passages", "summary writing", "parts of speech", "sentence structure", "punctuation", "vocabulary in context", "persuasive writing", "reported speech", "figures of speech"],
+      "Social Studies": ["responsible citizenship", "community rules", "conflict resolution", "environmental protection", "national development", "culture and identity", "democratic participation", "human rights", "family responsibilities", "resources and sustainability"]
+    };
+    const theoryActions = ["Explain two important points about", "Describe how", "State three reasons why", "Discuss two benefits of", "Suggest two ways to improve"];
+    const detailedTheoryPools = {
+      Mathematics: mathematicsTheoryQuestions,
+      Science: scienceTheoryQuestions,
+      "English Language": englishTheoryQuestions,
+      "Social Studies": socialStudiesTheoryQuestions
+    };
+    const theoryPools = Object.fromEntries(Object.entries(theoryTopics).map(([subject, topics]) => {
+      if (detailedTheoryPools[subject]) return [subject, detailedTheoryPools[subject]];
+      if (subject === "Science") return [subject, scienceTheoryQuestions];
+      const pool = [];
+      topics.forEach((topic, topicIndex) => {
+        theoryActions.forEach((action, actionIndex) => {
+          pool.push({
+            exam: pool.length < 25 ? "BECE" : "WASSCE",
+            subject,
+            prompt: action + " " + topic + ".",
+            answer: "A strong answer should define the idea clearly, give relevant points, and support each point with a suitable example. Award credit for any accurate explanation related to " + topic + "."
+          });
+        });
+      });
+      return [subject, pool];
+    }));
+    let selectedTheorySubject = "Mathematics";
+    let selectedTheoryExam = "all";
+    let theoryPool = theoryPools[selectedTheorySubject];
+    let theoryIndex = 0;
+
+    function renderTheoryQuestion() {
+      const filteredPool = selectedTheoryExam === "all" ? theoryPools[selectedTheorySubject] : theoryPools[selectedTheorySubject].filter(item => item.exam === selectedTheoryExam);
+      theoryPool = filteredPool;
+      if (theoryIndex >= theoryPool.length) theoryIndex = 0;
+      const item = theoryPool[theoryIndex];
+      document.getElementById("theory-progress").textContent = "Question " + (theoryIndex + 1) + " of " + theoryPool.length;
+      document.getElementById("theory-exam").textContent = item.exam + " · " + item.subject;
+      document.getElementById("theory-prompt").textContent = item.prompt;
+      document.getElementById("theory-answer").innerHTML = "<strong>Model answer:</strong> " + item.answer;
+      document.getElementById("theory-answer").hidden = true;
+    }
+
+    function showTheoryAnswer() {
+      document.getElementById("theory-answer").hidden = false;
+    }
+
+    function nextTheoryQuestion() {
+      theoryIndex = (theoryIndex + 1) % theoryPool.length;
+      renderTheoryQuestion();
+    }
+
+    function openTheoryPractice() {
+      document.querySelectorAll(".nav button").forEach(item => item.classList.remove("active"));
+      document.getElementById("theory-nav").classList.add("active");
+      document.getElementById("theory-library").scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(() => document.querySelector("#theory-question button")?.focus(), 450);
+    }
+
+    let currentQuestions = quickQuestionSets.Mathematics;
+    let currentQuestionIndex = 0;
+    let currentScore = 0;
+    let answerLocked = false;
+
+    function renderQuestion() {
+      const quiz = document.getElementById("quiz");
+      const item = currentQuestions[currentQuestionIndex];
+      quiz.querySelector("#quiz-progress").textContent = "Question " + (currentQuestionIndex + 1) + " of " + currentQuestions.length;
+      quiz.querySelector(".question").textContent = item.question;
+      quiz.querySelectorAll(".answer").forEach((button, index) => {
+        button.disabled = false;
+        button.className = "answer";
+        button.dataset.index = index;
+        button.textContent = item.answers[index];
+      });
+      document.getElementById("quiz-message").textContent = "";
+      answerLocked = false;
+    }
+
+    function startSubjectPractice(subject) {
+      currentQuestions = quickQuestionSets[subject] || quickQuestionSets.Mathematics;
+      currentQuestionIndex = 0;
+      currentScore = 0;
+      renderQuestion();
+      startQuiz();
+    }
+
+    function answerQuiz(button, selectedIndex) {
+      if (answerLocked) return;
+      answerLocked = true;
+      const item = currentQuestions[currentQuestionIndex];
+      const correct = selectedIndex === item.correct;
+      document.querySelectorAll(".answer").forEach(item => item.disabled = true);
+      button.classList.add(correct ? "correct" : "wrong");
+      if (correct) currentScore++;
+      document.getElementById("quiz-message").textContent = correct ? "Amazing! Next question coming up ⭐" : "Good try! The correct answer is highlighted. Next question coming up!";
+      if (!correct) document.querySelectorAll(".answer")[item.correct].classList.add("correct");
+      window.setTimeout(() => {
+        if (currentQuestionIndex === currentQuestions.length - 1) {
+          document.getElementById("quiz-message").textContent = "Practice complete! You scored " + currentScore + "/" + currentQuestions.length + " ⭐";
+          answerLocked = true;
+          return;
+        }
+        currentQuestionIndex++;
+        renderQuestion();
+      }, 850);
+    }
+
+    function loadPractice(name) {
+      const examQuestions = {
+        "BECE Mathematics": quickQuestionSets.Mathematics,
+        "BECE English": quickQuestionSets["English Language"],
+        "WASSCE Mathematics": quickQuestionSets.Mathematics,
+        "WASSCE English": quickQuestionSets["English Language"],
+        "BECE Science": quickQuestionSets.Science,
+        "WASSCE Science": quickQuestionSets.Science,
+        "BECE Social Studies": quickQuestionSets["Social Studies"],
+        "WASSCE Social Studies": quickQuestionSets["Social Studies"]
+      };
+      currentQuestions = examQuestions[name] || quickQuestionSets.Mathematics;
+      currentQuestionIndex = 0;
+      currentScore = 0;
+      document.getElementById("quiz").querySelector("h3").textContent = name + " practice";
+      renderQuestion();
+      startQuiz();
+    }
+
+    function startQuiz() {
+      document.getElementById("quiz").scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function openPracticeTests() {
+      document.querySelectorAll(".nav button").forEach(item => item.classList.remove("active"));
+      document.getElementById("practice-tests-nav").classList.add("active");
+      document.getElementById("exam-library").scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(() => {
+        document.querySelector("#exam-library .exam-card button")?.focus();
+      }, 450);
+    }
+
+    function scrollToSubjects() {
+      document.getElementById("subjects").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function openLesson(subject) {
+      const details = lessonDetails[subject];
+      document.getElementById("lesson-title").textContent = subject;
+      document.getElementById("lesson-prompt").textContent = "Today's focus: " + details[0];
+      document.getElementById("lesson-description").textContent = details[1];
+      document.getElementById("lesson-panel").hidden = false;
+      document.querySelector(".close-lesson").focus();
+    }
+
+    function closeLesson() {
+      document.getElementById("lesson-panel").hidden = true;
+    }
+
+    function startLessonPractice() {
+      const subject = document.getElementById("lesson-title").textContent;
+      closeLesson();
+      startSubjectPractice(subject);
+    }
+
+    document.querySelectorAll(".subject").forEach(subject => {
+      subject.addEventListener("click", () => openLesson(subject.dataset.subject));
+      subject.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openLesson(subject.dataset.subject);
+        }
+      });
+
+      document.querySelectorAll(".answer").forEach(button => {
+        button.addEventListener("click", () => answerQuiz(button, Number(button.dataset.index)));
+      });
+      renderQuestion();
+    });
+
+    document.getElementById("lesson-panel").addEventListener("click", event => {
+      if (event.target.id === "lesson-panel") closeLesson();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeLesson();
+    });
+
+    document.getElementById("search").addEventListener("input", event => {
+      const term = event.target.value.toLowerCase().trim();
+      document.querySelectorAll(".subject").forEach(subject => {
+        subject.hidden = term && !subject.dataset.name.includes(term);
+      });
+    });
+
+    document.querySelectorAll(".exam-library .exam-filter").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".exam-library .exam-filter").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        const filter = button.dataset.filter;
+        document.querySelectorAll(".exam-card").forEach(card => {
+          card.hidden = filter !== "all" && !card.dataset.exam.includes(filter);
+        });
+      });
+    });
+
+    document.querySelectorAll(".theory-filter").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".theory-filter").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        selectedTheorySubject = button.dataset.theorySubject;
+        theoryIndex = 0;
+        renderTheoryQuestion();
+      });
+    });
+
+    document.querySelectorAll(".theory-exam-filter").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".theory-exam-filter").forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        selectedTheoryExam = button.dataset.theoryExam;
+        theoryIndex = 0;
+        renderTheoryQuestion();
+      });
+    });
+
+    renderTheoryQuestion();
+  </script>
+</body>
+</html>

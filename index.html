@@ -322,12 +322,12 @@
       </section>
 
       <section class="theory-library" id="theory-library">
-        <div class="section-head"><h2>Theory past-question practice</h2><span class="theory-badge">50 per subject</span></div>
+        <div class="section-head"><h2>Theory past-question practice</h2><span class="theory-badge">50+ per subject</span></div>
         <p class="library-note">Practise explaining ideas in your own words, just like a written theory paper. Choose a subject to begin.</p>
         <div class="exam-filters" role="group" aria-label="Filter theory questions by subject">
           <button class="theory-filter exam-filter active" type="button" data-theory-subject="Mathematics">Mathematics · 50</button>
           <button class="theory-filter exam-filter" type="button" data-theory-subject="Science">Science · 50</button>
-          <button class="theory-filter exam-filter" type="button" data-theory-subject="English Language">English · 50</button>
+          <button class="theory-filter exam-filter" type="button" data-theory-subject="English Language">English · 70</button>
           <button class="theory-filter exam-filter" type="button" data-theory-subject="Social Studies">Social Studies · 50</button>
         </div>
         <div class="exam-filters" role="group" aria-label="Filter theory questions by exam">
@@ -656,8 +656,28 @@
       ["Explain the difference between irony and sarcasm.", "Irony contrasts appearance and reality; sarcasm is often a sharp or mocking use of words."],
       ["Write a clear instruction for planting a seed.", "Place the seed in moist soil at the recommended depth, cover it lightly, and water it regularly."],
       ["Explain how an index helps readers.", "An index lists important topics and page numbers so readers can locate information quickly."],
-      ["State two reasons for using examples in an essay.", "Examples clarify abstract ideas and provide evidence that supports the writer's argument."]
-    ].map(([prompt, answer], index) => ({ exam: index < 25 ? "BECE" : "WASSCE", subject: "English Language", prompt, answer }));
+      ["State two reasons for using examples in an essay.", "Examples clarify abstract ideas and provide evidence that supports the writer's argument."],
+      ["Narrative essay: Write a story that begins, 'The lights went out just as I opened the door.'", "Use a clear plot with an engaging opening, setting, characters, rising action, climax, and satisfying ending."],
+      ["Descriptive essay: Describe a busy market in your town.", "Use vivid sensory details, precise adjectives, organised paragraphs, and a clear overall impression."],
+      ["Argumentative essay: Should students be allowed to use phones for learning in school?", "Take a clear position, give balanced reasons and examples, address an opposing view, and conclude logically."],
+      ["Expository essay: Explain three ways young people can protect the environment.", "Organise factual points about reducing waste, conserving resources, planting trees, and encouraging responsible behaviour."],
+      ["Discursive essay: Discuss whether homework should be reduced.", "Present more than one viewpoint fairly, support each with reasons, then give a reasoned personal conclusion."],
+      ["Formal letter: Write to your Municipal Chief Executive about poor waste collection in your area.", "Use the correct address, date, salutation, subject, formal tone, specific concerns, suggestions, closing, and signature."],
+      ["Formal letter: Write to a newspaper editor about unsafe driving near your school.", "State the problem clearly, explain its effects, suggest practical solutions, and maintain a respectful formal tone."],
+      ["Formal letter: Apply for a vacation work opportunity at a local organisation.", "Include the position, relevant skills, availability, polite request, contact details, and formal letter conventions."],
+      ["Informal letter: Write to a friend describing your first week at a new school.", "Use a warm personal tone, natural paragraphs, details about experiences, and an appropriate informal closing."],
+      ["Informal letter: Write to a cousin giving advice about preparing for the BECE.", "Offer practical study advice, encouragement, a friendly greeting, and a personal closing."],
+      ["Speech: Write a speech for assembly on the importance of regular reading.", "Address the audience, introduce the topic, use persuasive points and examples, and end with a memorable call to action."],
+      ["Debate: Write points for or against the motion, 'School uniforms should be compulsory.'", "State your side clearly, develop logical arguments, anticipate opposing points, and use respectful persuasive language."],
+      ["Article: Write for a school magazine about preventing cyberbullying.", "Use an engaging headline, explain the issue, give practical advice, and finish with a clear message to readers."],
+      ["Report: Write a report on an inter-school sports competition.", "Include a suitable heading, purpose, date and place, participants, main events, results, and recommendations."],
+      ["Proposal: Suggest three improvements to your school's library.", "Present a clear objective, practical improvements, reasons, resources needed, and expected benefits."],
+      ["Review: Write a review of a Ghanaian book, film, or cultural performance.", "Identify the work, summarise it without giving away everything, evaluate strengths and weaknesses, and recommend it."],
+      ["Diary entry: Record your feelings after helping at a community clean-up.", "Use a first-person voice, date, honest feelings, specific events, reflection, and an appropriate diary style."],
+      ["Email: Write to a classmate explaining how to join an online study group safely.", "Use a clear subject, friendly but careful tone, organised steps, digital safety advice, and a suitable sign-off."],
+      ["Creative writing: Continue a story that ends with, 'We all knew the secret had changed our family forever.'", "Develop believable characters and conflict, use dialogue and description, and create a coherent ending."],
+      ["Application letter: Write to a headteacher requesting permission to start a reading club.", "State the purpose, explain the benefits, suggest activities and arrangements, and use a respectful formal tone with correct letter layout."]
+    ].map(([prompt, answer], index) => ({ exam: index < 35 ? "BECE" : "WASSCE", subject: "English Language", prompt, answer }));
 
     const socialStudiesTheoryQuestions = [
       ["Explain two responsibilities of a good citizen.", "A good citizen obeys fair laws, respects others, protects public property, and contributes positively to the community."],

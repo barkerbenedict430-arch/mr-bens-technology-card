@@ -500,14 +500,68 @@
       { exam: "WASSCE", subject: "Agriculture", prompt: "Explain two benefits of crop rotation.", answer: "Crop rotation helps maintain soil nutrients, interrupts pest cycles, reduces erosion, and can improve yields." },
       { exam: "WASSCE", subject: "ICT", prompt: "Describe two ways to protect a computer account.", answer: "Use a long unique password with multi-factor authentication and keep software updated while avoiding suspicious links." }
     ];
+    const scienceTheoryQuestions = [
+      ["State two functions of the cell membrane.", "It controls substances entering and leaving the cell and helps protect the cell contents."],
+      ["Explain how the small intestine is adapted for absorption.", "It has many villi, a large surface area, thin walls, and a good blood supply for rapid absorption."],
+      ["Distinguish between a series and a parallel electrical circuit.", "A series circuit has one path for current; a parallel circuit has separate branches, so one branch can work if another is open."],
+      ["Describe how a simple electric motor works.", "Current in a magnetic field experiences a force, causing the coil to turn; the split-ring commutator reverses current to maintain rotation."],
+      ["Explain why metals are suitable for making cooking pots.", "Metals conduct heat well and many have high melting points, allowing heat to reach food without the pot melting."],
+      ["Describe an experiment to show that air contains oxygen.", "Place a burning candle in a covered container; the flame goes out after oxygen is used, showing that air supports combustion."],
+      ["Explain two effects of friction in daily life.", "Friction allows walking and braking, but it also causes wear and produces unwanted heat in moving parts."],
+      ["State two differences between arteries and veins.", "Arteries carry blood away from the heart and have thick elastic walls; veins carry blood towards the heart and have valves."],
+      ["Explain how the kidneys help maintain a healthy body.", "They filter the blood, remove urea, and regulate water and mineral levels in the body."],
+      ["Describe two ways to prevent malaria in a community.", "Sleep under insecticide-treated nets and remove stagnant water where mosquitoes breed."],
+      ["Explain why crop rotation improves soil fertility.", "Different crops use different nutrients, while legumes add nitrogen through bacteria in their root nodules."],
+      ["Describe two causes of soil erosion on farms.", "Removing vegetation and leaving soil bare or poorly drained allow wind and running water to carry soil away."],
+      ["Explain how a food chain shows energy transfer.", "Energy passes from a producer to herbivores and then to consumers, with less available at each higher level."],
+      ["State two adaptations of a cactus to dry conditions.", "It has a thick water-storing stem, a waxy surface, and reduced leaves or spines to limit water loss."],
+      ["Explain the difference between weather and climate.", "Weather is the short-term condition of the atmosphere; climate is the average pattern over a long period."],
+      ["Describe how rainfall can be measured.", "A rain gauge collects rainfall, which is measured in millimetres over a stated time."],
+      ["Explain why a balanced diet is important for adolescents.", "It supplies energy, protein, vitamins, minerals, and water for growth, repair, and healthy body functions."],
+      ["Describe two methods of preserving food.", "Drying removes moisture and smoking adds heat and protective chemicals; both slow the growth of microorganisms."],
+      ["Explain how vaccination protects a person.", "It stimulates the immune system to produce memory cells so a later infection is recognised and fought quickly."],
+      ["State two symptoms that may indicate dehydration.", "A dehydrated person may have a dry mouth, dark urine, dizziness, thirst, or unusual tiredness."],
+      ["Explain why a metal spoon feels hotter than a wooden spoon in hot soup.", "Metal conducts heat quickly from the soup to the hand, while wood is a poor conductor."],
+      ["Describe how shadows are formed.", "An opaque object blocks light travelling from a source, creating a dark region behind the object."],
+      ["Explain the difference between renewable and non-renewable energy.", "Renewable energy is naturally replaced, such as solar energy; non-renewable fuels exist in limited amounts."],
+      ["State two uses of magnets in technology.", "Magnets are used in electric motors, speakers, generators, compasses, and magnetic storage devices."],
+      ["Explain how a lever makes work easier.", "A lever turns around a fulcrum so a small effort can move a larger load, depending on the distances involved."],
+      ["Describe two properties of acids.", "Acids have pH below 7, turn blue litmus red, and react with some metals to release hydrogen."],
+      ["Explain what happens during neutralisation.", "An acid reacts with a base to form salt and water, and the solution becomes less acidic or alkaline."],
+      ["Describe how to separate sand from salt in a mixture.", "Add water to dissolve the salt, filter out the sand, then evaporate the water to recover the salt."],
+      ["Explain why rusting is a chemical change.", "Iron reacts with oxygen and water to form a new substance, hydrated iron(III) oxide, with different properties."],
+      ["State two factors that affect the rate of a reaction.", "Temperature, concentration, surface area, and catalysts can affect how quickly a reaction occurs."],
+      ["Explain the importance of the ozone layer.", "It absorbs much of the Sun's harmful ultraviolet radiation and helps protect living organisms."],
+      ["Describe two effects of improper waste disposal.", "It can pollute soil and water, block drains, spread disease, and harm animals."],
+      ["Explain how trees help to reduce flooding.", "Roots improve water infiltration and hold soil, while leaves and branches slow rainfall reaching the ground."],
+      ["State two methods of conserving fish stocks.", "Use approved fishing gear and seasons, protect breeding areas, and avoid catching immature fish."],
+      ["Explain why scientific measurements should include units.", "Units communicate the quantity clearly and allow results from different investigations to be compared."],
+      ["Describe how to make a fair investigation.", "Change only the factor being tested, keep other conditions constant, repeat measurements, and record results accurately."],
+      ["Explain the difference between mass and weight.", "Mass is the amount of matter measured in kilograms; weight is gravitational force measured in newtons."],
+      ["State two uses of pulleys.", "Pulleys help lift loads, draw water from wells, raise flags, and move materials in construction."],
+      ["Explain how sound is produced and heard.", "A vibrating object creates waves in a medium; the waves enter the ear and make the eardrum vibrate."],
+      ["Describe two causes of noise pollution.", "Loud traffic, machinery, amplified music, construction, and aircraft can create excessive unwanted sound."],
+      ["Explain why a rainbow forms after rain.", "Water droplets disperse and reflect sunlight, separating white light into its different colours."],
+      ["State two ways to reduce the spread of communicable diseases.", "Wash hands, improve sanitation, vaccinate, cover coughs, and avoid close contact when ill."],
+      ["Explain the importance of a healthy lifestyle.", "Balanced food, exercise, rest, and hygiene help prevent disease and support physical and mental wellbeing."],
+      ["Describe how green plants obtain raw materials for photosynthesis.", "Roots absorb water and minerals from soil, while leaves take in carbon dioxide through stomata."],
+      ["Explain why farmers add compost to soil.", "Compost adds organic matter and nutrients, improves soil structure, and helps the soil hold water."],
+      ["State two uses of microorganisms that benefit humans.", "Microorganisms help make yoghurt and bread, decompose waste, and produce some medicines."],
+      ["Explain why a microscope is useful in science.", "It magnifies very small objects such as cells, allowing structures invisible to the unaided eye to be studied."],
+      ["Describe two safety rules for a science laboratory.", "Wear protective equipment, follow instructions, label chemicals, and never taste or directly smell substances."],
+      ["Explain how human activities can contribute to climate change.", "Burning fossil fuels and clearing forests increase greenhouse gases, which trap more heat in the atmosphere."],
+      ["Describe how a thermometer works.", "A thermometer uses a material that expands or contracts predictably with temperature, allowing the change to be read on a calibrated scale."]
+    ].map(([prompt, answer], index) => ({ exam: index < 25 ? "BECE" : "WASSCE", subject: "Integrated Science", prompt, answer }));
+
     const theoryTopics = {
       "Mathematics": ["fractions in daily life", "area and perimeter", "ratios and proportion", "linear equations", "percentages and discounts", "angles and shapes", "mean, median, and mode", "probability", "graphs and tables", "number patterns"],
-      "Science": ["safe water and sanitation", "photosynthesis", "the water cycle", "balanced nutrition", "human body systems", "energy changes", "forces and motion", "materials and their properties", "adaptation", "environmental conservation"],
+      "Science": ["cell biology", "electricity and circuits", "human body systems", "health and disease", "agriculture and soil", "energy and forces", "matter and reactions", "environment and climate", "scientific investigation", "food and nutrition"],
       "English Language": ["formal and informal letters", "main ideas in passages", "summary writing", "parts of speech", "sentence structure", "punctuation", "vocabulary in context", "persuasive writing", "reported speech", "figures of speech"],
       "Social Studies": ["responsible citizenship", "community rules", "conflict resolution", "environmental protection", "national development", "culture and identity", "democratic participation", "human rights", "family responsibilities", "resources and sustainability"]
     };
     const theoryActions = ["Explain two important points about", "Describe how", "State three reasons why", "Discuss two benefits of", "Suggest two ways to improve"];
     const theoryPools = Object.fromEntries(Object.entries(theoryTopics).map(([subject, topics]) => {
+      if (subject === "Science") return [subject, scienceTheoryQuestions];
       const pool = [];
       topics.forEach((topic, topicIndex) => {
         theoryActions.forEach((action, actionIndex) => {

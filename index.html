@@ -95,7 +95,7 @@
     .section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 25px 0 14px; }
     .section-head h2 { font-size: 19px; letter-spacing: -.4px; }
     .section-head a { color: var(--purple); font-size: 12px; font-weight: 800; text-decoration: none; }
-    .levels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px; }
+    .levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; }
     .level {
       padding: 17px 16px; text-align: left; border: 2px solid transparent; border-radius: 16px; background: #fff;
       box-shadow: 0 6px 22px rgba(74, 89, 145, .06); transition: .2s ease;
@@ -103,7 +103,7 @@
     .level:hover, .level.selected { border-color: var(--purple); transform: translateY(-3px); }
     .level-icon { width: 39px; height: 39px; display: grid; place-items: center; margin-bottom: 13px; border-radius: 12px; font-size: 20px; }
     .level:nth-child(1) .level-icon { background: #fff0c9; } .level:nth-child(2) .level-icon { background: #dff5ff; }
-    .level:nth-child(3) .level-icon { background: #e5e0ff; } .level:nth-child(4) .level-icon { background: #dff7eb; }
+    .level:nth-child(3) .level-icon { background: #e5e0ff; }
     .level strong { display: block; font-size: 14px; } .level small { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; }
 
     .content-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(275px, .8fr); gap: 22px; align-items: start; }
@@ -222,7 +222,6 @@
           <button class="level selected" type="button" onclick="selectLevel(this, 'Primary')"><span class="level-icon">🌱</span><strong>Primary</strong><small>Ages 6–11</small></button>
           <button class="level" type="button" onclick="selectLevel(this, 'Junior High')"><span class="level-icon">🚲</span><strong>Junior High</strong><small>Ages 12–14</small></button>
           <button class="level" type="button" onclick="selectLevel(this, 'Senior High')"><span class="level-icon">🎓</span><strong>Senior High</strong><small>Ages 15–17</small></button>
-          <button class="level" type="button" onclick="selectLevel(this, 'College')"><span class="level-icon">🏆</span><strong>College</strong><small>Advanced study</small></button>
         </div>
       </section>
 

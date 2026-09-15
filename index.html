@@ -239,7 +239,7 @@
         <aside>
           <div class="section-head"><h2>Quick practice</h2></div>
           <div class="quiz" id="quiz">
-            <div class="quiz-label"><span id="quiz-progress">Question 1 of 4</span><span>+10 XP each</span></div>
+            <div class="quiz-label"><span id="quiz-progress">Question 1 of 32</span><span>+10 XP each</span></div>
             <h3>Test your brain</h3><p>Warm up with a quick question before your next lesson.</p>
             <div class="question">What is 7 × 8?</div>
             <div class="answers">
@@ -267,22 +267,22 @@
           <article class="exam-card" data-exam="BECE Mathematics">
             <div class="exam-card-top"><span class="exam-badge">BECE · Maths</span><span class="exam-year">JHS 1–3</span></div>
             <h3>Numbers &amp; algebra</h3><p>Fractions, ratios, equations, percentages and everyday problem solving.</p>
-            <button type="button" onclick="loadPractice('BECE Mathematics')">Practice set · 10 questions</button>
+            <button type="button" onclick="loadPractice('BECE Mathematics')">Practice set · 32 questions</button>
           </article>
           <article class="exam-card" data-exam="BECE English">
             <div class="exam-card-top"><span class="exam-badge">BECE · English</span><span class="exam-year">JHS 1–3</span></div>
             <h3>Comprehension &amp; grammar</h3><p>Reading skills, parts of speech, vocabulary and sentence completion.</p>
-            <button type="button" onclick="loadPractice('BECE English')">Practice set · 10 questions</button>
+            <button type="button" onclick="loadPractice('BECE English')">Practice set · 32 questions</button>
           </article>
           <article class="exam-card" data-exam="WASSCE Mathematics">
             <div class="exam-card-top"><span class="exam-badge">WASSCE · Maths</span><span class="exam-year">SHS 1–3</span></div>
             <h3>Core mathematics</h3><p>Functions, statistics, geometry and quantitative reasoning practice.</p>
-            <button type="button" onclick="loadPractice('WASSCE Mathematics')">Practice set · 15 questions</button>
+            <button type="button" onclick="loadPractice('WASSCE Mathematics')">Practice set · 32 questions</button>
           </article>
           <article class="exam-card" data-exam="WASSCE English">
             <div class="exam-card-top"><span class="exam-badge">WASSCE · English</span><span class="exam-year">SHS 1–3</span></div>
             <h3>Language &amp; literature</h3><p>Summary, lexis, structure and thoughtful text-based exam practice.</p>
-            <button type="button" onclick="loadPractice('WASSCE English')">Practice set · 15 questions</button>
+            <button type="button" onclick="loadPractice('WASSCE English')">Practice set · 32 questions</button>
           </article>
         </div>
         <p class="disclaimer">These are original revision questions inspired by common BECE and WASSCE topics, not official past-paper questions. Always use approved textbooks and guidance from your school.</p>
@@ -312,31 +312,83 @@
       document.getElementById("subject-title").textContent = level + " subjects";
     }
 
+    const makeQuestions = rows => rows.map(([question, first, second, third, correct]) => ({
+      question, answers: [first, second, third], correct
+    }));
+
     const quickQuestionSets = {
-      "Mathematics": [
-        { question: "What is 7 × 8?", answers: ["54", "56", "64"], correct: 1 },
-        { question: "What is 25% of 80?", answers: ["15", "20", "25"], correct: 1 },
-        { question: "Which fraction is equal to 0.5?", answers: ["1/4", "1/2", "2/5"], correct: 1 },
-        { question: "A triangle has angles 60° and 70°. What is the third angle?", answers: ["40°", "50°", "60°"], correct: 1 }
-      ],
-      "Science": [
-        { question: "Which organ pumps blood around the body?", answers: ["Lung", "Heart", "Kidney"], correct: 1 },
-        { question: "What force pulls objects towards Earth?", answers: ["Friction", "Gravity", "Magnetism"], correct: 1 },
-        { question: "Plants make food using sunlight in a process called…", answers: ["Digestion", "Photosynthesis", "Respiration"], correct: 1 },
-        { question: "Water changes into vapour through…", answers: ["Freezing", "Melting", "Evaporation"], correct: 2 }
-      ],
-      "English Language": [
-        { question: "Choose the correct word: She ___ to school every day.", answers: ["go", "goes", "going"], correct: 1 },
-        { question: "Which word is an adjective?", answers: ["Quickly", "Beautiful", "Run"], correct: 1 },
-        { question: "What is the opposite of 'ancient'?", answers: ["Old", "Modern", "Broken"], correct: 1 },
-        { question: "Which punctuation mark ends a question?", answers: ["Full stop", "Comma", "Question mark"], correct: 2 }
-      ],
-      "Social Studies": [
-        { question: "Which action shows responsible citizenship?", answers: ["Littering", " obeying laws", "Damaging property"], correct: 1 },
-        { question: "What is the main purpose of a community?", answers: ["To live and work together", "To avoid one another", "To waste resources"], correct: 0 },
-        { question: "Which is a natural resource?", answers: ["Plastic", "Water", "Television"], correct: 1 },
-        { question: "Voting is an example of…", answers: ["Civic participation", "Private business", "A natural disaster"], correct: 0 }
-      ]
+      "Mathematics": makeQuestions([
+        ["What is 7 × 8?", "54", "56", "64", 1], ["What is 25% of 80?", "15", "20", "25", 1],
+        ["Which fraction equals 0.5?", "1/4", "1/2", "2/5", 1], ["A triangle has angles 60° and 70°. Find the third angle.", "40°", "50°", "60°", 1],
+        ["What is 144 ÷ 12?", "10", "12", "14", 1], ["Round 6.748 to one decimal place.", "6.7", "6.8", "6.9", 1],
+        ["What is the perimeter of a square with side 5 cm?", "10 cm", "20 cm", "25 cm", 1], ["Solve: 3x = 21.", "6", "7", "8", 1],
+        ["What is 2/3 + 1/3?", "1/3", "1", "2", 1], ["Convert 0.75 to a percentage.", "7.5%", "75%", "750%", 1],
+        ["What is the next number: 4, 8, 12, 16, …?", "18", "20", "24", 1], ["A right angle measures…", "45°", "90°", "180°", 1],
+        ["What is 15% of 200?", "15", "30", "45", 1], ["Which is a prime number?", "21", "29", "35", 1],
+        ["What is 5²?", "10", "20", "25", 2], ["If y = 2x + 1 and x = 3, find y.", "5", "7", "9", 1],
+        ["How many millilitres are in 2 litres?", "200", "2,000", "20,000", 1], ["What is the mean of 4, 6, and 8?", "5", "6", "7", 1],
+        ["A GH₵50 item rises by GH₵10. What is the percentage increase?", "10%", "20%", "25%", 1], ["What is the area of a rectangle 8 cm by 3 cm?", "11 cm²", "22 cm²", "24 cm²", 2],
+        ["Simplify 12/18.", "2/3", "3/4", "4/5", 0], ["What is 0.4 × 10?", "0.04", "4", "40", 1],
+        ["How many faces does a cube have?", "4", "6", "8", 1], ["If 5 pens cost GH₵20, one pen costs…", "GH₵4", "GH₵5", "GH₵10", 0],
+        ["What is the mode of 2, 3, 3, 4, 5?", "2", "3", "5", 1], ["An angle greater than 90° but less than 180° is…", "acute", "right", "obtuse", 2],
+        ["What is 9 × 9?", "72", "81", "99", 1], ["Convert 3/4 to a decimal.", "0.34", "0.75", "0.8", 1],
+        ["A dozen means…", "10", "12", "20", 1], ["What is the lowest common multiple of 3 and 4?", "7", "12", "24", 1],
+        ["Solve: x + 9 = 15.", "5", "6", "7", 1], ["How many degrees are in a straight line?", "90°", "180°", "360°", 1]
+      ]),
+      "Science": makeQuestions([
+        ["Which organ pumps blood around the body?", "Lung", "Heart", "Kidney", 1], ["What force pulls objects towards Earth?", "Friction", "Gravity", "Magnetism", 1],
+        ["Plants make food using sunlight through…", "Digestion", "Photosynthesis", "Respiration", 1], ["Water changes into vapour through…", "Freezing", "Melting", "Evaporation", 2],
+        ["Which gas do humans need to breathe?", "Oxygen", "Carbon dioxide", "Nitrogen", 0], ["The smallest unit of a living thing is a…", "Cell", "Tissue", "Bone", 0],
+        ["Which material is a good conductor of electricity?", "Rubber", "Copper", "Wood", 1], ["The Earth travels around the…", "Moon", "Sun", "Mars", 1],
+        ["Which sense organ helps us hear?", "Eye", "Ear", "Skin", 1], ["A push or pull is called a…", "force", "mass", "volume", 0],
+        ["Which state of matter has a fixed shape?", "Solid", "Liquid", "Gas", 0], ["What protects Earth from much of the Sun's harmful radiation?", "Ozone layer", "Cloud cover", "Rainfall", 0],
+        ["Which simple machine is a ramp?", "Lever", "Inclined plane", "Pulley", 1], ["Sound travels fastest through…", "A vacuum", "Solids", "Air", 1],
+        ["What is the boiling point of water at sea level?", "0°C", "50°C", "100°C", 2], ["Which organ helps digest food?", "Stomach", "Heart", "Brain", 0],
+        ["Animals that eat only plants are…", "Carnivores", "Herbivores", "Omnivores", 1], ["What is needed for a fire to burn?", "Oxygen", "Ice", "Darkness", 0],
+        ["Which planet is known as the Red Planet?", "Venus", "Mars", "Jupiter", 1], ["A magnet has two…", "Wheels", "Poles", "Cells", 1],
+        ["What instrument measures temperature?", "Barometer", "Thermometer", "Ruler", 1], ["The change from liquid to solid is…", "Melting", "Freezing", "Boiling", 1],
+        ["Which part of a plant absorbs water?", "Flower", "Root", "Fruit", 1], ["What type of energy comes from the Sun?", "Solar", "Sound", "Chemical", 0],
+        ["The lungs are part of which body system?", "Digestive", "Respiratory", "Skeletal", 1], ["Which is a renewable energy source?", "Coal", "Solar power", "Petrol", 1],
+        ["What do we call water falling from clouds?", "Precipitation", "Condensation", "Collection", 0], ["Which vitamin is made in skin in sunlight?", "Vitamin A", "Vitamin C", "Vitamin D", 2],
+        ["A balanced diet contains…", "Only fats", "Different nutrients", "Only sugar", 1], ["Which object reflects light best?", "Mirror", "Cloth", "Paper", 0],
+        ["What is the centre of an atom called?", "Nucleus", "Shell", "Muscle", 0], ["Which process turns food into energy in cells?", "Respiration", "Filtration", "Evaporation", 0]
+      ]),
+      "English Language": makeQuestions([
+        ["Choose the correct word: She ___ to school every day.", "go", "goes", "going", 1], ["Which word is an adjective?", "Quickly", "Beautiful", "Run", 1],
+        ["What is the opposite of 'ancient'?", "Old", "Modern", "Broken", 1], ["Which punctuation mark ends a question?", "Full stop", "Comma", "Question mark", 2],
+        ["Choose the noun: The bright bird sang.", "bright", "bird", "sang", 1], ["The past tense of 'write' is…", "wrote", "written", "writes", 0],
+        ["Which word is a synonym for 'happy'?", "Joyful", "Angry", "Tired", 0], ["Choose the correct spelling.", "Necesary", "Necessary", "Neccessary", 1],
+        ["A story's main character is the…", "setting", "protagonist", "title", 1], ["Which word is a verb?", "Jump", "Blue", "Table", 0],
+        ["Complete: Neither Kojo ___ Ama was late.", "or", "nor", "and", 1], ["What is the plural of 'child'?", "Childs", "Children", "Childes", 1],
+        ["A comparison using 'like' or 'as' is a…", "simile", "metaphor", "pun", 0], ["Which word shows possession?", "their", "there", "they're", 0],
+        ["Choose the correct article: ___ orange.", "A", "An", "Thee", 1], ["The opposite of 'expand' is…", "enlarge", "contract", "extend", 1],
+        ["Which is an adverb?", "Carefully", "Careful", "Care", 0], ["A group of lines in a poem is a…", "paragraph", "stanza", "chapter", 1],
+        ["Choose the correct sentence.", "He don't run.", "He doesn't run.", "He not runs.", 1], ["What does 'brief' mean?", "Short", "Loud", "Heavy", 0],
+        ["The setting tells us the…", "time and place", "author's age", "book's price", 0], ["Which word is spelled correctly?", "Separate", "Seperate", "Separete", 0],
+        ["A word that replaces a noun is a…", "pronoun", "preposition", "conjunction", 0], ["Complete: I have lived here ___ 2020.", "for", "since", "during", 1],
+        ["Which is a compound word?", "Sunflower", "Sunny", "Sunshine", 0], ["The opposite of 'generous' is…", "kind", "selfish", "helpful", 1],
+        ["What is the purpose of a title?", "To name the text", "To end a sentence", "To list punctuation", 0], ["Choose the correct homophone: ___ going home.", "Their", "They're", "There", 1],
+        ["A question beginning with 'Who' asks about a…", "person", "place", "time", 0], ["Which punctuation separates items in a list?", "Comma", "Apostrophe", "Hyphen", 0],
+        ["The prefix 'un-' usually means…", "again", "not", "before", 1], ["A formal letter usually begins with a…", "salutation", "plot", "rhyme", 0]
+      ]),
+      "Social Studies": makeQuestions([
+        ["Which action shows responsible citizenship?", "Littering", "Obeying laws", "Damaging property", 1], ["What is the main purpose of a community?", "To live and work together", "To avoid one another", "To waste resources", 0],
+        ["Which is a natural resource?", "Plastic", "Water", "Television", 1], ["Voting is an example of…", "Civic participation", "Private business", "A natural disaster", 0],
+        ["A family is a group of people related by…", "blood, marriage, or adoption", "a classroom only", "a market", 0], ["Which is a duty of a good citizen?", "Protecting public property", "Breaking laws", "Spreading litter", 0],
+        ["A map key explains…", "symbols on a map", "the weather only", "a person's name", 0], ["Which direction is opposite to north?", "East", "South", "West", 1],
+        ["Culture includes a people's…", "language and traditions", "shoe size", "bank balance", 0], ["Why do communities make rules?", "To promote order and safety", "To create confusion", "To stop cooperation", 0],
+        ["Which is a means of transport?", "Radio", "Bicycle", "Cement", 1], ["A leader chosen by voting is…", "elected", "hidden", "borrowed", 0],
+        ["Which activity can protect the environment?", "Planting trees", "Burning plastic", "Dumping waste in rivers", 0], ["A budget helps people plan…", "income and spending", "the weather", "a football score", 0],
+        ["Which institution helps enforce laws?", "Police service", "Bakery", "Library club", 0], ["What is teamwork?", "Working together toward a goal", "Working alone always", "Avoiding responsibility", 0],
+        ["A person who moves to live in another country is a…", "migrant", "tourist guide", "farmer only", 0], ["Which is a basic human right?", "Right to education", "Right to harm others", "Right to steal", 0],
+        ["Why do people pay taxes?", "To support public services", "To stop schools", "To hide income", 0], ["A village is usually…", "a rural settlement", "an ocean", "an airport", 0],
+        ["Which resource can be replaced naturally?", "Sunlight", "Gold", "Coal", 0], ["What does cooperation mean?", "Helping one another", "Refusing all help", "Arguing constantly", 0],
+        ["Which is a national symbol?", "Flag", "Notebook", "Spoon", 0], ["A constitution contains…", "fundamental laws and principles", "recipes", "sports results", 0],
+        ["What can cause soil erosion?", "Removing vegetation", "Planting cover crops", "Careful terracing", 0], ["Which is a secondary source of information?", "Textbook", "A witness at the event", "The original speech", 0],
+        ["A market is a place where people…", "buy and sell goods", "sleep in class", "make laws only", 0], ["Why are roads important?", "They connect places", "They stop travel", "They create rainfall", 0],
+        ["Which behaviour promotes peace?", "Respectful dialogue", "Bullying", "Threatening others", 0], ["A population census counts…", "people in an area", "only buildings", "rainfall", 0],
+        ["Which job provides health care?", "Nurse", "Carpenter", "Pilot", 0], ["What is conservation?", "Careful protection of resources", "Rapid waste", "Pollution", 0]
+      ])
     };
 
     let currentQuestions = quickQuestionSets.Mathematics;

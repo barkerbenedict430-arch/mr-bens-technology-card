@@ -190,7 +190,7 @@
       <nav class="nav" aria-label="Main navigation">
         <button class="active" type="button"><span class="nav-icon">⌂</span> Dashboard</button>
         <button type="button"><span class="nav-icon">▣</span> My Subjects</button>
-        <button type="button"><span class="nav-icon">◷</span> Practice Tests</button>
+        <button id="practice-tests-nav" type="button" onclick="openPracticeTests()"><span class="nav-icon">◷</span> Practice Tests</button>
         <button type="button"><span class="nav-icon">★</span> Achievements</button>
       </nav>
       <div class="sidebar-card">
@@ -456,6 +456,15 @@
 
     function startQuiz() {
       document.getElementById("quiz").scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function openPracticeTests() {
+      document.querySelectorAll(".nav button").forEach(item => item.classList.remove("active"));
+      document.getElementById("practice-tests-nav").classList.add("active");
+      document.getElementById("exam-library").scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(() => {
+        document.querySelector("#exam-library .exam-card button")?.focus();
+      }, 450);
     }
 
     function scrollToSubjects() {

@@ -215,14 +215,14 @@
 
     <main>
       <header class="topbar">
-        <div class="welcome"><small>Monday, 14 September</small><h1>Ready to learn, Alex? 👋</h1></div>
+        <div class="welcome"><small>Ghana curriculum learning hub · Monday, 14 September</small><h1>Ready to learn, Alex? 👋</h1></div>
         <div class="top-actions"><input class="search" id="search" aria-label="Search subjects" placeholder="Search..." type="search"><div class="avatar">A</div></div>
       </header>
 
       <section class="hero">
         <div>
           <h2>Small steps today,<br>big dreams tomorrow.</h2>
-          <p>Learn at your own pace with fun lessons, friendly practice, and helpful exam tips made just for you.</p>
+          <p>Learn at your own pace with Ghana curriculum-aligned lessons, friendly practice, and helpful BECE and WASSCE exam tips.</p>
           <button type="button" onclick="startQuiz()">Start today's practice <span aria-hidden="true">→</span></button>
         </div>
         <div class="hero-art" aria-hidden="true">📚</div>
@@ -232,8 +232,8 @@
         <div class="section-head"><h2>Choose your level</h2><a href="#levels">View all levels →</a></div>
         <div class="levels">
           <button class="level selected" type="button" onclick="selectLevel(this, 'Primary')"><span class="level-icon">🌱</span><strong>Primary</strong><small>Ages 6–11</small></button>
-          <button class="level" type="button" onclick="selectLevel(this, 'Junior High')"><span class="level-icon">🚲</span><strong>Junior High</strong><small>Ages 12–14</small></button>
-          <button class="level" type="button" onclick="selectLevel(this, 'Senior High')"><span class="level-icon">🎓</span><strong>Senior High</strong><small>Ages 15–17</small></button>
+          <button class="level" type="button" onclick="selectLevel(this, 'Junior High · BECE')"><span class="level-icon">🚲</span><strong>Junior High</strong><small>Common Core · BECE</small></button>
+          <button class="level" type="button" onclick="selectLevel(this, 'Senior High · WASSCE')"><span class="level-icon">🎓</span><strong>Senior High</strong><small>SHS · WASSCE</small></button>
         </div>
       </section>
 
@@ -242,7 +242,7 @@
           <div class="section-head"><h2 id="subject-title">Your subjects</h2><a href="#subjects">See all →</a></div>
           <div class="subjects">
             <article class="subject" data-name="mathematics" tabindex="0" role="button" data-subject="Mathematics"><div class="subject-icon math">➗</div><div><h3>Mathematics</h3><p>12 lessons · 64% complete</p><div class="progress"><span></span></div></div></article>
-            <article class="subject" data-name="science" tabindex="0" role="button" data-subject="Science"><div class="subject-icon science">🔬</div><div><h3>Science</h3><p>10 lessons · 42% complete</p><div class="progress"><span></span></div></div></article>
+            <article class="subject" data-name="science integrated science" tabindex="0" role="button" data-subject="Science"><div class="subject-icon science">🔬</div><div><h3>Integrated Science</h3><p>10 lessons · 42% complete</p><div class="progress"><span></span></div></div></article>
             <article class="subject" data-name="english" tabindex="0" role="button" data-subject="English Language"><div class="subject-icon english">📖</div><div><h3>English Language</h3><p>15 lessons · 78% complete</p><div class="progress"><span></span></div></div></article>
             <article class="subject" data-name="social studies" tabindex="0" role="button" data-subject="Social Studies"><div class="subject-icon social">🌍</div><div><h3>Social Studies</h3><p>8 lessons · 28% complete</p><div class="progress"><span></span></div></div></article>
           </div>
@@ -265,28 +265,30 @@
       </div>
 
       <section class="exam-library" id="exam-library">
-        <div class="section-head"><h2>BECE &amp; WASSCE practice</h2><a href="#exam-library">Study bank →</a></div>
-        <p class="library-note">Build confidence with original exam-style practice sets organised by level and subject.</p>
+        <div class="section-head"><h2>Ghana BECE &amp; WASSCE practice</h2><a href="#exam-library">Study bank →</a></div>
+        <p class="library-note">Build confidence with original practice aligned to Ghana's Common Core Programme for BECE and SHS subjects for WASSCE.</p>
         <div class="exam-filters" role="group" aria-label="Filter practice sets">
           <button class="exam-filter active" type="button" data-filter="all">All sets</button>
           <button class="exam-filter" type="button" data-filter="BECE">BECE</button>
           <button class="exam-filter" type="button" data-filter="WASSCE">WASSCE</button>
           <button class="exam-filter" type="button" data-filter="Mathematics">Mathematics</button>
           <button class="exam-filter" type="button" data-filter="English">English</button>
+          <button class="exam-filter" type="button" data-filter="Science">Integrated Science</button>
+          <button class="exam-filter" type="button" data-filter="Social Studies">Social Studies</button>
         </div>
         <div class="exam-list">
           <article class="exam-card" data-exam="BECE Mathematics">
-            <div class="exam-card-top"><span class="exam-badge">BECE · Maths</span><span class="exam-year">JHS 1–3</span></div>
+            <div class="exam-card-top"><span class="exam-badge">BECE · Core Maths</span><span class="exam-year">JHS / Common Core</span></div>
             <h3>Numbers &amp; algebra</h3><p>Fractions, ratios, equations, percentages and everyday problem solving.</p>
             <button type="button" onclick="loadPractice('BECE Mathematics')">Practice set · 32 questions</button>
           </article>
           <article class="exam-card" data-exam="BECE English">
-            <div class="exam-card-top"><span class="exam-badge">BECE · English</span><span class="exam-year">JHS 1–3</span></div>
+            <div class="exam-card-top"><span class="exam-badge">BECE · English</span><span class="exam-year">JHS / Common Core</span></div>
             <h3>Comprehension &amp; grammar</h3><p>Reading skills, parts of speech, vocabulary and sentence completion.</p>
             <button type="button" onclick="loadPractice('BECE English')">Practice set · 32 questions</button>
           </article>
           <article class="exam-card" data-exam="WASSCE Mathematics">
-            <div class="exam-card-top"><span class="exam-badge">WASSCE · Maths</span><span class="exam-year">SHS 1–3</span></div>
+            <div class="exam-card-top"><span class="exam-badge">WASSCE · Core Maths</span><span class="exam-year">SHS 1–3</span></div>
             <h3>Core mathematics</h3><p>Functions, statistics, geometry and quantitative reasoning practice.</p>
             <button type="button" onclick="loadPractice('WASSCE Mathematics')">Practice set · 32 questions</button>
           </article>
@@ -295,8 +297,28 @@
             <h3>Language &amp; literature</h3><p>Summary, lexis, structure and thoughtful text-based exam practice.</p>
             <button type="button" onclick="loadPractice('WASSCE English')">Practice set · 32 questions</button>
           </article>
+          <article class="exam-card" data-exam="BECE Science">
+            <div class="exam-card-top"><span class="exam-badge">BECE · Integrated Science</span><span class="exam-year">JHS / Common Core</span></div>
+            <h3>Living world &amp; environment</h3><p>Health, energy, matter, ecosystems, forces, and practical science ideas.</p>
+            <button type="button" onclick="loadPractice('BECE Science')">Practice set · 32 questions</button>
+          </article>
+          <article class="exam-card" data-exam="BECE Social Studies">
+            <div class="exam-card-top"><span class="exam-badge">BECE · Social Studies</span><span class="exam-year">JHS / Common Core</span></div>
+            <h3>Citizenship &amp; society</h3><p>Ghanaian values, governance, environment, identity, and community development.</p>
+            <button type="button" onclick="loadPractice('BECE Social Studies')">Practice set · 32 questions</button>
+          </article>
+          <article class="exam-card" data-exam="WASSCE Science">
+            <div class="exam-card-top"><span class="exam-badge">WASSCE · Integrated Science</span><span class="exam-year">SHS 1–3</span></div>
+            <h3>Core science concepts</h3><p>Biology, chemistry, physics, agriculture, health, and scientific investigation.</p>
+            <button type="button" onclick="loadPractice('WASSCE Science')">Practice set · 32 questions</button>
+          </article>
+          <article class="exam-card" data-exam="WASSCE Social Studies">
+            <div class="exam-card-top"><span class="exam-badge">WASSCE · Social Studies</span><span class="exam-year">SHS 1–3</span></div>
+            <h3>Ghana &amp; national development</h3><p>Governance, geography, economics, social change, and sustainable development.</p>
+            <button type="button" onclick="loadPractice('WASSCE Social Studies')">Practice set · 32 questions</button>
+          </article>
         </div>
-        <p class="disclaimer">These are original revision questions inspired by common BECE and WASSCE topics, not official past-paper questions. Always use approved textbooks and guidance from your school.</p>
+        <p class="disclaimer">These are original Ghana curriculum-aligned revision questions, not official past-paper questions. Always compare study topics with the current NaCCA/WAEC syllabus and guidance from your school.</p>
       </section>
 
       <section class="theory-library" id="theory-library">
@@ -319,7 +341,7 @@
           <div class="theory-answer" id="theory-answer" hidden><strong>Model answer:</strong> Fractions help us share quantities, measure ingredients, compare parts of a whole, and calculate discounts.</div>
           <div class="theory-actions"><button type="button" onclick="showTheoryAnswer()">Show model answer</button><button type="button" onclick="nextTheoryQuestion()">Next question →</button></div>
         </div>
-        <p class="disclaimer">These are original theory-style revision prompts inspired by common BECE and WASSCE topics, not reproduced official past-paper questions. Use your approved syllabus and teacher's marking guidance when checking answers.</p>
+        <p class="disclaimer">These are original Ghana curriculum-aligned theory prompts, not reproduced official past-paper questions. Use the current NaCCA/WAEC syllabus and your teacher's marking guidance when checking answers.</p>
       </section>
     </main>
   </div>
@@ -586,7 +608,11 @@
         "BECE Mathematics": quickQuestionSets.Mathematics,
         "BECE English": quickQuestionSets["English Language"],
         "WASSCE Mathematics": quickQuestionSets.Mathematics,
-        "WASSCE English": quickQuestionSets["English Language"]
+        "WASSCE English": quickQuestionSets["English Language"],
+        "BECE Science": quickQuestionSets.Science,
+        "WASSCE Science": quickQuestionSets.Science,
+        "BECE Social Studies": quickQuestionSets["Social Studies"],
+        "WASSCE Social Studies": quickQuestionSets["Social Studies"]
       };
       currentQuestions = examQuestions[name] || quickQuestionSets.Mathematics;
       currentQuestionIndex = 0;
